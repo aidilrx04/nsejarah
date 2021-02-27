@@ -132,6 +132,20 @@ function getGuru( $id )
 
 }
 
+function isGuru() 
+{
+
+    return isset($_SESSION['jenis']) && $_SESSION['jenis'] == 'guru';
+
+}
+
+function isAdmin()
+{
+
+    return isset($_SESSION['jenis']) && $_SESSION['jenis'] == 'admin';
+
+}
+
 /* KUIZ */
 /**
  * Dapatkan senarai kuiz
