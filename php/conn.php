@@ -191,7 +191,14 @@ function alert( $msg )
 
 }
 
-function _assert( $condition, $fail_msg, $die = false )
+/**
+ * Menguji sesuatu kondisi. Jika palsu, maka sebuah 'error' dipaparkan
+ * @param bool $condition Kondisi ingin diuji
+ * @param string $fail_msg Mesej untuk percubaan yang gagal
+ * @param bool $die Perlukah berhenti apabila gagal
+ * @return void
+ */
+function _assert( $condition, $fail_msg = '', $die = false )
 {
 
     if( !$condition )
