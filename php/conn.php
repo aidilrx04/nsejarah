@@ -24,41 +24,24 @@ function loginMurid( $nokp, $password )
     $col_1 = 'm_nokp';
     $col_2 = 'm_katalaluan';
 
-    $query = "SELECT * FROM {$table} WHERE {$col_1} = ?";
+    $query = "SELECT * FROM {$table} WHERE {$col_1} = ? AND {$col_2} = ?";
     if( $stmt = $conn->prepare( $query ) )
     {
 
-        $stmt->bind_param( 's', $nokp );
+        $stmt->bind_param( 'ss', $nokp, $password );
         $stmt->execute();
         $res = $stmt->get_result();
 
         if( $res->num_rows > 0 ) 
         {
 
-            $user = $res->fetch_assoc();
-
-            if( $user[$col_2] == $password )
-            {
-
-                return $user;
-
-            }
-            else
-            {
-
-                return;
-
-            }
-
-        } 
-        else 
-        {
-
-            return;
+            return $res->fetch_assoc();
 
         }
 
     }
+
+    return;
 
 }
 
@@ -89,7 +72,7 @@ function loginGuru( $nokp, $password )
         
     }
 
-    return [];
+    return;
 
 }
 

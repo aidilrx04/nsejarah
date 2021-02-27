@@ -20,7 +20,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
             $nokp = $_POST['nokp'];
             $katalaluan = $_POST['katalaluan'];
 
-            if( $murid = login($nokp, $katalaluan) )
+            if( $murid = loginMurid($nokp, $katalaluan) )
             {
 
                 session_regenerate_id();
