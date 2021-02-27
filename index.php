@@ -12,13 +12,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
     if( isset( $_POST['submit'] ) && $_POST['submit'] == 'login' ) 
     {
 
-        $jenis = $_POST['jenis'];
+        $jenis = $_POST['jenis'];        
+        $nokp = $_POST['nokp'];
+        $katalaluan = $_POST['katalaluan'];
 
         if( $jenis == 'murid' )
         {
-
-            $nokp = $_POST['nokp'];
-            $katalaluan = $_POST['katalaluan'];
 
             if( $murid = loginMurid($nokp, $katalaluan) )
             {
@@ -35,6 +34,21 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
             {
 
                 die( alert( 'No. KP atau Katalaluan salah!' ) );
+
+            }
+
+        }
+        else if ( $jenis == 'guru' )
+        {
+
+            if( $guru = loginGuru( $nokp, $katalaluan ) )
+            {
+
+                session_regenerate_id();
+                $_SESSION['jenis'] = $guru['g_jenis'];
+                $_SESSION['nokp'] = $guru['g_nokp'];
+                $_SESSION['nama'] = $guru['g_nama'];
+                $_SESSION['id'] = $guru['g_id'];
 
             }
 
