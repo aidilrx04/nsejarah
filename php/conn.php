@@ -13,10 +13,10 @@ if( mysqli_connect_errno() ) {
 }
 
 /* 
-    USERS
+    MURID
 */
 
-function login( $nokp, $password )
+function loginMurid( $nokp, $password )
 {
 
     global $conn;
@@ -63,6 +63,36 @@ function login( $nokp, $password )
 }
 
 /* GURU */
+
+function loginGuru( $nokp, $password )
+{
+
+    global $conn;
+    $table = 'guru';
+    $col_1 = 'g_nokp';
+    $col_2 = 'g_katalaluan';
+    $query = "SELECT * FROM {$table} WHERE {$col_1} = ? AND {$col_2} = ?";
+
+    if( $stmt = $conn->prepare($query) )
+    {
+
+        $stmt->bind_param( 'ss', $nokp, $password );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 )
+        {
+
+            return $res->fetch_assoc();
+
+        }
+        
+    }
+
+    return [];
+
+}
+
 function getGuru( $id )
 {
 
