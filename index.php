@@ -3,9 +3,11 @@
 #start session
 session_start();
 
+#conn and stuffs
+require 'php/conn.php';
+
 if( $_SERVER['REQUEST_METHOD'] == 'POST' ) 
 {
-    require 'php/conn.php';
 
     if( isset( $_POST['submit'] ) && $_POST['submit'] == 'login' ) 
     {
@@ -84,6 +86,50 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
                 <button type="submit" name="submit" value="login">Submit</button>
 
             </form>
+        </div>
+
+        <div class="senarai-kuiz">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+
+                        <th>Guru</th>
+
+                        <th>Jenis</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php
+
+                    # [O] senarai kuiz
+                    $kuiz_list = getKuizList();
+
+                    # papar kuiz
+                    foreach( $kuiz_list as $kuiz )
+                    {
+
+                        $guru = getGuru( $kuiz['kz_guru'] );
+                        
+
+                    ?>
+                        
+                        <tr>
+                            <td><?=$kuiz['kz_nama']?></td>
+
+                            <td><?=$guru['g_nama']?></td>
+
+                            <td><?=$kuiz['kz_jenis']?></td>
+                        </tr>
+
+                    <?php
+
+                    }
+
+                    ?>
+                </tbody>
+            </table>
         </div>
         
     </main>
