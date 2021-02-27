@@ -210,3 +210,13 @@ function _assert( $condition, $fail_msg = '', $die = false )
     }
 
 }
+
+/**
+ * Menukar lokasi.
+ * @param string location Lokasi yang ingin ditukar
+ * @return string Blok kod Javascript
+ */
+function redirect( $location )
+{
+    return "<script>window.location.href = '{$location}'</script>";
+}
