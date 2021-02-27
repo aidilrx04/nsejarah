@@ -154,6 +154,26 @@ function isAdmin()
 
 }
 
+function accessGuru( $err_msg = '', $reroute = '/' )
+{
+
+    if( !( isGuru() || isAdmin() ) ) 
+        die( ( $err_msg != '' ? alert( $err_msg ) : '' ) . redirect( $reroute ) );
+
+    return true;
+
+}
+
+function accessAdmin( $err_msg = '', $reroute = '/' )
+{
+
+    if( !( isAdmin() ) ) 
+        die( ( $err_msg != '' ? alert( $err_msg ) : '' ) . redirect( $reroute ) );
+
+    return true;
+    
+}
+
 /* KUIZ */
 /**
  * Dapatkan senarai kuiz
