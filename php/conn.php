@@ -13,6 +13,14 @@ if( mysqli_connect_errno() ) {
    # echo 'Sambungan berjaya';
 }
 
+# start session by default if not start yet
+if( session_status() == PHP_SESSION_NONE )
+{
+
+    session_start();
+
+}
+
 /* 
     MURID
 */
