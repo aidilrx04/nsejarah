@@ -4,6 +4,7 @@ $dbuser = 'root';
 $dbpass = '';
 $dbname = 'nsejarah';
 
+/**@var mysqli $conn Sambungan ke database */
 $conn = mysqli_connect( $dbhost, $dbuser, $dbpass, $dbname );
 
 if( mysqli_connect_errno() ) {
@@ -15,7 +16,12 @@ if( mysqli_connect_errno() ) {
 /* 
     MURID
 */
-
+/**
+ * Login murid menggunakan No. Kad Pengenalan($nokp) dan Katalaluan($password)
+ * @param string $nokp No. Kad Pengenalan
+ * @param string $password Katalaluan
+ * @return array|void Tatasusunan murid jika berjaya void sebaliknya.
+ */
 function loginMurid( $nokp, $password )
 {
 
@@ -48,6 +54,12 @@ function loginMurid( $nokp, $password )
 
 /* GURU */
 
+/**
+ * Login menggunakan No. Kad Pengenalan(nokp) dan Katalaluan(password) guru
+ * @param string $nokp No. Kad Pengenalan
+ * @param string $password Katalaluan
+ * @return array|void Tatasusunan guru jika berjaya sebaliknya void
+ */
 function loginGuru( $nokp, $password )
 {
 
@@ -77,6 +89,11 @@ function loginGuru( $nokp, $password )
 
 }
 
+/**
+ * Dapatkan data guru menggunakan ID Guru($id)
+ * @param int $id ID Guru
+ * @return array|void Tatasusunan guru jika berjaya, void sebaliknya.
+ */
 function getGuru( $id )
 {
 
@@ -101,7 +118,7 @@ function getGuru( $id )
         else
         {
             
-            return [];
+            return;
 
         }
 
@@ -109,14 +126,19 @@ function getGuru( $id )
     else
     {
 
-        return [];
+        return;
 
     }
 
 }
 
 /* KUIZ */
-
+/**
+ * Dapatkan senarai kuiz
+ * @param int $limit Had bilangan kuiz
+ * @param int $offset Titik permulaan pencarian data
+ * @return array Tatasusunan data kuiz jika berjaya, tatasusunan kosong jika tidak
+ */
 function getKuizList( int $limit = 10, int $offset = 0 )
 {
 
@@ -157,7 +179,11 @@ function getKuizList( int $limit = 10, int $offset = 0 )
 }
 
 /* MISCELLANEOUS */
-
+/**
+ * Memaparkan amaran(alert) Javascript
+ * @param string $msg Mesej|Paparan yang dikehendaki
+ * @return string Blok kod javascript
+ */
 function alert( $msg ) 
 {
 
