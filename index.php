@@ -111,6 +111,14 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
         <?php
 
         }
+        else
+        {
+
+        ?>
+        <a href="/logout.php" class="logout-btn">Log Keluar</a>
+        <?php
+
+        }
         ?>
 
         <div class="senarai-kuiz">
