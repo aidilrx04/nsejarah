@@ -190,3 +190,16 @@ function alert( $msg )
     return "<script>alert('{$msg}')</script>";
 
 }
+
+function _assert( $condition, $fail_msg, $die = false )
+{
+
+    if( !$condition )
+    {
+
+        if( $die ) die( $fail_msg );
+        else echo $fail_msg;
+
+    }
+
+}
