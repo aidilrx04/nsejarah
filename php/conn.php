@@ -140,6 +140,10 @@ function getGuru( $id )
 
 }
 
+/**
+ * Pengguna terkini ialah guru?
+ * @return bool
+ */
 function isGuru() 
 {
 
@@ -147,6 +151,10 @@ function isGuru()
 
 }
 
+/**
+ * Pengguna terkini ialah admin?
+ * @return bool
+ */
 function isAdmin()
 {
 
@@ -154,6 +162,13 @@ function isAdmin()
 
 }
 
+/**
+ * Set akses untuk guru/admin sahaja
+ * Apabila gagal, mesej ralat dipaparkan, kemudian lokasi terkini ditukar
+ * @param string $err_msg Mesej ralat
+ * @param string $reroute Lokasi hendak ditukar
+ * @param bool True jika akses adalah guru/admin
+ */
 function accessGuru( $err_msg = '', $reroute = '/' )
 {
 
@@ -164,6 +179,13 @@ function accessGuru( $err_msg = '', $reroute = '/' )
 
 }
 
+/**
+ * Set akses untuk admin sahaja
+ * Apabila gagal, mesej ralat dipaparkan, kemudian lokasi terkini ditukar
+ * @param string $err_msg Mesej ralat
+ * @param string $reroute Lokasi hendak ditukar
+ * @param bool True jika akses adalah admin
+ */
 function accessAdmin( $err_msg = '', $reroute = '/' )
 {
 
@@ -174,6 +196,95 @@ function accessAdmin( $err_msg = '', $reroute = '/' )
     
 }
 
+/* KELAS */
+
+/**
+ * Dapat senarai kelas
+ * @param int|null $id_guru Mencari kuiz jika set, sebaliknya cari keseluruhan kelas
+ * @param int $limit Had carian kelas
+ * @param int $offset Titik mula carian
+ * @return array|void Senarai kuiz hasil carian, void jika gagal.
+ */
+function getKelasList( $id_guru = null, int $limit = 10, int $offset = 0 )
+{
+
+    global $conn;
+    $tambahan = '';
+
+    if( $id_guru )
+    {
+
+        $col_1 = 'k_guru';
+        $tambahan = " WHERE {$col_1} = ?";
+
+    }
+
+    $query = "SELECT * FROM kelas " . $tambahan;
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        if( $id_guru ) $stmt->bind_param( 's', $id_guru );
+
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $kelas_list = [];
+
+        if( $res->num_rows > 0 )
+        {
+
+            # simpan semua kelas ke dalam kelas list
+            while( $kelas = $res->fetch_assoc() )
+            {
+
+                array_push( $kelas_list, $kelas );
+
+            }
+
+        }
+
+        return $kelas_list;
+
+    }
+
+    return;
+
+}
+
+/**
+ * Dapatkan jumlah murid dalam 1 kelas
+ * @param int $id_kelas ID Kelas
+ * @param int $ting Tingkatan murid yang dicari, 1 sedia ada.
+ * @return int Jumlah murid dalam kelas
+ */
+function getKelasJumlah( int $id_kelas, int $ting = 1 )
+{
+
+    global $conn;
+    $col_1 = 'k_id';
+    $col_2 = 'm_ting';
+    $query = "SELECT COUNT(m.m_id) AS jumlah FROM murid AS m, kelas AS k WHERE k.{$col_1} = ? AND m.m_kelas = k.k_id AND m.{$col_2} = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ss', $id_kelas, $ting );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if($res->num_rows > 0)
+        {
+
+            return (int)( $res->fetch_assoc()['jumlah'] );
+
+        }
+
+    }
+
+    return 0;
+
+}
+
 /* KUIZ */
 /**
  * Dapatkan senarai kuiz
@@ -181,14 +292,18 @@ function accessAdmin( $err_msg = '', $reroute = '/' )
  * @param int $offset Titik permulaan pencarian data
  * @return array Tatasusunan data kuiz jika berjaya, tatasusunan kosong jika tidak
  */
-function getKuizList( int $limit = 10, int $offset = 0 )
+function getKuizList( int $id_guru = null, int $limit = 10, int $offset = 0 )
 {
 
     global $conn;
-    $query = "SELECT * FROM kuiz LIMIT {$limit} OFFSET {$offset}";
+    $col_1 = 'kz_guru';
+    $tambahan = $id_guru ? " WHERE {$col_1} = ? " : '';
+    $query = "SELECT * FROM kuiz {$tambahan} LIMIT {$limit} OFFSET {$offset}";
 
     if( $stmt = $conn->prepare( $query ) )
     {
+
+        if( $id_guru ) $stmt->bind_param( 's', $id_guru );
 
         $stmt->execute();
         $res = $stmt->get_result();
