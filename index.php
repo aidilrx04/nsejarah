@@ -71,6 +71,13 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
 
     <main>
 
+        <?php
+        # papar apabila pengguna belum lagi login
+        
+        if( !isset( $_SESSION['jenis'] ) )
+        {
+
+        ?>
         <div class="login-form">
             <form action="" method="post">
 
@@ -101,6 +108,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
 
             </form>
         </div>
+        <?php
+
+        }
+        ?>
 
         <div class="senarai-kuiz">
             <table>

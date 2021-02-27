@@ -45,6 +45,7 @@ function loginMurid( $nokp, $password )
 
 }
 
+
 /* GURU */
 
 function loginGuru( $nokp, $password )
