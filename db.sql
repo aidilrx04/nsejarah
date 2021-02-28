@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS kelas (
 -- table guru
 CREATE TABLE IF NOT EXISTS guru (
     `g_id` INT(30) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `g_nokp` VARCHAR(30) NOT NULL,
+    `g_nokp` VARCHAR(30) UNIQUE NOT NULL,
     `g_nama` VARCHAR(255) NOT NULL,
     `g_katalaluan` VARCHAR(255) NOT NULL,
     `g_jenis` ENUM('admin', 'guru') DEFAULT 'guru',
