@@ -24,7 +24,7 @@ accessGuru( 'Akses tanpa kebenaran!' );
             <?php
 
             $guru = getGuru( $_SESSION['id'] );
-            $kelas = getKelasList( $guru['g_id'] );
+            $kelas = getKelasByGuru( $guru['g_id'] );
             $kuiz = getKuizList( $guru['g_id'] );
 
             ?>

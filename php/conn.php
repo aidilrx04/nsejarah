@@ -205,26 +205,14 @@ function accessAdmin( $err_msg = '', $reroute = '/' )
  * @param int $offset Titik mula carian
  * @return array|void Senarai kuiz hasil carian, void jika gagal.
  */
-function getKelasList( $id_guru = null, int $limit = 10, int $offset = 0 )
+function getKelasList( int $limit = 10, int $offset = 0 )
 {
 
     global $conn;
-    $tambahan = '';
-
-    if( $id_guru )
-    {
-
-        $col_1 = 'k_guru';
-        $tambahan = " WHERE {$col_1} = ?";
-
-    }
-
-    $query = "SELECT * FROM kelas " . $tambahan;
+    $query = "SELECT * FROM kelas ";
 
     if( $stmt = $conn->prepare( $query ) )
     {
-
-        if( $id_guru ) $stmt->bind_param( 's', $id_guru );
 
         $stmt->execute();
         $res = $stmt->get_result();
@@ -240,6 +228,41 @@ function getKelasList( $id_guru = null, int $limit = 10, int $offset = 0 )
                 array_push( $kelas_list, $kelas );
 
             }
+
+        }
+
+        return $kelas_list;
+
+    }
+
+    return;
+}
+
+/**
+ * Dapatkan senarai kelas yang diajari guru
+ * @param int $id_guru ID Guru
+ * @return array|void Senarai kelas yang diajari oleh guru
+ */
+function getKelasByGuru( int $id_guru )
+{
+
+    global $conn;
+    $col_1 = 'kt_guru';
+    $query = "SELECT * FROM kelas_tingkatan WHERE {$col_1} = ?";
+    
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_guru );
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $kelas_list = [];
+
+        if( $res->num_rows > 0 )
+        {
+
+            # simpan kelas
+            while( $kelas = $res->fetch_assoc() ) array_push( $kelas_list, $kelas );
 
         }
 
