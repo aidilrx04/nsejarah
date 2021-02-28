@@ -309,7 +309,6 @@ function getKelasByGuru( int $id_guru )
 /**
  * Dapatkan jumlah murid dalam 1 kelas
  * @param int $id_kelas ID Kelas
- * @param int $ting Tingkatan murid yang dicari, 1 sedia ada.
  * @return int Jumlah murid dalam kelas
  */
 function getKelasJumlah( int $id_kelas )
