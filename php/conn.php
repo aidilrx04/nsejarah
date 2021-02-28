@@ -46,7 +46,7 @@ function registerMurid( string $nokp, string $nama, string $katalaluan, int $kel
         $stmt->execute();
         $stmt->store_result();
 
-        if( $stmt ) return true;
+        if( $stmt && !$stmt->errno ) return true;
 
     }
 
