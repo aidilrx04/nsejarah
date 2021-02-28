@@ -210,6 +210,35 @@ function loginGuru( $nokp, $password )
 }
 
 /**
+ * Daftar guru baru
+ * @param string $nokp No. KP guru. 12 aksara
+ * @param string $nama Nama Guru
+ * @param string $katalaluan Katalaluan guru
+ * @param string $jenis enum('guru','admin'). guru default
+ * @return bool TRUE jika berjaya, FALSE jika gagal.
+ */
+function registerGuru( string $nokp, string $nama, string $katalaluan, string $jenis = 'guru' )
+{
+
+    global $conn;
+    $query = "INSERT INTO guru(g_nokp, g_nama, g_katalaluan, g_jenis) VALUE(?,?,?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ssss', $nokp, $nama, $katalaluan, $jenis );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return true;
+
+    }
+
+    return false;
+
+}
+
+/**
  * Kemaskini data guru
  * @param int $id_guru ID Guru
  * @param string $nnokp No. KP Baru

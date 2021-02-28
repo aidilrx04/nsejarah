@@ -6,6 +6,24 @@
 
 require '../php/conn.php';
 
+if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'daftar_guru' )
+{
+
+    $nokp = $_POST['nokp'];
+    $nama = $_POST['nama'];
+    $katalaluan = $_POST['katalaluan'];
+    $jenis = $_POST['jenis'];
+
+    if( $berjaya = registerGuru( $nokp, $nama, $katalaluan, $jenis ) )
+    {
+
+        echo alert( 'Data berjaya dimuatnaik!' ) . ( isset( $_GET['redir'] ) ? redirect( $_GET['redir'] ) : '' );
+
+    }
+    else die( alert( 'Data gagal dimuatnaik!' ) . back() );
+
+}
+
 # hanya benarkan admin sahaja mengakses laman ini
 accessAdmin('Akses tanpa kebenaran!');
 
@@ -37,6 +55,34 @@ accessAdmin('Akses tanpa kebenaran!');
             </thead>
 
             <tbody>
+                <tr>
+                    <form action="" method="post" class="tambah-guru">
+                        <td>
+                            <input type="text" name="nama" id="nama" placeholder="cth. Samad fly" maxlength="255" required="required">
+                        </td>
+
+                        <td>
+                            <input type="text" name="nokp" id="nokp" placeholder="696969696969" minlength="12" maxlength="12" required="required">
+                        </td>
+
+                        <td>
+                            <input type="text" name="katalaluan" id="katalaluan" placeholder="samadfly123" maxlength="15" required="required">
+                        </td>
+
+                        <td>
+                            <select name="jenis" id="jenis">
+                                <option value="guru">Guru</option>
+
+                                <option value="admin">Admin</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <button type="submit" name="submit" value="daftar_guru">Simpan</button>
+                        </td>
+                    </form>
+                </tr>
+
                 <?php
 
                 $guru_list = getGuruList(1000);
