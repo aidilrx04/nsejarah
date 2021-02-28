@@ -33,7 +33,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
             else
             {
 
-                die( alert( 'No. KP atau Katalaluan salah!' ) );
+                die( alert( 'No. KP atau Katalaluan salah!' ) . back() );
 
             }
 
@@ -49,6 +49,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
                 $_SESSION['nokp'] = $guru['g_nokp'];
                 $_SESSION['nama'] = $guru['g_nama'];
                 $_SESSION['id'] = $guru['g_id'];
+
+            }
+            else
+            {
+
+                die( alert( 'No. KP atau Katalaluan salah!' ) . back() );
 
             }
 
