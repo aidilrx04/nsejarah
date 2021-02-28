@@ -59,6 +59,40 @@ function loginMurid( $nokp, $password )
 
 }
 
+/**
+ * Dapatkan senarai murid
+ * @param int $limit Had carian
+ * @param int $offset Titik mula carian
+ * @return array Senarai Murid
+ */
+function getMuridList( int $limit = 10, int $offset = 0 )
+{
+
+    global $conn;
+    $tambahan = $limit <= 0 ? '' : ' LIMIT '. $limit . ' OFFSET ' . $offset;
+    $query = "SELECT * FROM murid {$tambahan}";
+    echo $query;
+    $murid_list = [];
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 )
+        {
+
+            # simpan data
+            while( $murid = $res->fetch_assoc() ) array_push( $murid_list, $murid );
+
+        }
+
+    }
+    return $murid_list;
+
+}
+
 
 /* GURU */
 
@@ -294,6 +328,30 @@ function getKelasById( int $id_kelas )
 
     return;
     
+}
+
+/**
+ * Dapatkan data tingkatan dengan id tingkatan
+ * @param int $id_ting ID Tingkatan
+ * @return array|void Data Tingkatan
+ */
+function getKelasByTingId( int $id_ting )
+{
+
+    global $conn;
+    $col_1 = 'kz_id';
+    $query = "SELECT * FROM kelas_tingkatan WHERE {$col_1} = '{$id_ting}'";
+    $res = $conn->query( $query );
+
+    if( $res->num_rows > 0 )
+    {
+
+        return $res->fetch_assoc();
+
+    }
+    
+    return;
+
 }
 
 /**
