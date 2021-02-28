@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS murid (
 CREATE TABLE IF NOT EXISTS kelas (
     `k_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `k_nama` VARCHAR(255) NOT NULL,
-    `k_guru` INT(30) UNSIGNED NOT NULL,
     PRIMARY KEY(`k_id`)
 );
 
@@ -62,6 +61,14 @@ CREATE TABLE IF NOT EXISTS jawapan (
 );
 
 -- TABLE COMPOSIT
+-- table kelas_tingkatan
+CREATE TABLE IF NOT EXISTS kelas_tingkatan (
+    `kt_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `kt_ting` TINYINT(1) UNSIGNED NOT NULL,
+    `kt_kelas` INT(10) UNSIGNED NOT NULL,
+    PRIMARY KEY(`kt_id`)
+);
+
 -- table soalan_jawapan
 CREATE TABLE IF NOT EXISTS soalan_jawapan (
     `sj_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -104,6 +111,10 @@ ALTER TABLE `soalan` ADD FOREIGN KEY(`s_kuiz`) REFERENCES `kuiz`(`kz_id`) ON UPD
 
 -- table jawapan
 ALTER TABLE `jawapan` ADD FOREIGN KEY(`j_soalan`) REFERENCES `soalan`(`s_id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+-- table kelas_tingkatan
+ALTER TABLE `kelas_tingkatan` ADD FOREIGN KEY(`kt_kelas`) REFERENCES `kelas`(`k_id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE `kelas_tingkatan` ADD FOREIGN KEY(`kt_guru`) REFERENCES `guru`(`g_id`) ON UPDATE CASCADE ON DELETE CASCADE;c
 
 -- table soalan_jawapan
 ALTER TABLE `soalan_jawapan` ADD FOREIGN KEY(`sj_soalan`) REFERENCES `soalan`(`s_id`) ON UPDATE CASCADE ON DELETE CASCADE;
