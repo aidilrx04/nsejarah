@@ -97,6 +97,26 @@ function loginGuru( $nokp, $password )
 
 }
 
+function getGuruList( int $limit = 10, int $offset = 0 )
+{
+
+    global $conn;
+    $query = "SELECT * FROM guru LIMIT {$limit} OFFSET {$offset}";
+    $res = $conn->query( $query );
+    $guru_list = [];
+
+    if( $res->num_rows > 0 )
+    {
+
+        # simpan guru
+        while( $guru = $res->fetch_assoc() ) array_push( $guru_list, $guru );
+
+    }
+
+    return $guru_list;
+
+}
+
 /**
  * Dapatkan data guru menggunakan ID Guru($id)
  * @param int $id ID Guru
