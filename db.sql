@@ -7,11 +7,11 @@ USE nsejarah;
 -- table murid
 CREATE TABLE IF NOT EXISTS murid (
     `m_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `m_nokp` VARCHAR(30) NOT NULL,
+    `m_nokp` VARCHAR(30) UNIQUE NOT NULL,
     `m_nama` VARCHAR(255) NOT NULL,
     `m_katalaluan` VARCHAR(255) NOT NULL,
     `m_kelas` INT(30) UNSIGNED NOT NULL,
-    PRIMARY KEY(`m_id`)
+    PRIMARY KEY(`m_id`, `m_nokp`)
 );
 
 -- table kelas
