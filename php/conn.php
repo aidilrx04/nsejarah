@@ -122,6 +122,55 @@ function getMuridList( int $limit = 10, int $offset = 0 )
 
 }
 
+/**
+ * Dapatkan data murid
+ * @param int $id_murid ID Murid
+ * @return array|void Data murid
+ */
+function getMuridById( int $id_murid )
+{
+
+    global $conn;
+    $col_1 = 'm_id';
+    $query = "SELECT * FROM murid WHERE {$col_1} = '{$id_murid}'";
+    $res = $conn->query( $query );
+
+    if( $res->num_rows > 0 ) return $res->fetch_assoc();
+
+    return;
+
+}
+
+/**
+ * Kemaskini data murid
+ * @param int $id_murid ID Murid yang ingin dikemaskini
+ * @param string $nnokp No. K/P Baru
+ * @param string $nnama Nama Baru
+ * @param string $nkatalaluan Katalaluan Baru
+ * @param int $nkelas ID Kelas Baru
+ * @return bool TRUE jika berjaya, FALSE jika gagal
+ */
+function updateMurid( int $id_murid, string $nnokp, string $nnama, string $nkatalaluan, int $nkelas )
+{
+
+    global $conn;
+    $query = "UPDATE murid SET m_nokp = ?, m_nama = ?, m_katalaluan = ?, m_kelas = ? WHERE m_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'sssss', $nnokp, $nnama, $nkatalaluan, $nkelas, $id_murid );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt ) return true;
+
+    }
+
+    return false;
+
+}
+
 
 /* GURU */
 
