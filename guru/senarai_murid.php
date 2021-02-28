@@ -117,9 +117,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid' )
                     <td><?=$ting['kt_ting']?> <?=$kelas['k_nama']?></td>
 
                     <td>
-                        <a href="#kemaskini">Kemaskini</a>
+                        <a href="kemaskini_murid.php?id_murid=<?=$murid['m_id']?>&redir=senarai_murid.php">Kemaskini</a>
 
-                        <a href="#padam">Padam</a>
+                        <a href="padam.php?table=murid&col=m_id&val=<?=$murid['m_id']?>">Padam</a>
                     </td>
                 </tr>
                 <?php
