@@ -26,6 +26,15 @@ accessGuru( 'Akses tanpa kebenaran!' );
             $guru = getGuru( $_SESSION['id'] );
             $kelas = getKelasByGuru( $guru['g_id'] );
             $kuiz = getKuizList( $guru['g_id'] );
+            $kelas_data = [];
+            
+            foreach( $kelas as $k )
+            {
+
+                $data = getKelasById( $k['kt_kelas'] );
+                array_push( $kelas_data, $data );
+
+            }
 
             ?>
 
@@ -41,10 +50,11 @@ accessGuru( 'Akses tanpa kebenaran!' );
                 <h4>
                 Kelas: 
                 <?php
-                foreach( $kelas as $k )
+                foreach( $kelas_data as $k )
                 {
 
-                    echo $k['k_nama'] . ' ';
+                    echo $k['k_nama'];
+
                 }
                 ?>
                 </h4>
@@ -64,7 +74,7 @@ accessGuru( 'Akses tanpa kebenaran!' );
 
                     <tbody>
                         <?php
-                        foreach( $kelas as $k )
+                        foreach( $kelas_data as $k )
                         {
 
                             $jumlah = getKelasJumlah( $k['k_id'], 1 );

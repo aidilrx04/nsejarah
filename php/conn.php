@@ -239,6 +239,38 @@ function getKelasList( int $limit = 10, int $offset = 0 )
 }
 
 /**
+ * Dapatkan data kelas berdasarkan idkelas
+ * @param int $id_kelas ID Kelas
+ * @return array|void Data kelas
+ */
+function getKelasById( int $id_kelas )
+{
+
+    global $conn;
+    $col_1 = 'k_id';
+    $query = "SELECT * FROM kelas WHERE {$col_1} = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_kelas );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 )
+        {
+
+            return $res->fetch_assoc();
+
+        }
+
+    }
+
+    return;
+    
+}
+
+/**
  * Dapatkan senarai kelas yang diajari guru
  * @param int $id_guru ID Guru
  * @return array|void Senarai kelas yang diajari oleh guru
