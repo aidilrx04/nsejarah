@@ -80,5 +80,44 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'upload_murid' )
             </form>
         </div>
     </main>
+
+    <script>
+        const uploadContainer = document.querySelector( '#upload-murid' ),
+              inputFile = uploadContainer.querySelector( '#data' );
+
+        uploadContainer.addEventListener( 'dragenter', dragenter );
+        uploadContainer.addEventListener( 'dragover', dragover );
+        uploadContainer.addEventListener( 'drop', drop );
+
+        function dragenter( e )
+        {
+
+            e.stopPropagation();
+            e.preventDefault();
+
+        }
+        
+        function dragover( e )
+        {
+
+            e.stopPropagation();
+            e.preventDefault();
+
+        }
+
+        function drop( e )
+        {
+            
+            e.stopPropagation();
+            e.preventDefault();
+
+
+            const dt = e.dataTransfer;
+            const file = dt.files;
+
+            inputFile.files = file;
+            
+        }
+    </script>
 </body>
 </html>
