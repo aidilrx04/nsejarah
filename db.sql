@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS skor_murid (
 
 -- FOREIGN KEYS/KUNCI-KUNCI ASING table
 -- table murid
-ALTER TABLE `murid` ADD FOREIGN KEY(`m_kelas`) REFERENCES `kelas`(`k_id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE `murid` ADD FOREIGN KEY(`m_kelas`) REFERENCES `kelas_tingkatan`(`kt_id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 -- table kelas
 ALTER TABLE `kelas` ADD FOREIGN KEY(`k_guru`) REFERENCES `guru`(`g_id`) ON UPDATE CASCADE;
