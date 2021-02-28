@@ -24,6 +24,36 @@ if( session_status() == PHP_SESSION_NONE )
 /* 
     MURID
 */
+
+/**
+ * Daftar murid
+ * @param string $nokp Aksara yang panjangnya 12
+ * @param string $nama Nama murid, maksimum 255 aksara
+ * @param string $katalaluan Katalaluan, maksimum 255 aksara
+ * @param int $kelas ID Kelas
+ * @return bool TRUE sekiranya berjaya, FALSE sebaliknya
+ */
+function registerMurid( string $nokp, string $nama, string $katalaluan, int $kelas )
+{
+
+    global $conn;
+    $query = "INSERT INTO murid(m_nokp, m_nama, m_katalaluan, m_kelas) VALUE (?,?,?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ssss', $nokp, $nama, $katalaluan, $kelas );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt ) return true;
+
+    }
+
+    return false;
+
+}
+
 /**
  * Login murid menggunakan No. Kad Pengenalan($nokp) dan Katalaluan($password)
  * @param string $nokp No. Kad Pengenalan
@@ -329,6 +359,12 @@ function getKelasById( int $id_kelas )
     
 }
 
+/**
+ * Dapatkan senarai tingkatan
+ * @param int $limit Had carian
+ * @param int $offset Titik mula carian
+ * @return array Senarai tingkatan
+ */
 function getTingList( int $limit = 10, int $offset = 0)
 {
 

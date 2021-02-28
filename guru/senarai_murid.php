@@ -14,27 +14,17 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid' )
     $nokp = $_POST['nokp'];
     $katalaluan = $_POST['katalaluan'];
     $kelas = $_POST['kelas'];
-    $query = "INSERT INTO murid(m_nama,m_nokp,m_katalaluan,m_kelas) VALUE (?,?,?,?)";
 
-    if( $stmt = $conn->prepare( $query ) )
+    if( registerMurid( $nokp, $nama, $katalaluan, $kelas ) )
     {
 
-        $stmt->bind_param( 'ssss', $nama, $nokp, $katalaluan, $kelas );
-        $stmt->execute();
-        $stmt->store_result();
+        echo alert( 'Data berjaya dimuat naik!' ) . ( isset( $_GET['redir'] ) ? redirect( $_GET['redir'] ) : '' );
 
-        if( $stmt )
-        {
+    }
+    else
+    {
 
-            echo alert( 'Data berjaya dimuat naik!' ) . ( isset( $_GET['redir'] ) ? redirect( $_GET['redir'] ) : '' );
-
-        }
-        else
-        {
-
-            die( alert( 'Data gagal dimuat naik!' ) . back() );
-
-        }
+        die( alert( 'Data gagal dimuat naik!' ) . back() );
 
     }
 
