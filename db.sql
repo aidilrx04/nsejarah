@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS kelas_tingkatan (
     `kt_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `kt_ting` TINYINT(1) UNSIGNED NOT NULL,
     `kt_kelas` INT(10) UNSIGNED NOT NULL,
+    `kt_guru` INT(10) UNSIGNED NOT NULL,
     PRIMARY KEY(`kt_id`)
 );
 
