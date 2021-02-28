@@ -456,3 +456,14 @@ function redirect( $location )
 {
     return "<script>window.location.href = '{$location}'</script>";
 }
+
+/**
+ * Back javascript
+ * @return string blok kod javascript
+ */
+function back()
+{
+
+    return "<script>window.history.back()</script>";
+
+}
