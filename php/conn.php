@@ -329,12 +329,32 @@ function getKelasById( int $id_kelas )
     
 }
 
+function getTingList( int $limit = 10, int $offset = 0)
+{
+
+    global $conn;
+    $tambahan = $limit <= 0 ? '' : ' LIMIT ' . $limit . ' OFFSET ' . $offset;
+    $query = "SELECT * FROM kelas_tingkatan {$tambahan}";
+    $res = $conn->query( $query );
+    $ting_list = [];
+
+    if( $res->num_rows > 0 )
+    {
+
+        # simpan ting
+        while( $ting = $res->fetch_assoc() ) array_push( $ting_list, $ting );
+
+    }
+
+    return $ting_list;
+}
+
 /**
  * Dapatkan data tingkatan dengan id tingkatan
  * @param int $id_ting ID Tingkatan
  * @return array|void Data Tingkatan
  */
-function getKelasByTingId( int $id_ting )
+function getTingById( int $id_ting )
 {
 
     global $conn;
