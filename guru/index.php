@@ -82,7 +82,7 @@ accessGuru( 'Akses tanpa kebenaran!' );
                             
                         ?>
                         <tr>
-                            <td><?=$k['k_nama']?></td>
+                            <td><?=$kt['kt_ting']?>  <?=$k['k_nama']?></td>
 
                             <td><?=$jumlah?></td>
                         </tr>

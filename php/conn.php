@@ -317,7 +317,7 @@ function getKelasJumlah( int $id_kelas )
 
     global $conn;
     $col_1 = 'kt.kt_id';
-    $query = "SELECT COUNT(m.m_id) as jumlah FROM murid as m, kelas_tingkatan as kt WHERE {$col_1} = ?";
+    $query = "select count(m.m_id) as jumlah from murid as m, kelas_tingkatan as kt where kt.kt_id = m.m_kelas and {$col_1} = ?";
 
     if( $stmt = $conn->prepare( $query ) )
     {
