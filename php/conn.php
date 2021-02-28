@@ -193,7 +193,7 @@ function isAdmin()
  * Apabila gagal, mesej ralat dipaparkan, kemudian lokasi terkini ditukar
  * @param string $err_msg Mesej ralat
  * @param string $reroute Lokasi hendak ditukar
- * @param bool True jika akses adalah guru/admin
+ * @return bool True jika akses adalah guru/admin
  */
 function accessGuru( $err_msg = '', $reroute = '/' )
 {
@@ -210,7 +210,7 @@ function accessGuru( $err_msg = '', $reroute = '/' )
  * Apabila gagal, mesej ralat dipaparkan, kemudian lokasi terkini ditukar
  * @param string $err_msg Mesej ralat
  * @param string $reroute Lokasi hendak ditukar
- * @param bool True jika akses adalah admin
+ * @return bool True jika akses adalah admin
  */
 function accessAdmin( $err_msg = '', $reroute = '/' )
 {
