@@ -312,18 +312,17 @@ function getKelasByGuru( int $id_guru )
  * @param int $ting Tingkatan murid yang dicari, 1 sedia ada.
  * @return int Jumlah murid dalam kelas
  */
-function getKelasJumlah( int $id_kelas, int $ting = 1 )
+function getKelasJumlah( int $id_kelas )
 {
 
     global $conn;
-    $col_1 = 'k_id';
-    $col_2 = 'm_ting';
-    $query = "SELECT COUNT(m.m_id) AS jumlah FROM murid AS m, kelas AS k WHERE k.{$col_1} = ? AND m.m_kelas = k.k_id AND m.{$col_2} = ?";
+    $col_1 = 'kt.kt_id';
+    $query = "SELECT COUNT(m.m_id) as jumlah FROM murid as m, kelas_tingkatan as kt WHERE {$col_1} = ?";
 
     if( $stmt = $conn->prepare( $query ) )
     {
 
-        $stmt->bind_param( 'ss', $id_kelas, $ting );
+        $stmt->bind_param( 's', $id_kelas );
         $stmt->execute();
         $res = $stmt->get_result();
 

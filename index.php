@@ -26,7 +26,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
                 $_SESSION['jenis'] = 'murid';
                 $_SESSION['nokp'] = $murid['m_nokp'];
                 $_SESSION['nama'] = $murid['m_nama'];
-                $_SESSION['ting'] = $murid['m_ting'];
                 $_SESSION['kelas'] = $murid['m_kelas'];
 
             }

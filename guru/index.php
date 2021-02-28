@@ -74,10 +74,11 @@ accessGuru( 'Akses tanpa kebenaran!' );
 
                     <tbody>
                         <?php
-                        foreach( $kelas_data as $k )
+                        foreach( $kelas as $kt )
                         {
 
-                            $jumlah = getKelasJumlah( $k['k_id'], 1 );
+                            $jumlah = getKelasJumlah( $kt['kt_id'] );
+                            $k = getKelasById( $kt['kt_kelas'] );
                             
                         ?>
                         <tr>
