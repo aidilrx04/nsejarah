@@ -97,6 +97,12 @@ function loginGuru( $nokp, $password )
 
 }
 
+/**
+ * Dapatkan senarai guru
+ * @param int $limit Had carian
+ * @param int $offset Titik mula carian
+ * @return array|void Senarai Guru
+ */
 function getGuruList( int $limit = 10, int $offset = 0 )
 {
 
