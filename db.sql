@@ -104,7 +104,7 @@ ALTER TABLE `murid` ADD FOREIGN KEY(`m_kelas`) REFERENCES `kelas_tingkatan`(`kt_
 ALTER TABLE `kelas` ADD FOREIGN KEY(`k_guru`) REFERENCES `guru`(`g_id`) ON UPDATE CASCADE;
 
 -- table  kuiz
-ALTER TABLE `kuiz` ADD FOREIGN KEY(`kz_guru`) REFERENCES `guru`(`g_id`) ON UPDATE CASCADE;
+ALTER TABLE `kuiz` ADD FOREIGN KEY(`kz_guru`) REFERENCES `guru`(`g_id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 -- table soalan
 ALTER TABLE `soalan` ADD FOREIGN KEY(`s_kuiz`) REFERENCES `kuiz`(`kz_id`) ON UPDATE CASCADE ON DELETE CASCADE;
@@ -114,7 +114,7 @@ ALTER TABLE `jawapan` ADD FOREIGN KEY(`j_soalan`) REFERENCES `soalan`(`s_id`) ON
 
 -- table kelas_tingkatan
 ALTER TABLE `kelas_tingkatan` ADD FOREIGN KEY(`kt_kelas`) REFERENCES `kelas`(`k_id`) ON UPDATE CASCADE ON DELETE CASCADE;
-ALTER TABLE `kelas_tingkatan` ADD FOREIGN KEY(`kt_guru`) REFERENCES `guru`(`g_id`) ON UPDATE CASCADE ON DELETE CASCADE;c
+ALTER TABLE `kelas_tingkatan` ADD FOREIGN KEY(`kt_guru`) REFERENCES `guru`(`g_id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 -- table soalan_jawapan
 ALTER TABLE `soalan_jawapan` ADD FOREIGN KEY(`sj_soalan`) REFERENCES `soalan`(`s_id`) ON UPDATE CASCADE ON DELETE CASCADE;
