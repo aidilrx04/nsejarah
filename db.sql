@@ -146,9 +146,9 @@ VALUES ('1', '1', '1'),
        ('2', '2', '2');
 
 -- murid
-INSERT INTO `murid`(`m_id`, `m_nokp`, `m_nama`, `m_katalaluan`, `m_ting`, `m_kelas`)
-VALUES ('1', '111111111111', 'Aidil', '123', '1', '1'),
-        ('2', '222222222222', 'Sudin', '123', '1', '1');
+INSERT INTO `murid`(`m_id`, `m_nokp`, `m_nama`, `m_katalaluan`, `m_kelas`)
+VALUES ('1', '111111111111', 'Aidil', '123', '1'),
+        ('2', '222222222222', 'Sudin', '123', '1');
 
 -- kuiz
 INSERT INTO `kuiz`(`kz_id`, `kz_nama`, `kz_guru`, `kz_tarikh`, `kz_jenis`, `kz_masa`)
