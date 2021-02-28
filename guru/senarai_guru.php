@@ -55,9 +55,9 @@ accessAdmin('Akses tanpa kebenaran!');
                     <td><?=$guru['g_jenis']?></td>
 
                     <td>
-                        <a href="#kemaskini">Kemaskini</a>
+                        <a href="kemaskini_guru.php?id_guru=<?=$guru['g_id']?>&redir=senarai_guru.php">Kemaskini</a>
 
-                        <a href="#padam">Padam</a>
+                        <a href="padam.php?table=guru&col=g_id&val=<?=$guru['g_id']?>&redir=senarai_guru.php">Padam</a>
                     </td>
                 </tr>
                 <?php
