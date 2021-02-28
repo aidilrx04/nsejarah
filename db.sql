@@ -136,9 +136,16 @@ VALUES ('1', '333333333333', 'Samad', '123', 'guru'),
         ('2', '444444444444', 'Aidil Admin', '123', 'admin');
 
 -- kelas
-INSERT INTO `kelas`(`k_id`, `k_nama`, `k_guru`)
-VALUES ('1', 'Amanah', '1'),
-        ('2', 'Bestari', '1');
+INSERT INTO `kelas`(`k_id`, `k_nama`)
+VALUES ('1', 'Amanah'),
+        ('2', 'Bestari');
+
+-- kelas_tingkatan
+INSERT INTO `kelas_tingkatan`(`kt_ting`, `kt_kelas`, `kt_guru`)
+VALUES ('1', '1', '1'),
+       ('2', '1', '2'),
+       ('1', '2', '1'),
+       ('2', '2', '2');
 
 -- murid
 INSERT INTO `murid`(`m_id`, `m_nokp`, `m_nama`, `m_katalaluan`, `m_ting`, `m_kelas`)
