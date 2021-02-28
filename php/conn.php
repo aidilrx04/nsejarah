@@ -210,6 +210,36 @@ function loginGuru( $nokp, $password )
 }
 
 /**
+ * Kemaskini data guru
+ * @param int $id_guru ID Guru
+ * @param string $nnokp No. KP Baru
+ * @param string $nnama Nama Baru
+ * @param string $nkatalaluan Katalaluan Baru
+ * @param string $njenis Jenis Guru Baru
+ * @return bool TRUE jika berjaya, FALSE jika gagal.
+ */
+function updateGuru( int $id_guru, string $nnokp, string $nnama, string $nkatalaluan, string $njenis )
+{
+
+    global $conn;
+    $query = "UPDATE guru SET g_nokp = ?, g_nama = ?, g_katalaluan = ?, g_jenis = ? WHERE g_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'sssss', $nnokp, $nnama, $nkatalaluan, $njenis, $id_guru );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt ) return true;
+
+    }
+
+    return false;
+
+}
+
+/**
  * Dapatkan senarai guru
  * @param int $limit Had carian
  * @param int $offset Titik mula carian

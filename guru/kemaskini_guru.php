@@ -16,29 +16,14 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" && $_POST['submit'] == 'kemaskini_guru'
     $nama = $_POST['nama'];
     $katalaluan = $_POST['katalaluan'];
     $jenis = $_POST['jenis'];
-    $query = "UPDATE guru SET `g_nokp` = ?, `g_nama` = ?, `g_katalaluan` = ?, `g_jenis` = ? WHERE `g_id` = ?";
 
-    if( $stmt = $conn->prepare( $query ) )
+    if( $berjaya = updateGuru( $id, $nokp, $nama, $katalaluan, $jenis ) )
     {
 
-        $stmt->bind_param( 'sssss', $nokp, $nama, $katalaluan, $jenis, $id );
-        $stmt->execute();
-        $stmt->store_result();
-
-        if( $stmt->errno )
-        {
-
-            die( alert( 'Kemaskini gagal!' ) . back() );
-
-        }
-        else
-        {
-
-            echo alert( 'Kemaskini berjaya' ) . ( isset($_GET['redir']) ? redirect( $_GET['redir'] ) : '' );
-
-        }
+        echo alert( 'Kemaskini berjaya' ) . ( isset($_GET['redir']) ? redirect( $_GET['redir'] ) : '' );
 
     }
+    else die( alert( 'Kemaskini gagal!' ) . back() );
 
 }
 
