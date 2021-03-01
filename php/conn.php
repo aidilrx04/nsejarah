@@ -394,6 +394,30 @@ function accessAdmin( $err_msg = '', $reroute = '/' )
 }
 
 /* KELAS */
+/**
+ * Daftar kelas baru
+ * @param string $nama Nama kelas baru
+ * @return bool TRUE jika berjaya, FALSE sebaliknya
+ */
+function registerKelas( string $nama )
+{
+
+    global $conn;
+    $query = "INSERT INTO kelas(k_nama) VALUE(?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $nama );
+        $stmt->execute();
+
+        if( $stmt && !$stmt->errno ) return true;
+
+    }
+
+    return false;
+
+}
 
 /**
  * Dapat senarai kelas
@@ -465,6 +489,34 @@ function getKelasById( int $id_kelas )
 
     return;
     
+}
+
+/**
+ * Daftar tingkatan baru
+ * @param int $ting Tingkatan. 1-5.
+ * @param int $kelas ID Kelas
+ * @param int $guru ID Guru
+ * @return bool TRUE jika berjaya, FALSE sebaliknya
+ */
+function registerTing( int $ting, int $kelas, int $guru )
+{
+
+    global $conn;
+    $query = "INSERT INTO kelas_tingkatan(kt_ting, kt_kelas, kt_guru) VALUE(?,?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'iii', $ting, $kelas, $guru );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return true;
+
+    }
+    
+    return false;
+
 }
 
 /**
