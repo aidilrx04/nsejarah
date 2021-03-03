@@ -14,13 +14,13 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
     $guru = $_SESSION['id'];
     $tarikh = $_POST['tarikh'];
     $jenis = $_POST['jenis'];
-    $masa = $_POST['masa'];
+    $masa = $_POST['masa'] ? $_POST['masa'] : null;
 
     if( $id_kuiz = registerKuiz( $nama, $guru, $tarikh, $jenis, $masa ) )
     // if( true )
     {
         
-        $soalan_list = $_POST['s'];
+        $soalan_list = $_POST['s']['b'];
         $sBerjaya = 0;
         $sGagal = 0;
         $sJumlah = count( $soalan_list );
@@ -140,134 +140,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 
-    <script>
-        /** CUSTOM SCRIPT */
-        $( function()
-        {
-
-            let sContainer, sList, submitBtn, tambahBtn, kJenis, kMasaInput;
-            sContainer = $( '#soalan' );
-            sList= sContainer.find( '#soalan-list' );
-            submitBtn = $( '#submit' );
-            tambahBtn = $( '#tambah-soalan' );
-            kJenis = $( '#jenis' );
-            kMasaInput = $( '#masa' );
-
-            tambahBtn.click( 'click', function () { tambahSoalan( sList ) } );
-            kJenis.change( function( e ) 
-            {
-
-                const target = e.target;
-                let valToDisable = 'latihan';
-
-                if( target.value == valToDisable )
-                {
-
-                    kMasaInput.attr( { disabled: true } );
-
-                }
-                else
-                {
-
-                    kMasaInput.attr( { disabled: false } );
-
-                }
-
-            } );
-
-        } );
-
-        function tambahSoalan( sList )
-        {
-
-            let sContainer, sInput, sImage, sjContainer;
-            const sId = uniqid();
-
-            sContainer = $( document.createElement( 'div' ) )
-                         .attr( {
-                             class: 'soalan'
-                         } )
-                         .appendTo( sList );
-
-            sInput = $( document.createElement( 'input' ) )
-                     .attr( {
-                        class: 'input-field',
-                        placeholder: 'Sila masukkan teks soalan',
-                        name: 's[' + sId + '][]',
-                        required: true
-                     } )
-                     .appendTo( sContainer );
-            
-            sImage = $( document.createElement( 'input' ) )
-                     .attr( {
-                        class: 'input-field',
-                        type: 'file',
-                        name: sId
-                     } )
-                     .appendTo( sContainer );
-
-            sjContainer = $( document.createElement( 'div' ) )
-                          .attr( {
-                              class: 'jawapan-container'
-                          } )
-                          .appendTo( sContainer );
-
-            const jawapanCount = 4;
-            const jInput = [];
-
-            for( let i = 0; i < jawapanCount; i++ )
-            {
-
-                const jId = uniqid();
-                let jInput = $( document.createElement( 'input' ) )
-                             .attr( {
-                                 class: 'jawapan-input',
-                                 placeholder: 'Sila masukkan jawapan',
-                                 name: 's[' + sId + '][j][][0]',
-                                 required: true
-                             } )
-                             .appendTo( sjContainer );
-
-                let jBetul = $( document.createElement( 'input' ) )
-                             .attr( {
-                                 type: 'radio',
-                                 value: i,
-                                 name: 's[' + sId + '][]',
-                                 required: true
-                             } )
-                             .appendTo( sjContainer );
-            }
-
-            return;
-
-        }
-        
-        function uniqid() {
-            var keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
-            var id = false;
-
-            do {
-
-                id = '';
-
-                for (var i = 0; i < 5; i++) {
-
-                    id += keys[Math.floor(Math.random() * keys.length)];
-
-                }
-
-                var _dummy = document.querySelector('#' + id);
-
-                if (_dummy) {
-
-                    id = false;
-
-                }
-
-            } while (!id);
-
-            return id;
-        }
-    </script>
+    <script src="kuiz.js"></script>
 </body>
 </html>
