@@ -4,6 +4,8 @@ $dbuser = 'root';
 $dbpass = '';
 $dbname = 'nsejarah';
 
+$root = realpath('../');
+
 /**@var mysqli $conn Sambungan ke database */
 $conn = mysqli_connect( $dbhost, $dbuser, $dbpass, $dbname );
 
@@ -638,6 +640,156 @@ function getKelasJumlah( int $id_kelas )
 }
 
 /* KUIZ */
+/**
+ * Daftar kuiz baru
+ * @param string $nama Nama Kuiz
+ * @param int $guru ID Guru
+ * @param string $tarikh Tarikh kuiz
+ * @param string $jenis Jenis Kuiz. 'latihan' default.
+ * @param int $masa Masa menjawab. null jika latihan.
+ * @return int|bool ID Kuiz jika berjaya. FALSE jika gagal.
+ */
+function registerKuiz( string $nama, int $guru, string $tarikh, string $jenis = 'latihan', ?int $masa = null )
+{
+
+    global $conn;
+    $masa = ( $jenis == 'kuiz' ? $masa : null );
+    $query = "INSERT INTO kuiz(kz_nama, kz_guru, kz_tarikh, kz_jenis, kz_masa) VALUE (?,?,?,?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'sssss', $nama, $guru, $tarikh, $jenis, $masa );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return $stmt->insert_id;
+
+    }
+
+    return false;
+
+}
+
+/**
+ * Daftar kuiz baharu.
+ * @param int $kuiz ID Kuiz
+ * @param string $teks Teks Soalan
+ * @param resource $image Resource Gambar.
+ * @return int|bool ID Soalan jika berjaya. FALSE jika gagal.
+ */
+function registerSoalan( int $kuiz, string $teks, $image )
+{
+
+    global $conn;
+    $img_url = uploadImage( $image );
+    $query = "INSERT INTO soalan(s_kuiz, s_teks, s_gambar) VALUE (?,?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'sss', $kuiz, $teks, $img_url );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return $stmt->insert_id;
+
+    }
+
+    return false;
+
+}
+
+/**
+ * Daftar jawapan.
+ * @param int $soalan ID Soalan
+ * @param string $teks Teks Jawapan
+ * @return int|bool ID Jawapan jika berjaya. FALSE jika gagal.
+ */
+function registerJawapan( $soalan, $teks )
+{
+
+    global $conn;
+    $query = "INSERT INTO jawapan(j_soalan, j_teks) VALUE(?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ss', $soalan, $teks );
+        $stmt->execute();
+
+        if( $stmt && !$stmt->errno ) return $stmt->insert_id;
+
+    }
+
+    return false;
+
+}
+
+/**
+ * Daftar jawapan 'betul' bagi sesuatu soalan
+ * @param int $soalan ID Soalan
+ * @param int $jawapan ID Jawapan
+ * @return int|bool ID SoalanJawapan jika berjaya. FALSE jika gagal.
+ */
+function registerSoalanJawapan( $soalan, $jawapan )
+{
+
+    global $conn;
+    $query = "INSERT INTO soalan_jawapan(sj_soalan, sj_jawapan) VALUE(?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ss', $soalan, $jawapan );
+        $stmt->execute();
+        
+        if( $stmt && !$stmt->errno ) return $stmt->insert_id;
+
+    }
+
+    return false;
+
+}
+
+/**
+ * Muat naik gambar
+ * @param resource $img Resource gambar
+ * @param string $path Lokasi simpanan gambar
+ * @return string|null URL gambar
+ */
+function uploadImage( $img, $path = '/images/' )
+{
+
+    global $conn, $root;
+    $filename = basename( $img['name'] );
+    $ufilename = $filename;
+    $tmp = $img['tmp_name'];
+    $ext = pathinfo( $filename, PATHINFO_EXTENSION );
+    $target_dir = $root . $path;
+
+    $target_file = $target_dir . $filename;
+
+    while( file_exists( $target_file ) ) 
+    {
+        $ufilename = uniqid() . '.' . $ext;
+        $target_file = $target_dir . $ufilename;
+
+    }
+
+    if( move_uploaded_file( $tmp, $target_file ) )
+    {
+
+        $url = '/images/' . $ufilename;
+
+        return $url;
+
+    }
+
+    return null;
+
+}
+
 /**
  * Dapatkan senarai kuiz
  * @param int $limit Had bilangan kuiz
