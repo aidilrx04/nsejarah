@@ -14,7 +14,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
     $guru = $_SESSION['id'];
     $tarikh = $_POST['tarikh'];
     $jenis = $_POST['jenis'];
-    $masa = $_POST['masa'] ? $_POST['masa'] : null;
+    $masa = isset( $_POST['masa'] ) ? $_POST['masa'] : null;
 
     if( $id_kuiz = registerKuiz( $nama, $guru, $tarikh, $jenis, $masa ) )
     // if( true )
@@ -29,7 +29,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
         {
 
             $sTeks = $soalan[0];
-            var_dump( $id_kuiz );
 
             if( $id_soalan = registerSoalan( $id_kuiz, $sTeks, $_FILES[$id] ) )
             {
@@ -115,7 +114,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
                         <label for="masa" class="input-container">
                             <span>Masa(minit)</span>
 
-                            <input type="number" name="masa" id="masa" class="input-field" disabled>
+                            <input type="number" name="masa" id="masa" class="input-field" disabled required>
                         </label>
                     </div>
                 </div>

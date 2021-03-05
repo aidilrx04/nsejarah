@@ -682,7 +682,7 @@ function registerSoalan( int $kuiz, string $teks, $image )
 {
 
     global $conn;
-    $img_url = uploadImage( $image );
+    $img_url = $image ? uploadImage( $image ) : NULL;
     $query = "INSERT INTO soalan(s_kuiz, s_teks, s_gambar) VALUE (?,?,?)";
 
     if( $stmt = $conn->prepare( $query ) )
@@ -761,7 +761,7 @@ function registerSoalanJawapan( $soalan, $jawapan )
 function uploadImage( $img, $path = '/images/' )
 {
 
-    global $conn, $root;
+    global $root;
     $filename = basename( $img['name'] );
     $ufilename = $filename;
     $tmp = $img['tmp_name'];
@@ -787,6 +787,112 @@ function uploadImage( $img, $path = '/images/' )
     }
 
     return null;
+
+}
+
+function updateKuiz( $id_kuiz, $nama, $tarikh, $jenis, $masa )
+{
+
+    global $conn;
+    $query = "UPDATE kuiz SET kz_nama = ?, kz_tarikh = ?, kz_jenis = ?, kz_masa = ? WHERE kz_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'sssss', $nama, $tarikh, $jenis, $masa, $id_kuiz );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return $id_kuiz;
+
+    }
+
+    return false;
+
+}
+
+function updateSoalan( $id_soalan, $teks, $gambar )
+{
+
+    global $conn;
+    $gambar_url = $gambar ? uploadImage( $gambar ) : NULL;
+    $query = "UPDATE soalan SET s_teks = ?, s_gambar = ? WHERE s_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'sss', $teks, $gambar_url, $id_soalan );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return $id_soalan;
+
+    }
+
+    return false;
+
+}
+
+function updateJawapan( $id_jawapan, $teks )
+{
+
+    global $conn;
+    $query = "UPDATE jawapan SET j_teks = ? WHERE j_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ss', $teks, $id_jawapan );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return $id_jawapan;
+
+    }
+
+    return false;
+
+}
+
+function updateSoalanJawapan( $soalan, $jawapan )
+{
+
+    global $conn;
+    $query = "UPDATE soalan_jawapan SET sj_jawapan = ? WHERE sj_soalan = ?";
+
+    if( $stmt = $conn->prepare( $query ) )   
+    {
+
+        $stmt->bind_param( 'ss', $jawapan, $soalan );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return true;
+
+    }
+
+    return false;
+
+}
+
+function deleteSoalan( $id_soalan )
+{
+
+    global $conn;
+    $query = "DELETE FROM soalan WHERE s_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_soalan );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return 1;
+
+    }
+
+    return 0;
 
 }
 
@@ -836,6 +942,113 @@ function getKuizList( int $id_guru = null, int $limit = 10, int $offset = 0 )
         }
 
     }
+
+}
+
+function getKuizById( int $id_kuiz )
+{
+
+    global $conn;
+    $query = "SELECT * FROM kuiz WHERE kz_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_kuiz );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 )
+        {
+
+            return $res->fetch_assoc();
+
+        }
+
+    }
+
+    return false;
+
+}
+
+function getSoalanByKuiz( int $id_kuiz )
+{
+
+    global $conn;
+    $query = "SELECT * FROM soalan WHERE s_kuiz = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_kuiz );
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $soalan_list = [];
+
+        if( $res->num_rows > 0 )
+        {
+
+            #simpan soalan
+            while( $soalan = $res->fetch_assoc() ) array_push( $soalan_list, $soalan );
+
+        }
+
+        return $soalan_list;
+
+    }
+
+    return false;
+
+}
+
+function getJawapanBySoalan( int $id_soalan )
+{
+
+    global $conn;
+    $query = "SELECT * FROM jawapan WHERE j_soalan = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_soalan );
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $jawapan_list = [];
+
+        if( $res->num_rows > 0 )
+        {
+
+            #simpan jawapan
+            while( $jawapan = $res->fetch_assoc() ) array_push( $jawapan_list, $jawapan );
+
+        }
+
+        return $jawapan_list;
+
+    }
+
+    return false;
+
+}
+
+function isJawapanToSoalan( $id_jawapan, $id_soalan )
+{
+
+    global $conn;
+    $query = "SELECT * FROM soalan_jawapan WHERE sj_soalan = ? AND sj_jawapan = ? LIMIT 1";
+
+    if( $stmt = $conn->prepare( $query ) ) 
+    {
+
+        $stmt->bind_param( 'ss', $id_soalan, $id_jawapan );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt->num_rows > 0 ) return 1;
+
+    }
+
+    return false;
 
 }
 
