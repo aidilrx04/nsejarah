@@ -267,6 +267,22 @@ function getJawapanMurid( $id_murid, $id_kuiz )
 
 }
 
+function isMurid()
+{
+
+    return $_SESSION['jenis'] == 'murid' ? true : false;
+
+}
+
+function accessMurid( $err_msg = '', $reroute = '/' )
+{
+
+    if( !( isMurid() ) ) 
+        die( ( $err_msg != '' ? alert( $err_msg ) : '' ) . redirect( $reroute ) );
+
+    return true;
+
+}
 
 /* GURU */
 
