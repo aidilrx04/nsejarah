@@ -143,6 +143,35 @@ function getMuridById( int $id_murid )
 
 }
 
+function getMuridByTing( int $id_ting )
+{
+
+    global $conn;
+    $query = "SELECT * FROM murid WHERE m_kelas = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_ting );
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $murid_list = [];
+
+        if( $res->num_rows > 0 )
+        {
+
+            while( $murid = $res->fetch_assoc() ) array_push( $murid_list, $murid );
+
+        }
+
+        return $murid_list;
+
+    }
+
+    return false;
+
+}
+
 /**
  * Kemaskini data murid
  * @param int $id_murid ID Murid yang ingin dikemaskini
@@ -170,6 +199,71 @@ function updateMurid( int $id_murid, string $nnokp, string $nnama, string $nkata
     }
 
     return false;
+
+}
+
+/** SKOR_MURID */
+function getSkorMurid( $id_murid )
+{
+
+    global $conn;
+    $query = "SELECT * FROM skor_murid WHERE sm_murid = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_murid );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 ) return $res->fetch_assoc();
+
+    }
+
+    return false;
+
+}
+
+function getJawapanMurid( $id_murid, $id_kuiz )
+{
+
+    global $conn;
+    // echo $id_kuiz;
+    $kuiz = getKuizById( $id_kuiz );
+    $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
+    // var_dump( $soalan_list );
+    $id_soalan = array_map( function( $soalan ) { return $soalan['s_id']; }, $soalan_list );
+    $jm_list = [];
+    // var_dump( $id_soalan );
+
+    foreach( $id_soalan as $id )
+    {
+
+        // echo $id."<br>";
+        $query = "SELECT * FROM jawapan_murid WHERE jm_murid = {$id_murid} AND jm_soalan = {$id}";
+        // echo $query;
+
+        if( $stmt = $conn->prepare( $query ) )
+        {
+
+            // $stmt->bind_param( 'ss', $id_murid, $id );
+            $stmt->execute();
+            $res = $stmt->get_result();
+
+            if( $res->num_rows > 0 )
+            {
+
+                // while( $jm = $res->fetch_assoc() ) array_push( $jm_list , $jm );
+                array_push( $jm_list, $res->fetch_assoc() );
+
+            }
+
+        }
+        // var_dump( $jm_list );
+
+    }
+
+    return !empty( $jm_list ) ? $jm_list : false;
 
 }
 
@@ -576,7 +670,7 @@ function getTingById( int $id_ting )
  * @param int $id_guru ID Guru
  * @return array|void Senarai kelas yang diajari oleh guru
  */
-function getKelasByGuru( int $id_guru )
+function getTingByGuru( int $id_guru )
 {
 
     global $conn;
@@ -964,6 +1058,66 @@ function getKuizById( int $id_kuiz )
             return $res->fetch_assoc();
 
         }
+
+    }
+
+    return false;
+
+}
+
+function getKuizByGuru( int $id_guru )
+{
+
+    global $conn;
+    $query = "SELECT * FROM kuiz WHERE kz_guru = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_guru );
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $kuiz_list = [];
+
+        if( $res->num_rows > 0 )
+        {
+
+            #simpan kuiz
+            while( $kuiz = $res->fetch_assoc() ) array_push( $kuiz_list, $kuiz );
+
+        }
+
+        return $kuiz_list;
+        
+    }
+
+    return false;
+
+}
+
+function getKuizByTing( int $id_ting )
+{
+
+    global $conn;
+    $query = "SELECT * FROM kuiz WHERE kz_ting = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_ting );
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $kuiz_list = [];
+
+        if( $res->num_rows > 0 )
+        {
+
+            #simpan kuiz
+            while( $kuiz = $res->fetch_assoc() ) array_push( $kuiz_list, $kuiz );
+
+        }
+
+        return $kuiz_list;
 
     }
 
