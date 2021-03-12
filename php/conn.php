@@ -202,6 +202,23 @@ function updateMurid( int $id_murid, string $nnokp, string $nnama, string $nkata
 
 }
 
+function isMurid()
+{
+
+    return $_SESSION['jenis'] == 'murid' ? true : false;
+
+}
+
+function accessMurid( $err_msg = '', $reroute = '/' )
+{
+
+    if( !( isMurid() ) ) 
+        die( ( $err_msg != '' ? alert( $err_msg ) : '' ) . redirect( $reroute ) );
+
+    return true;
+
+}
+
 /** SKOR_MURID */
 function getSkorMurid( $id_murid )
 {
@@ -267,20 +284,47 @@ function getJawapanMurid( $id_murid, $id_kuiz )
 
 }
 
-function isMurid()
+function registerSkorMurid( $id_murid, $id_kuiz, $skor )
 {
 
-    return $_SESSION['jenis'] == 'murid' ? true : false;
+    global $conn;
+    $query = "INSERT INTO skor_murid(sm_murid, sm_kuiz, sm_skor) VALUES(?,?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'sss', $id_murid, $id_kuiz, $skor );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return $stmt->insert_id;
+
+    }
+
+    return false;
 
 }
 
-function accessMurid( $err_msg = '', $reroute = '/' )
+function registerJawapanMurid( $id_murid, $id_soalan, $id_jawapan )
 {
 
-    if( !( isMurid() ) ) 
-        die( ( $err_msg != '' ? alert( $err_msg ) : '' ) . redirect( $reroute ) );
+    global $conn;
+    $betul = isJawapanToSoalan( $id_jawapan, $id_soalan );
+    $query = "INSERT INTO jawapan_murid(jm_murid, jm_soalan, jm_jawapan, jm_status) 
+              VALUES (?,?,?,?)";
 
-    return true;
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ssss', $id_murid, $id_soalan, $id_jawapan, $betul );
+        $stmt->execute();
+        $stmt->store_result();
+        
+        if( $stmt && !$stmt->errno ) return $betul ? true : false;
+
+    }
+
+    return null;
 
 }
 
