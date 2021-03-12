@@ -241,6 +241,27 @@ function getSkorMurid( $id_skor )
 
 }
 
+function getSkorMuridByKuiz( $id_murid, $id_kuiz )
+{
+
+    global $conn;
+    $query = "SELECT * FROM skor_murid WHERE sm_murid = ? AND sm_kuiz = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ss', $id_murid, $id_kuiz );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 ) return $res->fetch_assoc();
+
+    }
+
+    return false;
+
+}
+
 function getSkorByMurid( $id_murid )
 {
 

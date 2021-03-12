@@ -25,7 +25,7 @@ foreach( $jawapan_murid_raw as $j )
 
 }
 
-var_dump( $jawapan_murid );
+// var_dump( $jawapan_murid );
 
 ?>
 <!DOCTYPE html>

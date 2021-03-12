@@ -55,7 +55,7 @@ $kuiz_list = getKuizByTing( $ting['kt_id'] );
 
                     <td>
                         <?php
-                        $skor = getSkorMurid( $murid['m_id'] );
+                        $skor = getSkorMuridByKuiz( $murid['m_id'], $kuiz['kz_id'] );
                         /**
                          * p = ( n/t ) * 100
                          */
@@ -68,7 +68,7 @@ $kuiz_list = getKuizByTing( $ting['kt_id'] );
                     <td><?=$skor ? $skor['sm_skor'] : 0?>%</td>
 
                     <td>
-                        <?=!$skor ? "<a href=\"jawab_latihan.php?id_kuiz={$kuiz['kz_id']}\">Pilih</a>" : "<a href=\"ulangkaji.php?id_kuiz={$kuiz['kz_id']}\"></a>"?>
+                        <?=!$skor ? "<a href=\"jawab_kuiz.php?id_kuiz={$kuiz['kz_id']}\">Pilih</a>" : "<a href=\"ulangkaji.php?id_skor={$skor['sm_id']}\">Ulangkaji</a>"?>
                     </td>
                 </tr>
                 <?php
