@@ -83,7 +83,7 @@ $kelas = getKelasById( $ting['kt_kelas'] );
                     foreach( $murid_list as $murid )
                     {
 
-                        $skor_murid = getSkorMurid( $murid['m_id'] );
+                        $skor_murid = getSkorByMurid( $murid['m_id'] );
 
                         if ( $skor_murid )
                         {

@@ -8,7 +8,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'submit_jawapan'
 {
 
     # Jika murid sudah menjawab, paparan ralat akan dikeluarkan
-    _assert( !( $sm =  getSkorMurid( $_SESSION['id'] ) ), alert( 'Anda telah menjawab kuiz. Tidak boleh mencuba lagi!' ), 0 );
+    _assert( !( $sm =  getSkorByMurid( $_SESSION['id'] ) ), alert( 'Anda telah menjawab kuiz. Tidak boleh mencuba lagi!' ), 0 );
 
     // var_dump( $sm );
 
@@ -49,7 +49,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'submit_jawapan'
 _assert( isset( $_GET['id_kuiz'] ) && !empty( $_GET['id_kuiz'] ), alert( 'Sila masukkan ID Kuiz' ) . back(), 1 );
 
 // jika murid sudah jawab, pindah lokasi ke jawab_semak.php
-_assert( !( $sm = getSkorMurid( $_SESSION['id'] ) ), redirect( "jawab_semak.php?id_skor={$sm['sm_id']}" ), 1 );
+_assert( !( $sm = getSkorByMurid( $_SESSION['id'] ) ), redirect( "jawab_semak.php?id_skor={$sm['sm_id']}" ), 1 );
 
 $murid = getMuridById( $_SESSION['id'] );
 $kuiz = getKuizById( $_GET['id_kuiz'] );

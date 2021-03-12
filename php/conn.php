@@ -220,7 +220,28 @@ function accessMurid( $err_msg = '', $reroute = '/' )
 }
 
 /** SKOR_MURID */
-function getSkorMurid( $id_murid )
+function getSkorMurid( $id_skor )
+{
+
+    global $conn;
+    $query = "SELECT * FROM skor_murid WHERE sm_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_skor );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 ) return $res->fetch_assoc();
+
+    }
+
+    return false;
+
+}
+
+function getSkorByMurid( $id_murid )
 {
 
     global $conn;
