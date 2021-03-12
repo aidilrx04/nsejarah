@@ -1266,6 +1266,27 @@ function getJawapanBySoalan( int $id_soalan )
 
 }
 
+function getJawapanToSoalan( int $id_soalan )
+{
+
+    global $conn;
+    $query = "SELECT * FROM soalan_jawapan WHERE sj_soalan = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_soalan );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 ) return $res->fetch_assoc();
+
+    }
+
+    return false;
+
+}
+
 function isJawapanToSoalan( $id_jawapan, $id_soalan )
 {
 
