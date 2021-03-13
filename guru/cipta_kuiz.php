@@ -12,11 +12,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
 
     $nama = $_POST['nama'];
     $guru = $_SESSION['id'];
+    $ting = $_POST['ting'];
     $tarikh = $_POST['tarikh'];
     $jenis = $_POST['jenis'];
     $masa = isset( $_POST['masa'] ) ? $_POST['masa'] : null;
 
-    if( $id_kuiz = registerKuiz( $nama, $guru, $tarikh, $jenis, $masa ) )
+    if( $id_kuiz = registerKuiz( $nama, $guru, $ting, $tarikh, $jenis, $masa ) )
     // if( true )
     {
         
@@ -92,6 +93,25 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
                         <span>Nama Kuiz</span>
 
                         <input type="text" name="nama" id="nama" class="input-file" maxlength="255" required="required">
+                    </label>
+
+                    <label for="ting" class="input-container">
+                        <select name="ting" id="ting">
+                            <?php
+                            $ting_list = getTingByGuru( $_SESSION['id'] );
+
+                            foreach( $ting_list as $ting )
+                            {
+
+                                $kelas = getKelasById( $ting['kt_kelas'] );
+
+                            ?>
+                            <option value="<?=$ting['kt_id']?>"><?=$ting['kt_ting']?> <?=$kelas['k_nama']?></option>
+                            <?php
+
+                            }
+                            ?>
+                        </select>
                     </label>
 
                     <div>

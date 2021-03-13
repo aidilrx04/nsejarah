@@ -262,7 +262,7 @@ function getSkorMuridByKuiz( $id_murid, $id_kuiz )
 
 }
 
-function getSkorByMurid( $id_murid )
+function getSkorByMurid( $id_murid, $id_kuiz )
 {
 
     global $conn;
@@ -840,22 +840,23 @@ function getKelasJumlah( int $id_kelas )
  * Daftar kuiz baru
  * @param string $nama Nama Kuiz
  * @param int $guru ID Guru
+ * @param int $id_kelas ID KELAS
  * @param string $tarikh Tarikh kuiz
  * @param string $jenis Jenis Kuiz. 'latihan' default.
  * @param int $masa Masa menjawab. null jika latihan.
  * @return int|bool ID Kuiz jika berjaya. FALSE jika gagal.
  */
-function registerKuiz( string $nama, int $guru, string $tarikh, string $jenis = 'latihan', ?int $masa = null )
+function registerKuiz( string $nama, int $guru, int $id_ting, string $tarikh, string $jenis = 'latihan', ?int $masa = null )
 {
 
     global $conn;
     $masa = ( $jenis == 'kuiz' ? $masa : null );
-    $query = "INSERT INTO kuiz(kz_nama, kz_guru, kz_tarikh, kz_jenis, kz_masa) VALUE (?,?,?,?,?)";
+    $query = "INSERT INTO kuiz(kz_nama, kz_guru, kz_ting, kz_tarikh, kz_jenis, kz_masa) VALUE (?,?,?,?,?,?)";
 
     if( $stmt = $conn->prepare( $query ) )
     {
 
-        $stmt->bind_param( 'sssss', $nama, $guru, $tarikh, $jenis, $masa );
+        $stmt->bind_param( 'ssssss', $nama, $guru, $id_ting, $tarikh, $jenis, $masa );
         $stmt->execute();
         $stmt->store_result();
 
