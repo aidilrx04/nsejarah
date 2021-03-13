@@ -24,17 +24,14 @@ accessGuru( 'Akses tanpa kebenaran!' );
             <?php
 
             $guru = getGuru( $_SESSION['id'] );
-            $kelas = getTingByGuru( $guru['g_id'] );
+            $ting = getTingByGuru( $guru['g_id'] );
             $kuiz = getKuizList( $guru['g_id'] );
-            $kelas_data = [];
-            
-            foreach( $kelas as $k )
+            $kelas_data = array_map( function( $t )
             {
 
-                $data = getKelasById( $k['kt_kelas'] );
-                array_push( $kelas_data, $data );
+                return ['kt_id' => $t['kt_id'],'kt_ting'=>$t['kt_ting'], 'kelas' => getKelasById( $t['kt_kelas'] )];
 
-            }
+            }, $ting );
 
             ?>
 
@@ -53,7 +50,7 @@ accessGuru( 'Akses tanpa kebenaran!' );
                 foreach( $kelas_data as $k )
                 {
 
-                    echo $k['k_nama'];
+                    echo $k['kt_ting'] . ' ' . $k['kelas']['k_nama'] . ', ';
 
                 }
                 ?>
@@ -74,15 +71,14 @@ accessGuru( 'Akses tanpa kebenaran!' );
 
                     <tbody>
                         <?php
-                        foreach( $kelas as $kt )
+                        foreach( $kelas_data as $kt )
                         {
 
                             $jumlah = getKelasJumlah( $kt['kt_id'] );
-                            $k = getKelasById( $kt['kt_kelas'] );
                             
                         ?>
                         <tr>
-                            <td><?=$kt['kt_ting']?>  <?=$k['k_nama']?></td>
+                            <td><?=$kt['kt_ting']?>  <?=$kt['kelas']['k_nama']?></td>
 
                             <td><?=$jumlah?></td>
                         </tr>
