@@ -122,6 +122,8 @@ _assert( isAdmin() || $kuiz['kz_guru'] == $_SESSION['id'], alert( 'Akses tanpa k
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php';?>
+
         <div id="kemaskini-kuiz">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="maklumat-kuiz">
@@ -241,6 +243,9 @@ _assert( isAdmin() || $kuiz['kz_guru'] == $_SESSION['id'], alert( 'Akses tanpa k
                 <button type="submit" id="submit" name="submit" value="kemaskini-kuiz">Kemaskini</button>
             </form>
         </div>
+
+        <?php require '../footer.php';?>
+
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>

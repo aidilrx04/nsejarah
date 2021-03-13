@@ -74,6 +74,8 @@ $mula = isset( $_GET['m'] ) ? $_GET['m'] : 0;
 </head>
 <body>
     <main>
+        <?php require '../header.php'?>
+
         <h2><?=$kuiz['kz_nama']?></h2>
     
         <?php
@@ -164,6 +166,9 @@ $mula = isset( $_GET['m'] ) ? $_GET['m'] : 0;
 
         }
         ?>
+
+        <?php require '../footer.php'?>
+
     </main>
 </body>
 </html>

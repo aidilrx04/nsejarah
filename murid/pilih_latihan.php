@@ -19,6 +19,9 @@ $kuiz_list = getKuizByTing( $ting['kt_id'] );
 </head>
 <body>
     <main>
+        <?php require '../header.php'?>
+
+
         <div id="pilih-latihan">
             <table border="1">
                 <thead>
@@ -78,6 +81,9 @@ $kuiz_list = getKuizByTing( $ting['kt_id'] );
                 </tbody>
             </table>
         </div>
+
+        <?php require '../footer.php'?>
+
     </main>
 </body>
 </html>

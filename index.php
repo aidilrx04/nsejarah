@@ -70,6 +70,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
 <body>
 
     <main>
+        <?php require 'header.php'?>
 
         <?php
         # papar apabila pengguna belum lagi login
@@ -164,6 +165,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
                 </tbody>
             </table>
         </div>
+
+        <?php require 'footer.php'?>
         
     </main>
 

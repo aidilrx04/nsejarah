@@ -26,6 +26,9 @@ $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
 </head>
 <body>
     <main>
+        <?php require '../header.php'?>
+
+
         <div id="ulangkaji">
             <h2>Bahagian Ulangkaji</h2>
 
@@ -87,6 +90,9 @@ $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
                 ?>
             </div>
         </div>
+
+        <?php require '../footer.php'?>
+
     </main>
 </body>
 </html>

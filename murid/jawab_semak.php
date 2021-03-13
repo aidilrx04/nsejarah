@@ -37,6 +37,9 @@ foreach( $jawapan_murid_raw as $j )
 </head>
 <body>
     <main>
+        <?php require '../header.php'?>
+
+
         <div id="keputusan">
             <h2>Keputusan</h2>
             <hr>
@@ -110,6 +113,8 @@ foreach( $jawapan_murid_raw as $j )
                 </tbody>
             </table>
         </div>
+
+        <?php require '../footer.php'?>
     </main>
 </body>
 </html>

@@ -44,6 +44,9 @@ _assert( $murid = getMuridById( $_GET['id_murid'] ), alert( 'ID Murid tidak sah!
 </head>
 <body>
     <main>
+
+        <?php require 'header_guru.php';?>
+
         <form action="" method="post" class="kemaskini-form">
             <input type="hidden" name="id" value="<?=$murid['m_id']?>">
 
@@ -92,6 +95,9 @@ _assert( $murid = getMuridById( $_GET['id_murid'] ), alert( 'ID Murid tidak sah!
 
             <button type="submit" name="submit" value="kemaskini_murid">Kemaskini</button>
         </form>
+
+        <?php require '../footer.php.php';?>
+
     </main>
 </body>
 </html>

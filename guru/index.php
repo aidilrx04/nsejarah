@@ -20,6 +20,9 @@ accessGuru( 'Akses tanpa kebenaran!' );
 <body>
 
     <main>
+        <?php require 'header_guru.php'?>
+
+
         <div id="maklumat-guru">
             <?php
 
@@ -127,6 +130,9 @@ accessGuru( 'Akses tanpa kebenaran!' );
                 </table>
             </div>        
         </div>
+
+        <?php require '../footer.php';?>
+
     </main>
     
 </body>

@@ -84,6 +84,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php';?>
+
         <div id="cipta-kuiz">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="maklumat-kuiz">
@@ -155,6 +157,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
                 <button type="submit" id="submit" name="submit" value="tambah-kuiz">Simpan</button>
             </form>
         </div>
+
+        <?php require '../footer.php';?>
+
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
