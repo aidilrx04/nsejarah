@@ -68,6 +68,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'upload_murid' )
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php';?>
+
+
         <div id="upload-murid">
             <form action="" method="post" enctype="multipart/form-data">
                 <label for="data" class="input-container">
@@ -79,6 +82,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'upload_murid' )
                 <button type="submit" name="submit" value="upload_murid">Muat naik</button>
             </form>
         </div>
+
+        <?php require '../footer.php';?>
+
     </main>
 
     <script>

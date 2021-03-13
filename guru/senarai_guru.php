@@ -37,6 +37,8 @@ accessAdmin('Akses tanpa kebenaran!');
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php';?>
+
         <h2>Senarai Guru</h2>
 
         <table border="1">
@@ -113,6 +115,9 @@ accessAdmin('Akses tanpa kebenaran!');
                 ?>
             </tbody>
         </table>
+
+        <?php require '../footer.php';?>
+
     </main>
 </body>
 </html>

@@ -41,6 +41,8 @@ _assert( $guru = getGuru( $_GET['id_guru'] ), alert( 'ID tidak sah!' ) . back(),
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php';?>
+
         <form action="" method="post" class="kemaskini-form">
             <input type="hidden" name="id" value="<?=$guru['g_id']?>">
 
@@ -78,6 +80,8 @@ _assert( $guru = getGuru( $_GET['id_guru'] ), alert( 'ID tidak sah!' ) . back(),
 
             <button type="submit" name="submit" value="kemaskini_guru">Kemaskini</button>
         </form>
+        <?php require '../footer.php';?>
+        
     </main>
 </body>
 </html>

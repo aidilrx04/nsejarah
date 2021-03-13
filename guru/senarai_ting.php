@@ -55,6 +55,9 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php';?>    
+
+
         <div id="senarai-tingkatan">
             <h2>Senarai Tingkatan</h2>
 
@@ -202,6 +205,9 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
                 </tbody>
             </table>
         </div>
+
+        <?php require '../footer.php';?>
+
     </main>
 </body>
 </html>

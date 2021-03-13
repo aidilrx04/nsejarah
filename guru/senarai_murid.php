@@ -40,6 +40,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid' )
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php'?>
+
         <h2>Senarai murid</h2>
 
         <table border="100">
@@ -128,6 +130,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid' )
                 ?>
             </tbody>
         </table>
+
+        <?php require '../footer.php';?>
+
     </main>
 </body>
 </html>

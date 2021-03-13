@@ -27,6 +27,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
                 $_SESSION['nokp'] = $murid['m_nokp'];
                 $_SESSION['nama'] = $murid['m_nama'];
                 $_SESSION['kelas'] = $murid['m_kelas'];
+                $_SESSION['id'] = $murid['m_id'];
 
             }
             else
@@ -69,6 +70,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
 <body>
 
     <main>
+        <?php require 'header.php'?>
 
         <?php
         # papar apabila pengguna belum lagi login
@@ -163,6 +165,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
                 </tbody>
             </table>
         </div>
+
+        <?php require 'footer.php'?>
         
     </main>
 

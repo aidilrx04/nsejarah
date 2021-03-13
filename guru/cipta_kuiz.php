@@ -12,11 +12,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
 
     $nama = $_POST['nama'];
     $guru = $_SESSION['id'];
+    $ting = $_POST['ting'];
     $tarikh = $_POST['tarikh'];
     $jenis = $_POST['jenis'];
     $masa = isset( $_POST['masa'] ) ? $_POST['masa'] : null;
 
-    if( $id_kuiz = registerKuiz( $nama, $guru, $tarikh, $jenis, $masa ) )
+    if( $id_kuiz = registerKuiz( $nama, $guru, $ting, $tarikh, $jenis, $masa ) )
     // if( true )
     {
         
@@ -83,6 +84,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php';?>
+
         <div id="cipta-kuiz">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="maklumat-kuiz">
@@ -92,6 +95,25 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
                         <span>Nama Kuiz</span>
 
                         <input type="text" name="nama" id="nama" class="input-file" maxlength="255" required="required">
+                    </label>
+
+                    <label for="ting" class="input-container">
+                        <select name="ting" id="ting">
+                            <?php
+                            $ting_list = getTingByGuru( $_SESSION['id'] );
+
+                            foreach( $ting_list as $ting )
+                            {
+
+                                $kelas = getKelasById( $ting['kt_kelas'] );
+
+                            ?>
+                            <option value="<?=$ting['kt_id']?>"><?=$ting['kt_ting']?> <?=$kelas['k_nama']?></option>
+                            <?php
+
+                            }
+                            ?>
+                        </select>
                     </label>
 
                     <div>
@@ -135,6 +157,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
                 <button type="submit" id="submit" name="submit" value="tambah-kuiz">Simpan</button>
             </form>
         </div>
+
+        <?php require '../footer.php';?>
+
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>

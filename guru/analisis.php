@@ -33,6 +33,8 @@ $kelas = getKelasById( $ting['kt_kelas'] );
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php';?>
+
         <div id="analisis">
             <form action="" method="get">
                 <label for="tajuk" class="input-container">
@@ -83,7 +85,7 @@ $kelas = getKelasById( $ting['kt_kelas'] );
                     foreach( $murid_list as $murid )
                     {
 
-                        $skor_murid = getSkorMurid( $murid['m_id'] );
+                        $skor_murid = getSkorByMurid( $murid['m_id'], $kuiz['kz_id'] );
 
                         if ( $skor_murid )
                         {
@@ -112,6 +114,9 @@ $kelas = getKelasById( $ting['kt_kelas'] );
                 </tbody>
             </table>
         </div>
+
+        <?php require '../footer.php';?>
+
     </main>
 </body>
 </html>

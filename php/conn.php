@@ -202,8 +202,67 @@ function updateMurid( int $id_murid, string $nnokp, string $nnama, string $nkata
 
 }
 
+function isMurid()
+{
+
+    return $_SESSION['jenis'] == 'murid' ? true : false;
+
+}
+
+function accessMurid( $err_msg = '', $reroute = '/' )
+{
+
+    if( !( isMurid() ) ) 
+        die( ( $err_msg != '' ? alert( $err_msg ) : '' ) . redirect( $reroute ) );
+
+    return true;
+
+}
+
 /** SKOR_MURID */
-function getSkorMurid( $id_murid )
+function getSkorMurid( $id_skor )
+{
+
+    global $conn;
+    $query = "SELECT * FROM skor_murid WHERE sm_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_skor );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 ) return $res->fetch_assoc();
+
+    }
+
+    return false;
+
+}
+
+function getSkorMuridByKuiz( $id_murid, $id_kuiz )
+{
+
+    global $conn;
+    $query = "SELECT * FROM skor_murid WHERE sm_murid = ? AND sm_kuiz = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ss', $id_murid, $id_kuiz );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 ) return $res->fetch_assoc();
+
+    }
+
+    return false;
+
+}
+
+function getSkorByMurid( $id_murid, $id_kuiz )
 {
 
     global $conn;
@@ -267,6 +326,49 @@ function getJawapanMurid( $id_murid, $id_kuiz )
 
 }
 
+function registerSkorMurid( $id_murid, $id_kuiz, $skor )
+{
+
+    global $conn;
+    $query = "INSERT INTO skor_murid(sm_murid, sm_kuiz, sm_skor) VALUES(?,?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'sss', $id_murid, $id_kuiz, $skor );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return $stmt->insert_id;
+
+    }
+
+    return false;
+
+}
+
+function registerJawapanMurid( $id_murid, $id_soalan, $id_jawapan )
+{
+
+    global $conn;
+    $betul = isJawapanToSoalan( $id_jawapan, $id_soalan );
+    $query = "INSERT INTO jawapan_murid(jm_murid, jm_soalan, jm_jawapan, jm_status) 
+              VALUES (?,?,?,?)";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ssss', $id_murid, $id_soalan, $id_jawapan, $betul );
+        $stmt->execute();
+        $stmt->store_result();
+        
+        if( $stmt && !$stmt->errno ) return $betul ? true : false;
+
+    }
+
+    return null;
+
+}
 
 /* GURU */
 
@@ -738,22 +840,23 @@ function getKelasJumlah( int $id_kelas )
  * Daftar kuiz baru
  * @param string $nama Nama Kuiz
  * @param int $guru ID Guru
+ * @param int $id_kelas ID KELAS
  * @param string $tarikh Tarikh kuiz
  * @param string $jenis Jenis Kuiz. 'latihan' default.
  * @param int $masa Masa menjawab. null jika latihan.
  * @return int|bool ID Kuiz jika berjaya. FALSE jika gagal.
  */
-function registerKuiz( string $nama, int $guru, string $tarikh, string $jenis = 'latihan', ?int $masa = null )
+function registerKuiz( string $nama, int $guru, int $id_ting, string $tarikh, string $jenis = 'latihan', ?int $masa = null )
 {
 
     global $conn;
     $masa = ( $jenis == 'kuiz' ? $masa : null );
-    $query = "INSERT INTO kuiz(kz_nama, kz_guru, kz_tarikh, kz_jenis, kz_masa) VALUE (?,?,?,?,?)";
+    $query = "INSERT INTO kuiz(kz_nama, kz_guru, kz_ting, kz_tarikh, kz_jenis, kz_masa) VALUE (?,?,?,?,?,?)";
 
     if( $stmt = $conn->prepare( $query ) )
     {
 
-        $stmt->bind_param( 'sssss', $nama, $guru, $tarikh, $jenis, $masa );
+        $stmt->bind_param( 'ssssss', $nama, $guru, $id_ting, $tarikh, $jenis, $masa );
         $stmt->execute();
         $stmt->store_result();
 
@@ -1178,6 +1281,48 @@ function getJawapanBySoalan( int $id_soalan )
         }
 
         return $jawapan_list;
+
+    }
+
+    return false;
+
+}
+
+function getJawapanToSoalan( int $id_soalan )
+{
+
+    global $conn;
+    $query = "SELECT * FROM soalan_jawapan WHERE sj_soalan = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_soalan );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0 ) return $res->fetch_assoc();
+
+    }
+
+    return false;
+
+}
+
+function getJawapanById( int $id_jawapan )
+{
+
+    global $conn;
+    $query = "SELECT * FROM jawapan WHERE j_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_jawapan );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0  ) return $res->fetch_assoc();
 
     }
 
