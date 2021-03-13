@@ -8,7 +8,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'submit_jawapan'
 {
 
     # Jika murid sudah menjawab, paparan ralat akan dikeluarkan
-    _assert( !( $sm =  getSkorByMurid( $_SESSION['id'] ) ), alert( 'Anda telah menjawab kuiz. Tidak boleh mencuba lagi!' ), 0 );
+    _assert( ( $sm =  getSkorByMurid( $_SESSION['id'], $_POST['kuiz']['id'] ) ), alert( 'Anda telah menjawab kuiz. Tidak boleh mencuba lagi!' ), 0 );
 
     // var_dump( $sm );
 

@@ -34,7 +34,7 @@ $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
             <p>
                 <b>Nama Kuiz: </b><?=$kuiz['kz_nama']?>
                 <br>
-                <b>Skor: </b><?=floor($skor_murid['sm_skor'] / 100 * count( $soalan_list ))?> / <?=count( $soalan_list )?>
+                <b>Skor: </b><?=round($skor_murid['sm_skor'] / 100 * count( $soalan_list ))?> / <?=count( $soalan_list )?>
                 <br>
                 <b>Peratus: </b><?=$skor_murid['sm_skor']?>% 
             </p>

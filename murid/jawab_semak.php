@@ -40,7 +40,7 @@ foreach( $jawapan_murid_raw as $j )
         <div id="keputusan">
             <h2>Keputusan</h2>
             <hr>
-            Jumlah markah: <?=floor( $skor/100 * count( $soalan_list ) )?> / <?=count( $soalan_list )?>
+            Jumlah markah: <?=round( $skor/100 * count( $soalan_list ) )?> / <?=count( $soalan_list )?>
             <br>
             Peratus: <?=$skor?>%
         </div>

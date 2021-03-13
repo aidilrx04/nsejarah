@@ -60,7 +60,7 @@ $kuiz_list = getKuizByTing( $ting['kt_id'] );
                          * p = ( n/t ) * 100
                          */
                         ?>
-                        <?=$skor ? (floor( $skor['sm_skor'] / 100 * count( $soalan_list ) ) ) : 0 ?>
+                        <?=$skor ? (round( $skor['sm_skor'] / 100 * count( $soalan_list ) ) ) : 0 ?>
                         /
                         <?=count( $soalan_list )?>
                     </td>
