@@ -1309,6 +1309,27 @@ function getJawapanToSoalan( int $id_soalan )
 
 }
 
+function getJawapanById( int $id_jawapan )
+{
+
+    global $conn;
+    $query = "SELECT * FROM jawapan WHERE j_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_jawapan );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0  ) return $res->fetch_assoc();
+
+    }
+
+    return false;
+
+}
+
 function isJawapanToSoalan( $id_jawapan, $id_soalan )
 {
 
