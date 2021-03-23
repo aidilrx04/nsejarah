@@ -20,6 +20,8 @@ $kuiz_list = isAdmin() ? getKuizList( null, 10000 ) : getKuizByGuru( $_SESSION['
 </head>
 <body>
     <main>
+        <?php require 'header_guru.php';?>
+
         <h2>Senarai Kuiz</h2>
 
         <a href="cipta_kuiz.php">Cipta kuiz baharu &plus;</a>
@@ -80,6 +82,8 @@ $kuiz_list = isAdmin() ? getKuizList( null, 10000 ) : getKuizByGuru( $_SESSION['
                 ?>
             </tbody>
         </table>
+
+        <?php require '../footer.php';?>
     </main>
 </body>
 </html>
