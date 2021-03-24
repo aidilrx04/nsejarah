@@ -71,104 +71,143 @@ $mula = isset( $_GET['m'] ) ? $_GET['m'] : 0;
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><?=$kuiz['kz_nama']?> | Nsejarah</title>
+
+    <link rel="stylesheet" href="/base.css">
+    <style>
+        /** Custom style */
+        .soalan
+        {
+            padding: 10px 5px;
+            margin-bottom: 10px;
+        }
+        .soalan p
+        {
+
+            padding: 10px 0;
+            background-color: #ddd;
+
+        }
+
+        .soalan .jawapan
+        {
+
+            margin: 5px 0;
+            padding: 10px 0;
+
+        }
+
+        .soalan .jawapan .input-container
+        {
+
+            display: block;
+
+        }
+    </style>
 </head>
 <body>
-    <main>
-        <?php require '../header.php'?>
+    <div class="container">
+        <div id="navigasi"><?php require '../header.php'?></div>
 
-        <h2><?=$kuiz['kz_nama']?></h2>
-    
-        <?php
-        if( !$mula )
-        {
+        <main>
 
-        ?>
-        <form action="">
-            <input type="hidden" name="id_kuiz" value="<?=$kuiz['kz_id']?>">
-            <button type="submit" name="m" value="1">Mula</button>
-        </form>
-        <?php
-
-        }
-        else
-        {
-
-        ?>
-        <div id="jawab-kuiz">
+            <h2><?=$kuiz['kz_nama']?></h2>
         
-            <form action="" method="post" id="jawab-form">
-                <input type="hidden" name="kuiz[id]" value="<?=$kuiz['kz_id']?>">
+            <?php
+            if( !$mula )
+            {
 
-                <?php
+            ?>
+            <form action="">
+                <input type="hidden" name="id_kuiz" value="<?=$kuiz['kz_id']?>">
+                <button type="submit" name="m" value="1">Mula</button>
+            </form>
+            <?php
 
-                foreach( $soalan_list as $bil=>$soalan )
-                {
+            }
+            else
+            {
 
-                    $soalan_id = uniqid();
+            ?>
+            <div id="jawab-kuiz">
+            
+                <form action="" method="post" id="jawab-form">
+                    <input type="hidden" name="kuiz[id]" value="<?=$kuiz['kz_id']?>">
 
-                ?>
-                <div class="soalan">
-                    <input type="hidden" name="s[<?=$soalan_id?>][id]" value="<?=$soalan['s_id']?>">
-                    <hr>
-                    <p>
-                        <b><?=$bil++?>.</b>
-                        <?=$soalan['s_teks']?>
+                    <?php
 
-                        <div style="max-width: 300px;"><?=$soalan['s_gambar'] ? "<img style=\"max-width: 100%;\" src=\"{$soalan['s_gambar']}\">" : ''?></div>
-                    </p>
+                    foreach( $soalan_list as $bil=>$soalan )
+                    {
 
-                    <div class="jawapan">
-                        <?php
-                        // randomize jawapan position
-                        $jawapan_list = getJawapanBySoalan( $soalan['s_id'] );
-                        shuffle( $jawapan_list );
+                        $soalan_id = uniqid();
 
-                        foreach( $jawapan_list as $jawapan )
-                        {
+                    ?>
+                    <div class="soalan">
+                        <input type="hidden" name="s[<?=$soalan_id?>][id]" value="<?=$soalan['s_id']?>">
+                        <p>
+                            <b><?=$bil++?>.</b>
+                            <?=$soalan['s_teks']?>
 
-                            $jawapan_id = uniqid();
+                            <div style="max-width: 300px;"><?=$soalan['s_gambar'] ? "<img style=\"max-width: 100%;\" src=\"{$soalan['s_gambar']}\">" : ''?></div>
+                        </p>
 
-                        ?>
-                        <label for="<?=$jawapan_id?>" class="input-container">
-                            <input type="radio" name="s[<?=$soalan_id?>][j]" value="<?=$jawapan['j_id']?>" id="<?=$jawapan_id?>" required>
-                            <span>
-                                <?=$jawapan['j_teks']?>
-                            </span>
-                        </label>
-                        <?php
+                        <div class="jawapan">
+                            <?php
+                            // randomize jawapan position
+                            $jawapan_list = getJawapanBySoalan( $soalan['s_id'] );
+                            shuffle( $jawapan_list );
 
-                        }
-                        ?>
+                            foreach( $jawapan_list as $jawapan )
+                            {
+
+                                $jawapan_id = uniqid();
+
+                            ?>
+                            <label for="<?=$jawapan_id?>" class="input-container">
+                                <input type="radio" name="s[<?=$soalan_id?>][j]" value="<?=$jawapan['j_id']?>" id="<?=$jawapan_id?>" required>
+                                <span>
+                                    <?=$jawapan['j_teks']?>
+                                </span>
+                            </label>
+                            <?php
+
+                            }
+                            ?>
+                        </div>
+
+                        <hr>
+
                     </div>
-                </div>
-                <?php
+                    <?php
 
+                    }
+                    ?>
+                
+                    <button type="submit" name="submit" value="submit_jawapan">Hantar</button>
+                
+                </form>
+
+                <?php
+                if( $kuiz['kz_jenis'] == 'kuiz' )
+                {
+                ?>
+                <script>
+                const form = document.querySelector( "#jawab-form" );
+
+                </script>
+                <?php
                 }
                 ?>
-            
-                <button type="submit" name="submit" value="submit_jawapan">Hantar</button>
-            
-            </form>
-
+            </div>
             <?php
-            if( $kuiz['kz_jenis'] == 'kuiz' )
-            {
-            ?>
-            <script>
-            const form = document.querySelector( "#jawab-form" );
 
-            </script>
-            <?php
             }
             ?>
-        </div>
-        <?php
 
-        }
-        ?>
+
+        </main>
 
         <?php require '../footer.php'?>
 
-    </main>
+    </div>
 </body>
 </html>

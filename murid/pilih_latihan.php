@@ -16,74 +16,82 @@ $kuiz_list = getKuizByTing( $ting['kt_id'] );
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Latihan/Kuiz | Nsejarah</title>
+
+    <link rel="stylesheet" href="/base.css">
 </head>
 <body>
-    <main>
-        <?php require '../header.php'?>
+    <div class="container">
+        <div id="navigasi"><?php require '../header.php'?></div>
 
-
-        <div id="pilih-latihan">
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Bil</th>
-                        <th>Nama Kuiz</th>
-                        <th>Jenis</th>
-                        <th>Bil Soalan</th>
-                        <th>Skor</th>
-                        <th>Peratus</th>
-                        <th>Jawab</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                <?php
-                foreach( $kuiz_list as $bil=>$kuiz )
-                {
-
-                ?>
-                <tr>
-                    <td><?=$bil+1?></td>
+        <main>
+            <div id="pilih-latihan">
+                <h2>Pilih Latihan</h2>
                 
-                    <td><?=$kuiz['kz_nama']?></td>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Bil</th>
+                            <th>Nama Kuiz</th>
+                            <th>Jenis</th>
+                            <th>Bil Soalan</th>
+                            <th>Skor</th>
+                            <th>Peratus</th>
+                            <th>Jawab</th>
+                        </tr>
+                    </thead>
 
-                    <td><?=$kuiz['kz_jenis']?></td>
-
-                    <td>
+                    <tbody>
                     <?php
-                    $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
+                    foreach( $kuiz_list as $bil=>$kuiz )
+                    {
+
                     ?>
-                    <?=count( $soalan_list )?>
-                    </td>
+                    <tr>
+                        <td><?=$bil+1?></td>
+                    
+                        <td><?=$kuiz['kz_nama']?></td>
 
-                    <td>
+                        <td><?=$kuiz['kz_jenis']?></td>
+
+                        <td>
                         <?php
-                        $skor = getSkorMuridByKuiz( $murid['m_id'], $kuiz['kz_id'] );
-                        /**
-                         * p = ( n/t ) * 100
-                         */
+                        $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
                         ?>
-                        <?=$skor ? (round( $skor['sm_skor'] / 100 * count( $soalan_list ) ) ) : 0 ?>
-                        /
                         <?=count( $soalan_list )?>
-                    </td>
+                        </td>
 
-                    <td><?=$skor ? $skor['sm_skor'] : 0?>%</td>
+                        <td>
+                            <?php
+                            $skor = getSkorMuridByKuiz( $murid['m_id'], $kuiz['kz_id'] );
+                            /**
+                             * p = ( n/t ) * 100
+                             */
+                            ?>
+                            <?=$skor ? (round( $skor['sm_skor'] / 100 * count( $soalan_list ) ) ) : 0 ?>
+                            /
+                            <?=count( $soalan_list )?>
+                        </td>
 
-                    <td>
-                        <?=!$skor ? "<a href=\"jawab_kuiz.php?id_kuiz={$kuiz['kz_id']}\">Pilih</a>" : "<a href=\"ulangkaji.php?id_skor={$skor['sm_id']}\">Ulangkaji</a>"?>
-                    </td>
-                </tr>
-                <?php
+                        <td><?=$skor ? $skor['sm_skor'] : 0?>%</td>
 
-                }
-                ?>
-                </tbody>
-            </table>
-        </div>
+                        <td>
+                            <?=!$skor ? "<a href=\"jawab_kuiz.php?id_kuiz={$kuiz['kz_id']}\">Pilih</a>" : "<a href=\"ulangkaji.php?id_skor={$skor['sm_id']}\">Ulangkaji</a>"?>
+                        </td>
+                    </tr>
+                    <?php
+
+                    }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </main>
 
         <?php require '../footer.php'?>
 
-    </main>
+    </div>
+    
 </body>
 </html>

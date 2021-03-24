@@ -16,11 +16,15 @@ accessGuru( 'Akses tanpa kebenaran!' );
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Admin | NSejarah</title>
+
+    <link rel="stylesheet" href='/base.css'>
 </head>
 <body>
 
-    <main>
-        <?php require 'header_guru.php'?>
+    <div class="container">
+        <div id="navigasi"><?php require 'header_guru.php'?></div>
+
+        <main>
 
 
         <div id="maklumat-guru">
@@ -41,29 +45,32 @@ accessGuru( 'Akses tanpa kebenaran!' );
             <div id="guru">
                 <h3>Maklumat Guru</h3>
 
-                <h4>Nama: <?=$guru['g_nama']?></h4>
+                <span><b>Nama: </b><?=$guru['g_nama']?></span>
+                <br>
 
-                <h4>No. Kad Pengenalan: <?=$guru['g_nokp']?></h4>
+                <span><b>No. Kad Pengenalan: </b><?=$guru['g_nokp']?></span>
+                <br>
 
-                <h4>Status: <?=$guru['g_jenis']?></h4>
+                <span><b>Status: </b><?=$guru['g_jenis']?></span>
+                <br>
 
-                <h4>
-                Kelas: 
-                <?php
-                foreach( $kelas_data as $k )
-                {
+                <span>
+                    <b>Kelas: </b>
+                    <?php
+                    foreach( $kelas_data as $k )
+                    {
 
-                    echo $k['kt_ting'] . ' ' . $k['kelas']['k_nama'] . ', ';
+                        echo $k['kt_ting'] . ' ' . $k['kelas']['k_nama'] . ', ';
 
-                }
-                ?>
-                </h4>
+                    }
+                    ?>
+                </span>
             </div>
 
             <div id="kelas">
                 <h3>Kelas Guru</h3>
 
-                <table>
+                <table border="1">
                     <thead>
                         <tr>
                             <th>Nama Kelas</th>
@@ -96,7 +103,7 @@ accessGuru( 'Akses tanpa kebenaran!' );
             <div id="kuiz">
                 <h3>Senarai Kuiz</h3>
 
-                <table>
+                <table border="1">
                     <thead>
                         <tr>
                             <th>Nama Kuiz</th>
@@ -131,9 +138,10 @@ accessGuru( 'Akses tanpa kebenaran!' );
             </div>        
         </div>
 
-        <?php require '../footer.php';?>
-
     </main>
+
+        <?php require '../footer.php';?>
+    </div>
     
 </body>
 </html>

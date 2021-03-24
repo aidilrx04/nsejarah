@@ -36,103 +36,113 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid' )
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senarai Murid</title>
+
+    <link rel="stylesheet" href="/base.css">
 </head>
 <body>
-    <main>
-        <?php require 'header_guru.php'?>
+    
 
-        <h2>Senarai murid</h2>
+    <div class="container">
+        <div id="navigasi"><?php require 'header_guru.php'?></div>
 
-        <table border="100">
-            <thead>
-                <tr>
-                    <th>Nama</th>
+        <main>
 
-                    <th>No. Kad Pengenalan</th>
+            <h2>Senarai murid</h2>
 
-                    <th>Katalaluan</th>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
 
-                    <th>Kelas</th>
+                        <th>No. Kad Pengenalan</th>
 
-                    <th>Aksi</th>
-                </tr>
-            </thead>
+                        <th>Katalaluan</th>
 
-            <tbody>
-                <tr>
-                    <form action="" method="post">
+                        <th>Kelas</th>
+
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <form action="" method="post">
+                            <td>
+                                <input type="text" name="nama" id="nama" placeholder="cth. Abu flyy" maxlength="255" required="required">
+                            </td>
+
+                            <td>
+                                <input type="text" name="nokp" id="nokp" placeholder="cth. 555555555555" minlength="12" maxlength="12" required>
+                            </td>
+
+                            <td>
+                                <input type="text" name="katalaluan" id="katalaluan" placeholder="cth. abufly123" maxlength="15" required="required">
+                            </td>
+
+                            <td>
+                                <select name="kelas" id="kelas">
+                                    <?php
+                                    $ting_list = getTingList(-1);
+
+                                    foreach( $ting_list as $ting )
+                                    {
+
+                                        $kelas = getKelasById( $ting['kt_kelas'] );
+
+                                    ?>
+                                    <option value="<?=$ting['kt_id']?>"><?=$ting['kt_ting'] . ' ' . $kelas['k_nama']?></option>
+                                    <?php
+
+                                    }
+                                    ?>
+                                </select>
+                            </td>
+
+                            <td>
+                                <button type="submit" name="submit" value="submit_murid">Simpan</button>
+                            </td>
+                        </form>
+                    </tr>
+
+                    <?php
+                    $murid_list = getMuridList(-1);
+                    
+                    
+                    foreach( $murid_list as $murid )
+                    {
+                        $ting = getTingById( $murid['m_kelas'] );
+                        $kelas = getKelasById( $ting['kt_kelas'] );
+
+                    ?>
+                    <tr>
+                        <td><?=$murid['m_nama']?></td>
+
+                        <td><?=$murid['m_nokp']?></td>
+
+                        <td><?=$murid['m_katalaluan']?></td>
+
+                        <td><?=$ting['kt_ting']?> <?=$kelas['k_nama']?></td>
+
                         <td>
-                            <input type="text" name="nama" id="nama" placeholder="cth. Abu flyy" maxlength="255" required="required">
+                            <a href="kemaskini_murid.php?id_murid=<?=$murid['m_id']?>&redir=senarai_murid.php" class="kemaskini">Kemaskini</a>
+
+                            <a href="padam.php?table=murid&col=m_id&val=<?=$murid['m_id']?>" class="padam">Padam</a>
                         </td>
+                    </tr>
+                    <?php
+                    
+                    }
+                    ?>
+                </tbody>
+            </table>
 
-                        <td>
-                            <input type="text" name="nokp" id="nokp" placeholder="cth. 555555555555" minlength="12" maxlength="12" required>
-                        </td>
 
-                        <td>
-                            <input type="text" name="katalaluan" id="katalaluan" placeholder="cth. abufly123" maxlength="15" required="required">
-                        </td>
-
-                        <td>
-                            <select name="kelas" id="kelas">
-                                <?php
-                                $ting_list = getTingList(-1);
-
-                                foreach( $ting_list as $ting )
-                                {
-
-                                    $kelas = getKelasById( $ting['kt_kelas'] );
-
-                                ?>
-                                <option value="<?=$ting['kt_id']?>"><?=$ting['kt_ting'] . ' ' . $kelas['k_nama']?></option>
-                                <?php
-
-                                }
-                                ?>
-                            </select>
-                        </td>
-
-                        <td>
-                            <button type="submit" name="submit" value="submit_murid">Simpan</button>
-                        </td>
-                    </form>
-                </tr>
-
-                <?php
-                $murid_list = getMuridList(-1);
-                
-                
-                foreach( $murid_list as $murid )
-                {
-                    $ting = getTingById( $murid['m_kelas'] );
-                    $kelas = getKelasById( $ting['kt_kelas'] );
-
-                ?>
-                <tr>
-                    <td><?=$murid['m_nama']?></td>
-
-                    <td><?=$murid['m_nokp']?></td>
-
-                    <td><?=$murid['m_katalaluan']?></td>
-
-                    <td><?=$ting['kt_ting']?> <?=$kelas['k_nama']?></td>
-
-                    <td>
-                        <a href="kemaskini_murid.php?id_murid=<?=$murid['m_id']?>&redir=senarai_murid.php">Kemaskini</a>
-
-                        <a href="padam.php?table=murid&col=m_id&val=<?=$murid['m_id']?>">Padam</a>
-                    </td>
-                </tr>
-                <?php
-                
-                }
-                ?>
-            </tbody>
-        </table>
-
+        </main>
+        
         <?php require '../footer.php';?>
+    </div>
 
-    </main>
 </body>
 </html>

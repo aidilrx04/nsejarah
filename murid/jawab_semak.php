@@ -34,87 +34,111 @@ foreach( $jawapan_murid_raw as $j )
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Semak Jawapan</title>
+
+    <link rel="stylesheet" href="/base.css">
+
+    <style>
+        /** Custom style */
+        .soalan
+        {
+            padding: 10px 5px;
+            margin-bottom: 10px;
+        }
+        .soalan p
+        {
+
+            padding: 10px 0;
+            background-color: #ddd;
+
+        }
+
+        .soalan .jawapan
+        {
+
+            margin: 5px 0;
+            padding: 10px 0;
+
+        }
+
+        .soalan .jawapan .input-container
+        {
+
+            display: block;
+
+        }
+    </style>
 </head>
 <body>
-    <main>
-        <?php require '../header.php'?>
+    <div class="container">
+        <div id="navigasi"><?php require '../header.php'?></div>
 
+        <main>
+            <div id="keputusan">
+                <h2>Keputusan</h2>
+                Jumlah markah: <?=round( $skor/100 * count( $soalan_list ) )?> / <?=count( $soalan_list )?>
+                <br>
+                Peratus: <?=$skor?>%
+                <hr>
 
-        <div id="keputusan">
-            <h2>Keputusan</h2>
-            <hr>
-            Jumlah markah: <?=round( $skor/100 * count( $soalan_list ) )?> / <?=count( $soalan_list )?>
-            <br>
-            Peratus: <?=$skor?>%
-        </div>
+            </div>
 
-        <div id="semak-jawapan">
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>No. Soalan</th>
+            <div id="semak-jawapan">
+                <?php
+                
+                foreach( $soalan_list as $bil=>$soalan )
+                {
 
-                        <th>Soalan & Jawapan</th>
-                    </tr>
-                </thead>
+                    $jawapan_list = getJawapanBySoalan( $soalan['s_id'] );
+                    $jawapan_soalan = $jawapan_murid[$soalan['s_id']];
+                    $jawapan_betul = getJawapanToSoalan( $soalan['s_id'] )['sj_jawapan'];
 
-                <tbody>
-                    <?php
-                    
-                    foreach( $soalan_list as $bil=>$soalan )
-                    {
+                ?>
+                <div class="soalan" style="background-color: <?=$jawapan_soalan == $jawapan_betul ? "#00ff0066" : "#ff000066"?>" >
+                    <p>
+                    <b><?=++$bil?>. </b>
 
-                        $jawapan_list = getJawapanBySoalan( $soalan['s_id'] );
-                        $jawapan_soalan = $jawapan_murid[$soalan['s_id']];
-                        $jawapan_betul = getJawapanToSoalan( $soalan['s_id'] )['sj_jawapan'];
+                        <?=$soalan['s_teks']?>
+                        <br>
+                        <?=$soalan['s_gambar'] ? "<img src=\"{$soalan['s_gambar']}\" style=\"max-width: 300px;\">" : ""?>
+                    </p>
+                    <div class="jawapan">
+                        <b>Jawapan</b>
+                        <br>
+                        <?php
 
-                    ?>
-                    <tr>
-                        <td><?=++$bil?></td>
+                        foreach( $jawapan_list as $jawapan )
+                        {
+                            //check samada jawapan ialah jawapan murid atau jawapan sebenar
+                            $isJawapan = isJawapanToSoalan( $jawapan['j_id'], $soalan['s_id'] );
+                            $jawapan_ = ( $jawapan['j_id'] == $jawapan_soalan ) || ( $isJawapan );
 
-                        <td style="background-color: <?=$jawapan_soalan == $jawapan_betul ? "#00ff0066" : "#ff000066"?>" >
-                            <p>
-                                <?=$soalan['s_teks']?>
-                                <br>
-                                <?=$soalan['s_gambar'] ? "<img src=\"{$soalan['s_gambar']}\" style=\"max-width: 300px;\">" : ""?>
-                            </p>
-                            <div>
-                                <b>Jawapan</b>
-                                <br>
-                                <?php
+                        ?>
+                        <label>
+                            <input type="checkbox"<?=$jawapan_ ? "checked" : ""?>
+                            disabled>
 
-                                foreach( $jawapan_list as $jawapan )
-                                {
-                                    //check samada jawapan ialah jawapan murid atau jawapan sebenar
-                                    $isJawapan = isJawapanToSoalan( $jawapan['j_id'], $soalan['s_id'] );
-                                    $jawapan_ = ( $jawapan['j_id'] == $jawapan_soalan ) || ( $isJawapan );
+                            <span style="color: <?=$isJawapan ? "green" : ($jawapan_ ? "red" : "black")?>"><?=$jawapan['j_teks']?>&nbsp;<?=$isJawapan ? "&check;" : ($jawapan_ ? "&times;" : "")?></span>
+                        </label>
 
-                                ?>
-                                <label>
-                                    <input type="checkbox"<?=$jawapan_ ? "checked" : ""?>
-                                     disabled>
+                        <br>
+                        <?php
 
-                                    <span style="color: <?=$isJawapan ? "green" : ($jawapan_ ? "red" : "black")?>"><?=$jawapan['j_teks']?>&nbsp;<?=$isJawapan ? "&check;" : ($jawapan_ ? "&times;" : "")?></span>
-                                </label>
+                        }
+                        ?>
+                    </div>
+                </div>
+                <?php
 
-                                <br>
-                                <?php
+                }
 
-                                }
-                                ?>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php
+                ?>
+                <hr>
+            </div>
 
-                    }
-
-                    ?>
-                </tbody>
-            </table>
-        </div>
+        </main>
 
         <?php require '../footer.php'?>
-    </main>
+    </div>
+    
 </body>
 </html>

@@ -119,134 +119,146 @@ _assert( isAdmin() || $kuiz['kz_guru'] == $_SESSION['id'], alert( 'Akses tanpa k
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Kemaskini kuiz</title>
+
+    <link rel="stylesheet" href="/base.css">
 </head>
 <body>
-    <main>
-        <?php require 'header_guru.php';?>
+    <div class="container">
+        <div id="navigasi">
+            <?php require 'header_guru.php';?>
+        </div>
 
-        <div id="kemaskini-kuiz">
-            <form action="" method="post" enctype="multipart/form-data">
-                <div class="maklumat-kuiz">
-                    <h3>Maklumat kuiz</h3>
+        <main>
 
-                    <input type="hidden" name="id" value="<?=$kuiz['kz_id']?>">
+            <div class="kemaskini-kuiz-form">
+                <form action="" method="post" enctype="multipart/form-data" style="width: 70%;">
+                    <div class="maklumat-kuiz">
+                        <h3>Maklumat kuiz</h3>
 
-                    <label for="nama" class="input-container">
-                        <span>Nama Kuiz</span>
+                        <input type="hidden" name="id" value="<?=$kuiz['kz_id']?>">
 
-                        <input type="text" name="nama" id="nama" class="input-field" value="<?=$kuiz['kz_nama']?>" maxlength="255" required="required">
-                    </label>
+                        <label for="nama" class="input-container">
+                            <span>Nama Kuiz</span>
 
-                    <div>
-                        <label for="tarikh" class="input-container">
-                            <span>Tarikh</span>
-
-                            <?php
-                            $tarikh = $kuiz['kz_tarikh'] ? $kuiz['kz_tarikh'] : date( 'Y-m-d' );
-                            ?>
-
-                            <input type="date" name="tarikh" id="tarikh" class="input-field" value="<?=$tarikh?>">
+                            <input type="text" name="nama" id="nama" class="input-field" value="<?=$kuiz['kz_nama']?>" maxlength="255" required="required">
                         </label>
 
-                        <label for="jenis" class="input-container">
-                            <span>Jenis</span>
-
-                            <?php
-
-                            $jenis = $kuiz['kz_jenis'];
-                            
-                            ?>
-
-                            <select name="jenis" id="jenis" class="input-field">
-                                <option value="latihan"<?=$jenis == 'latihan' ? 'selected' : ''?>>Latihan</option>
-
-                                <option value="kuiz"<?=$jenis == 'kuiz' ? 'selected' : ''?>>Kuiz</option>
-                            </select>
-                        </label>
-
-                        <label for="masa" class="input-container">
-                            <span>Masa(minit)</span>
-
-                            <input type="number" name="masa" id="masa" class="input-field" <?=$jenis == 'latihan' ? 'disabled' : ''?> value="<?=$kuiz['kz_masa']?>" required>
-                        </label>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div id="soalan">
-                    <h3>Soalan</h3>
-
-                    <div id="soalan-list">
-                        <?php
-                        
-                        $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
-
-                        foreach( $soalan_list as $soalan )
-                        {
-
-                            $idSoalan = uniqid( 's' );
-
-                        ?>
-                        <div class="soalan">
-                            <input type="hidden" name="s[u][<?=$idSoalan?>][id]" value=<?=$soalan['s_id']?>>
-
-                            <input type="text" name="s[u][<?=$idSoalan?>][teks]" value="<?=$soalan['s_teks']?>">
-
-                            <input type="file" name="<?=$idSoalan?>" id="">
-
-                            <button type="button" data-padam="<?=$soalan['s_id']?>" class="delete-exist">Padam soalan</button>
-
-                            <div class="jawapan-container">
+                        <div>
+                            <label for="tarikh" class="input-container">
+                                <span>Tarikh</span>
 
                                 <?php
-
-                                $jawapan_list = getJawapanBySoalan( $soalan['s_id'] );
-
-                                foreach( $jawapan_list as $jawapan )
-                                {
-
-                                    $idJawapan = uniqid( 'j' );
-                                    $jBetul = isJawapanToSoalan( $jawapan['j_id'], $soalan['s_id'] );
-
+                                $tarikh = $kuiz['kz_tarikh'] ? $kuiz['kz_tarikh'] : date( 'Y-m-d' );
                                 ?>
-                                <div>
-                                    <input type="hidden" name="s[u][<?=$idSoalan?>][j][<?=$idJawapan?>][id]" value="<?=$jawapan['j_id']?>">
 
-                                    <input type="text" name="s[u][<?=$idSoalan?>][j][<?=$idJawapan?>][teks]" value="<?=$jawapan['j_teks']?>">
+                                <input type="date" name="tarikh" id="tarikh" class="input-field" value="<?=$tarikh?>">
+                            </label>
 
-                                    <input type="radio" name="s[u][<?=$idSoalan?>][jBetul]" value="<?=$jawapan['j_id']?>"<?=$jBetul ? ' checked ' : ''?> required>
-                                </div>
+                            <label for="jenis" class="input-container">
+                                <span>Jenis</span>
+
                                 <?php
 
-                                }
+                                $jenis = $kuiz['kz_jenis'];
                                 
                                 ?>
 
-                            </div>
+                                <select name="jenis" id="jenis" class="input-field">
+                                    <option value="latihan"<?=$jenis == 'latihan' ? 'selected' : ''?>>Latihan</option>
+
+                                    <option value="kuiz"<?=$jenis == 'kuiz' ? 'selected' : ''?>>Kuiz</option>
+                                </select>
+                            </label>
+
+                            <label for="masa" class="input-container">
+                                <span>Masa(minit)</span>
+
+                                <input type="number" name="masa" id="masa" class="input-field" <?=$jenis == 'latihan' ? 'disabled' : ''?> value="<?=$kuiz['kz_masa']?>" required>
+                            </label>
                         </div>
-                        <?php
-
-                        }
-
-                        ?>
                     </div>
 
-                    <div id="soalan-padam"></div>
+                    <div id="soalan">
+                        <h3>Soalan</h3>
 
-                    <button id="tambah-soalan" class="btn btn-success" type="button">
-                        <i class="fas fa-plus"></i>
-                        <span>Tambah Soalan</span>
-                    </button>
-                </div>
+                        <div id="soalan-list">
+                            <?php
+                            
+                            $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
 
-                <button type="submit" id="submit" name="submit" value="kemaskini-kuiz">Kemaskini</button>
-            </form>
-        </div>
+                            foreach( $soalan_list as $soalan )
+                            {
+
+                                $idSoalan = uniqid( 's' );
+
+                            ?>
+                            <div class="soalan">
+                                <input type="hidden" name="s[u][<?=$idSoalan?>][id]" value=<?=$soalan['s_id']?>>
+
+                                <label class="input-container">
+                                    <input type="text" name="s[u][<?=$idSoalan?>][teks]" value="<?=$soalan['s_teks']?>" class="input-field">
+                                </label>
+
+                                <label class="input-container">
+                                    <input type="file" name="<?=$idSoalan?>" id="">
+
+                                    <button type="button" data-padam="<?=$soalan['s_id']?>" class="delete-exist">Padam soalan</button>
+                                </label>
+
+                                <div class="jawapan-container input-container">
+                                    <h4>Jawapan</h4>
+
+                                    <?php
+
+                                    $jawapan_list = getJawapanBySoalan( $soalan['s_id'] );
+
+                                    foreach( $jawapan_list as $jawapan )
+                                    {
+
+                                        $idJawapan = uniqid( 'j' );
+                                        $jBetul = isJawapanToSoalan( $jawapan['j_id'], $soalan['s_id'] );
+
+                                    ?>
+                                    <div>
+                                        <input type="hidden" name="s[u][<?=$idSoalan?>][j][<?=$idJawapan?>][id]" value="<?=$jawapan['j_id']?>">
+
+                                        <input type="text" name="s[u][<?=$idSoalan?>][j][<?=$idJawapan?>][teks]" value="<?=$jawapan['j_teks']?>">
+
+                                        <input type="radio" name="s[u][<?=$idSoalan?>][jBetul]" value="<?=$jawapan['j_id']?>"<?=$jBetul ? ' checked ' : ''?> required>
+                                    </div>
+                                    <?php
+
+                                    }
+                                    
+                                    ?>
+
+                                </div>
+                            </div>
+                            <hr>
+                            <?php
+
+                            }
+
+                            ?>
+                        </div>
+
+                        <div id="soalan-padam"></div>
+
+                        <button id="tambah-soalan" class="btn btn-success" type="button" style="background: blue; color: white;">
+                            <i class="fas fa-plus"></i>
+                            <span>Tambah Soalan</span>
+                        </button>
+                    </div>
+
+                    <button type="submit" id="submit" name="submit" value="kemaskini-kuiz">Kemaskini</button>
+                </form>
+            </div>
+        </main>
 
         <?php require '../footer.php';?>
 
-    </main>
+    </div>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 

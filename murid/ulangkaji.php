@@ -23,76 +23,122 @@ $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Ulangkaji</title>
+
+    <link rel="stylesheet" href="/base.css">
+
+    <style>
+        /** Custom style */
+        .soalan
+        {
+            padding: 10px 5px;
+            margin-bottom: 10px;
+        }
+        .soalan p
+        {
+
+            padding: 10px 0;
+            background-color: #ddd;
+
+        }
+
+        .soalan .jawapan
+        {
+
+            margin: 5px 0;
+            padding: 10px 0;
+
+        }
+
+        .soalan .jawapan .input-container
+        {
+
+            display: block;
+
+        }
+    </style>
 </head>
 <body>
-    <main>
-        <?php require '../header.php'?>
+    <div class="container">
+        <div id="navigasi"><?php require '../header.php'?></div>
 
+        <main>
+            <div id="ulangkaji">
+                <h2>Bahagian Ulangkaji</h2>
 
-        <div id="ulangkaji">
-            <h2>Bahagian Ulangkaji</h2>
+                <h3>Anda telah selesai menjawab kuiz ini</h3>
 
-            <h3>Anda telah selesai menjawab kuiz ini</h3>
+                <p>
+                    <b>Nama Kuiz: </b><?=$kuiz['kz_nama']?>
+                    <br>
+                    <b>Skor: </b><?=round($skor_murid['sm_skor'] / 100 * count( $soalan_list ))?> / <?=count( $soalan_list )?>
+                    <br>
+                    <b>Peratus: </b><?=$skor_murid['sm_skor']?>% 
+                </p>
 
-            <p>
-                <b>Nama Kuiz: </b><?=$kuiz['kz_nama']?>
-                <br>
-                <b>Skor: </b><?=round($skor_murid['sm_skor'] / 100 * count( $soalan_list ))?> / <?=count( $soalan_list )?>
-                <br>
-                <b>Peratus: </b><?=$skor_murid['sm_skor']?>% 
-            </p>
-
-            <div id="soalan">
-                <?php
-                foreach( $soalan_list as $bil=>$soalan )
-                {
-
-                ?>
                 <hr>
-                <div class="soalan">
-                    <b>No Soalan: </b><?=++$bil?>
-                    <br>
-                    <?=$soalan['s_teks']?>
-                    <br>
-                    <?=$soalan['s_gambar'] ? "<img src=\"{$soalan['s_gambar']}\" style=\"max-width:300px;\">" : ""?>
 
+                <div id="soalan">
                     <?php
-                    $jawapan_list = getJawapanBySoalan( $soalan['s_id'] );
-
-                    foreach( $jawapan_list as $jawapan )
+                    foreach( $soalan_list as $bil=>$soalan )
                     {
 
                     ?>
-                    <li><?=$jawapan['j_teks']?></li>
-                    <?php
+                    <div class="soalan">
+                        <b>No Soalan: </b><?=++$bil?>
+                        <br>
+                        <p>
+                        <?=$soalan['s_teks']?>
+                        <br>
+                        <?=$soalan['s_gambar'] ? "<img src=\"{$soalan['s_gambar']}\" style=\"max-width:300px;\">" : ""?>
+                        </p>
 
+                        <div class="jawapan">
+                            <?php
+                            $jawapan_list = getJawapanBySoalan( $soalan['s_id'] );
+
+                            foreach( $jawapan_list as $jawapan )
+                            {
+
+                            ?>
+                            <li><?=$jawapan['j_teks']?></li>
+                            <?php
+
+                            }
+                            ?>
+                        </div>
+
+                        <div class="status-jawapan">
+                            <b class="betul">Jawapan Sebenar: </b><?=getJawapanById( getJawapanToSoalan( $soalan['s_id'] )['sj_jawapan'] )['j_teks']?>
+                            <br>
+
+                            <b>Jawapan anda: </b><?php
+                            
+                            $jawapan_murid = array_filter( getJawapanMurid( $murid['m_id'], $kuiz['kz_id'] ), function( $j ) 
+                            {
+                                global $soalan, $murid;
+                                return $j['jm_soalan'] == $soalan['s_id'] && $j['jm_murid'] == $murid['m_id'];
+                            } );
+
+                            foreach( $jawapan_murid as $j ) echo getJawapanById( $j['jm_jawapan'] )['j_teks'];
+                            ?>
+                            <br>
+
+                            <b>Status: </b><?php foreach( $jawapan_murid as $j ) echo $j['jm_status'] ? "BETUL <b style=\"color: green\">&check;</b>" : "SALAH <b style=\"color: red;\">&times;</b>"?>
+
+                        </div>
+
+                        <hr>
+                    
+                    </div>
+                    <?php
                     }
                     ?>
                 </div>
-
-                <b>Jawapan Sebenar: </b><?=getJawapanById( getJawapanToSoalan( $soalan['s_id'] )['sj_jawapan'] )['j_teks']?>
-                <br>
-                <b>Jawapan anda: </b><?php
-                
-                $jawapan_murid = array_filter( getJawapanMurid( $murid['m_id'], $kuiz['kz_id'] ), function( $j ) 
-                {
-                    global $soalan, $murid;
-                    return $j['jm_soalan'] == $soalan['s_id'] && $j['jm_murid'] == $murid['m_id'];
-                } );
-
-                foreach( $jawapan_murid as $j ) echo getJawapanById( $j['jm_jawapan'] )['j_teks'];
-                ?>
-                <br>
-
-                <b>Status: </b><?php foreach( $jawapan_murid as $j ) echo $j['jm_status'] ? "BETUL" : "SALAH"?>
-                <?php
-                }
-                ?>
             </div>
-        </div>
+        </main>
 
         <?php require '../footer.php'?>
-
-    </main>
+    </div>
+    
 </body>
 </html>

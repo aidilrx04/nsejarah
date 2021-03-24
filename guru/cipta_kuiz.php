@@ -81,86 +81,97 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Cipta Kuiz</title>
+
+    <link rel="stylesheet" href="/base.css">
 </head>
 <body>
-    <main>
-        <?php require 'header_guru.php';?>
+    <div class="container">
+        <div id="navigasi">
+            <?php require 'header_guru.php';?>
+        </div>
 
-        <div id="cipta-kuiz">
-            <form action="" method="post" enctype="multipart/form-data">
-                <div class="maklumat-kuiz">
-                    <h3>Maklumat kuiz</h3>
+        <main>
 
-                    <label for="nama" class="input-container">
-                        <span>Nama Kuiz</span>
+            <div class="cipta-kuiz-form">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="maklumat-kuiz">
+                        <h3>Maklumat kuiz</h3>
 
-                        <input type="text" name="nama" id="nama" class="input-file" maxlength="255" required="required">
-                    </label>
+                        <label for="nama" class="input-container">
+                            <span>Nama Kuiz</span>
 
-                    <label for="ting" class="input-container">
-                        <select name="ting" id="ting">
-                            <?php
-                            $ting_list = getTingByGuru( $_SESSION['id'] );
-
-                            foreach( $ting_list as $ting )
-                            {
-
-                                $kelas = getKelasById( $ting['kt_kelas'] );
-
-                            ?>
-                            <option value="<?=$ting['kt_id']?>"><?=$ting['kt_ting']?> <?=$kelas['k_nama']?></option>
-                            <?php
-
-                            }
-                            ?>
-                        </select>
-                    </label>
-
-                    <div>
-                        <label for="tarikh" class="input-container">
-                            <span>Tarikh</span>
-
-                            <input type="date" name="tarikh" id="tarikh" class="input-field" value="<?=date('Y-m-d')?>">
+                            <input type="text" name="nama" id="nama" class="input-field" maxlength="255" required="required">
                         </label>
 
-                        <label for="jenis" class="input-container">
-                            <span>Jenis</span>
+                        <label for="ting" class="input-container">
+                            <span>Tingkatan</span>
+                            <select name="ting" id="ting" class="input-field">
+                                <?php
+                                $ting_list = getTingByGuru( $_SESSION['id'] );
 
-                            <select name="jenis" id="jenis" class="input-field">
-                                <option value="latihan">Latihan</option>
+                                foreach( $ting_list as $ting )
+                                {
 
-                                <option value="kuiz">Kuiz</option>
+                                    $kelas = getKelasById( $ting['kt_kelas'] );
+
+                                ?>
+                                <option value="<?=$ting['kt_id']?>"><?=$ting['kt_ting']?> <?=$kelas['k_nama']?></option>
+                                <?php
+
+                                }
+                                ?>
                             </select>
                         </label>
 
-                        <label for="masa" class="input-container">
-                            <span>Masa(minit)</span>
+                        <div>
+                            <label for="tarikh" class="input-container">
+                                <span>Tarikh</span>
 
-                            <input type="number" name="masa" id="masa" class="input-field" disabled required>
-                        </label>
+                                <input type="date" name="tarikh" id="tarikh" class="input-field" value="<?=date('Y-m-d')?>">
+                            </label>
+
+                            <label for="jenis" class="input-container">
+                                <span>Jenis</span>
+
+                                <select name="jenis" id="jenis" class="input-field">
+                                    <option value="latihan">Latihan</option>
+
+                                    <option value="kuiz">Kuiz</option>
+                                </select>
+                            </label>
+
+                            <label for="masa" class="input-container">
+                                <span>Masa(minit)</span>
+
+                                <input type="number" name="masa" id="masa" class="input-field" disabled required>
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <hr>
+                    <hr>
 
-                <div id="soalan">
-                    <h3>Soalan</h3>
+                    <div id="soalan">
+                        <h3>Soalan</h3>
 
-                    <div id="soalan-list"></div>
+                        <div id="soalan-list"></div>
 
-                    <button id="tambah-soalan" class="btn btn-success" type="button">
-                        <i class="fas fa-plus"></i>
-                        <span>Tambah Soalan</span>
-                    </button>
-                </div>
+                        <button id="tambah-soalan" class="btn btn-success" type="button">
+                            <i class="fas fa-plus"></i>
+                            <span>Tambah Soalan</span>
+                        </button>
+                    </div>
 
-                <button type="submit" id="submit" name="submit" value="tambah-kuiz">Simpan</button>
-            </form>
-        </div>
+                    <button type="submit" id="submit" name="submit" value="tambah-kuiz">Simpan</button>
+                </form>
+            </div>
+
+
+        </main>
 
         <?php require '../footer.php';?>
 
-    </main>
+    </div>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 

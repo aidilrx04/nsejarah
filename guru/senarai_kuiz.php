@@ -17,73 +17,82 @@ $kuiz_list = isAdmin() ? getKuizList( null, 10000 ) : getKuizByGuru( $_SESSION['
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Senarai Kuiz</title>
+
+    <link rel="stylesheet" href="/base.css">
 </head>
 <body>
-    <main>
-        <?php require 'header_guru.php';?>
+    <div class="container">
+        <div id="navigasi">
+            <?php require 'header_guru.php';?>
+        </div>
 
-        <h2>Senarai Kuiz</h2>
+        <main>
 
-        <a href="cipta_kuiz.php">Cipta kuiz baharu &plus;</a>
+            <h2>Senarai Kuiz</h2>
 
-        <table id="senarai-kuiz" border="1">
-            <thead>
-                <tr>
-                    <th>Nama Kuiz</th>
+            <a href="cipta_kuiz.php">Cipta kuiz baharu &plus;</a>
 
-                    <th>Jenis</th>
+            <table id="senarai-kuiz" border="1">
+                <thead>
+                    <tr>
+                        <th>Nama Kuiz</th>
 
-                    <?=isAdmin() ? "<th>Guru</th>" : ""?>
+                        <th>Jenis</th>
 
-                    <th>Tarikh</th>
+                        <?=isAdmin() ? "<th>Guru</th>" : ""?>
 
-                    <th>Masa</th>
+                        <th>Tarikh</th>
 
-                    <th></th>
-                </tr>
-            </thead>
+                        <th>Masa</th>
 
-            <tbody>
-                <?php
-                
-                foreach( $kuiz_list as $kuiz )
-                {
+                        <th></th>
+                    </tr>
+                </thead>
 
-                ?>
-                <tr>
-                    <td><?=$kuiz['kz_nama']?></td>
-
-                    <td><?=$kuiz['kz_jenis']?></td>
-
+                <tbody>
                     <?php
-                    if( isAdmin() )
+                    
+                    foreach( $kuiz_list as $kuiz )
                     {
-                        $guru = getGuru( $kuiz['kz_guru'] );
-                        ?>
-                        <td><?=$guru['g_nama']?></td>
-                        <?php
-                    }
+
                     ?>
+                    <tr>
+                        <td><?=$kuiz['kz_nama']?></td>
 
-                    <td><?=$kuiz['kz_tarikh']?></td>
+                        <td><?=$kuiz['kz_jenis']?></td>
 
-                    <td><?=$kuiz['kz_masa']?></td>
+                        <?php
+                        if( isAdmin() )
+                        {
+                            $guru = getGuru( $kuiz['kz_guru'] );
+                            ?>
+                            <td><?=$guru['g_nama']?></td>
+                            <?php
+                        }
+                        ?>
 
-                    <td>
-                        <a href="kemaskini_kuiz.php?id_kuiz=<?=$kuiz['kz_id']?>">Kemaskini</a>|
-                        <a href="padam.php?table=kuiz&col=kz_id&val=<?=$kuiz['kz_id']?>">Padam</a>
-                    </td>
+                        <td><?=$kuiz['kz_tarikh']?></td>
 
-                </tr>
-                <?php
+                        <td><?=$kuiz['kz_masa']?></td>
 
-                }
+                        <td>
+                            <a href="kemaskini_kuiz.php?id_kuiz=<?=$kuiz['kz_id']?>" class="kemaskini">Kemaskini</a>|
+                            <a href="padam.php?table=kuiz&col=kz_id&val=<?=$kuiz['kz_id']?>" class="padam">Padam</a>
+                        </td>
 
-                ?>
-            </tbody>
-        </table>
+                    </tr>
+                    <?php
 
+                    }
+
+                    ?>
+                </tbody>
+            </table>
+
+        </main>
         <?php require '../footer.php';?>
-    </main>
+
+    </div>
+    
 </body>
 </html>

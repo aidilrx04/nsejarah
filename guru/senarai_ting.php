@@ -52,162 +52,171 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Senarai Tingkatan</title>
+
+    <link rel="stylesheet" href="/base.css">
 </head>
 <body>
-    <main>
-        <?php require 'header_guru.php';?>    
-
-
-        <div id="senarai-tingkatan">
-            <h2>Senarai Tingkatan</h2>
-
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Tingkatan</th>
-
-                        <th>Nama</th>
-
-                        <th>Guru</th>
-
-                        <td>Aksi</td>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <form action="" method="post">
-                            <td>
-                                <input type="number" name="ting" id="ting" min="1" max="5" placeholder="cth. 1" required="required">
-                            </td>
-
-                            <td>
-                                <select name="kelas" id="kelas" required="required">
-                                    <?php
-                                    $kelas_list = getKelasList(-1);
-
-                                    foreach( $kelas_list as $kelas )
-                                    {
-
-                                    ?>
-                                    <option value="<?=$kelas['k_id']?>"><?=$kelas['k_nama']?></option>
-                                    <?php
-
-                                    }
-                                    ?>
-                                </select>
-                            </td>
-
-                            <td>
-                                <select name="guru" id="guru">
-                                    <?php
-                                    $guru_list = getGuruList();
-
-                                    foreach( $guru_list as $guru )
-                                    {
-
-                                    ?>
-                                    <option value="<?=$guru['g_id']?>"><?=$guru['g_nama']?></option>
-                                    <?php
-
-                                    }
-                                    ?>
-                                </select>
-                            </td>
-
-                            <td>
-                                    <button type="submit" name="submit" value="tambah_ting">Simpan</button>
-                            </td>
-                        </form>
-                    </tr>
-
-                    <?php
-                    
-                    $ting_list = getTingList(-1);
-
-                    foreach( $ting_list as $ting )
-                    {
-
-                        $kelas = getKelasById( $ting['kt_kelas'] );
-                        $guru = getGuru( $ting['kt_guru'] );
-
-                    ?>
-
-                    <tr>
-                        <td><?=$ting['kt_ting']?></td>
-
-                        <td><?=$kelas['k_nama']?></td>
-
-                        <td><?=$guru['g_nama']?></td>
-
-                        <td>
-                            <a href="#kemaskini">Kemaskini</a>
-
-                            <a href="#padam">Padam</a>
-                        </td>
-                    </tr>
-
-                    <?php
-
-                    }
-
-                    ?>
-                </tbody>
-            </table>
+    <div class="container">
+        <div id="navigasi">
+            <?php require 'header_guru.php';?> 
         </div>
 
-        <div id="senarai-kelas">
-            <h2>Senarai Kelas</h2>
+        <main>
 
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Nama</th>
 
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
+            <div id="senarai-tingkatan">
+                <h2>Senarai Tingkatan</h2>
 
-                <tbody>
-                    <tr>
-                        <form action="" method="post">
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Tingkatan</th>
+
+                            <th>Nama</th>
+
+                            <th>Guru</th>
+
+                            <td>Aksi</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <form action="" method="post">
+                                <td>
+                                    <input type="number" name="ting" id="ting" min="1" max="5" placeholder="cth. 1" required="required">
+                                </td>
+
+                                <td>
+                                    <select name="kelas" id="kelas" required="required">
+                                        <?php
+                                        $kelas_list = getKelasList(-1);
+
+                                        foreach( $kelas_list as $kelas )
+                                        {
+
+                                        ?>
+                                        <option value="<?=$kelas['k_id']?>"><?=$kelas['k_nama']?></option>
+                                        <?php
+
+                                        }
+                                        ?>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <select name="guru" id="guru">
+                                        <?php
+                                        $guru_list = getGuruList();
+
+                                        foreach( $guru_list as $guru )
+                                        {
+
+                                        ?>
+                                        <option value="<?=$guru['g_id']?>"><?=$guru['g_nama']?></option>
+                                        <?php
+
+                                        }
+                                        ?>
+                                    </select>
+                                </td>
+
+                                <td>
+                                        <button type="submit" name="submit" value="tambah_ting">Simpan</button>
+                                </td>
+                            </form>
+                        </tr>
+
+                        <?php
+                        
+                        $ting_list = getTingList(-1);
+
+                        foreach( $ting_list as $ting )
+                        {
+
+                            $kelas = getKelasById( $ting['kt_kelas'] );
+                            $guru = getGuru( $ting['kt_guru'] );
+
+                        ?>
+
+                        <tr>
+                            <td><?=$ting['kt_ting']?></td>
+
+                            <td><?=$kelas['k_nama']?></td>
+
+                            <td><?=$guru['g_nama']?></td>
+
                             <td>
-                                <input type="text" name="nama" id="nama_kelas" placeholder="cth. Amanah" required="required">
+                                <a href="#kemaskini" class="kemaskini">Kemaskini</a>
+
+                                <a href="#padam" class="padam">Padam</a>
                             </td>
+                        </tr>
+
+                        <?php
+
+                        }
+
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="senarai-kelas">
+                <h2>Senarai Kelas</h2>
+
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <form action="" method="post">
+                                <td>
+                                    <input type="text" name="nama" id="nama_kelas" placeholder="cth. Amanah" required="required">
+                                </td>
+
+                                <td>
+                                    <button type="submit" name="submit" value="tambah_kelas">Simpan</button>
+                                </td>
+                            </form>
+                        </tr>
+
+                        <?php
+                        
+                        $kelas_list = getKelasList(-1);
+
+                        foreach( $kelas_list as $kelas )
+                        {
+
+                        ?>
+                        <tr>
+                            <td><?=$kelas['k_nama']?></td>
 
                             <td>
-                                <button type="submit" name="submit" value="tambah_kelas">Simpan</button>
+                                <a href="#kemaskini" class="kemaskini">Kemaskini</a>
+                                <a href="#padam" class="padam">Padam</a>
                             </td>
-                        </form>
-                    </tr>
+                        </tr>
+                        <?php
 
-                    <?php
-                    
-                    $kelas_list = getKelasList(-1);
+                        }
 
-                    foreach( $kelas_list as $kelas )
-                    {
+                        ?>
+                    </tbody>
+                </table>
+            </div>
 
-                    ?>
-                    <tr>
-                        <td><?=$kelas['k_nama']?></td>
 
-                        <td>
-                            <a href="#kemaskini">Kemaskini</a>
-                            <a href="#padam">Padam</a>
-                        </td>
-                    </tr>
-                    <?php
-
-                    }
-
-                    ?>
-                </tbody>
-            </table>
-        </div>
+        </main>
 
         <?php require '../footer.php';?>
+    </div>
 
-    </main>
 </body>
 </html>

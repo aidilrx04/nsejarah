@@ -40,12 +40,20 @@ function tambahSoalan( sList )
     let sContainer, sInput, sImage, sjContainer, sPadamBtn;
     const sId = uniqid();
 
+    //custom css
+    var sInputContainer, sImage_BtnContainer, sjTitle, sjInputsContainer;
+
     sContainer = $( document.createElement( 'div' ) )
                  .attr( {
                      class: 'soalan'
                  } )
                  .appendTo( sList );
 
+    sInputContainer = $( document.createElement( 'label' ) )
+                      .attr( {
+                          'class': 'input-container'
+                      })
+                      .appendTo( sContainer );
     sInput = $( document.createElement( 'input' ) )
              .attr( {
                 class: 'input-field',
@@ -53,22 +61,28 @@ function tambahSoalan( sList )
                 name: 's[b][' + sId + '][]',
                 required: true
              } )
-             .appendTo( sContainer );
-    
+             .appendTo( sInputContainer );
+    sImage_BtnContainer = $( document.createElement( 'label' ) )
+                          .attr( 
+                              {
+                                  'class': 'input-container'
+                              }
+                           )
+                          .appendTo( sContainer );
     sImage = $( document.createElement( 'input' ) )
              .attr( {
-                class: 'input-field',
                 type: 'file',
                 name: sId
              } )
-             .appendTo( sContainer );
+             .appendTo( sImage_BtnContainer );
 
     sPadamBtn = $( document.createElement( 'button' ) )
                 .attr( {
-                    type: 'button'
+                    type: 'button',
+                    'class': 'delete-new'
                 } )
                 .text( 'Padam Soalan' )
-                .appendTo( sContainer ); 
+                .appendTo( sImage_BtnContainer ); 
     sPadamBtn.click( function () 
     {
 
@@ -78,9 +92,13 @@ function tambahSoalan( sList )
 
     sjContainer = $( document.createElement( 'div' ) )
                   .attr( {
-                      class: 'jawapan-container'
+                      class: 'jawapan-container input-container'
                   } )
                   .appendTo( sContainer );
+    
+    sjTitle = $( document.createElement( 'h4' ) )
+              .text( 'Jawapan' )
+              .appendTo( sjContainer );
 
     const jawapanCount = 4;
     const jInput = [];
@@ -89,14 +107,16 @@ function tambahSoalan( sList )
     {
 
         const jId = uniqid();
+        sjInputsContainer = $( document.createElement( 'div' ) ).appendTo( sjContainer )
         let jInput = $( document.createElement( 'input' ) )
                      .attr( {
+                         type: 'text',
                          class: 'jawapan-input',
                          placeholder: 'Sila masukkan jawapan',
                          name: 's[b][' + sId + '][j][][0]',
                          required: true
                      } )
-                     .appendTo( sjContainer );
+                     .appendTo( sjInputsContainer );
 
         let jBetul = $( document.createElement( 'input' ) )
                      .attr( {
@@ -105,8 +125,10 @@ function tambahSoalan( sList )
                          name: 's[b][' + sId + '][]',
                          required: true
                      } )
-                     .appendTo( sjContainer );
+                     .appendTo( sjInputsContainer );
     }
+
+    sContainer.append( document.createElement( 'hr' ) );
 
     return;
 

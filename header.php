@@ -1,20 +1,38 @@
-<h1 align="center">NSEJARAH</h1>
-<hr>
+<div id="nav">
+    <h1>NSejarah</h1>
 
-<?php
+    <hr>
 
-#session already started at php/conn.php;
-if( isset( $_SESSION['jenis'] ) )
-{
+    <?php if( isset( $_SESSION['jenis'] ) && $jenis = $_SESSION['jenis'] ) {?>
+    <span class="nama"><b>Nama <?=$_SESSION['jenis'] == 'murid' ? "Murid" : "Guru"?>: </b> <?=$_SESSION['nama']?></span>
+    <?php }?>
 
-?>
-<b>Nama Murid: </b> <?=$_SESSION['nama']?> |
-<a href="/murid/pilih_latihan.php">Laman Utama</a> |
-<a href="/logout.php">Logout</a>
+    <ul>
+        <li>
+            <span style="text-decoration: none;" class="resize nav-link">
+                Saiz Teks:
+                <button id="teks-kurang" value="-1">&minus;</button>
+                <button  utton id="teks-reset" value="2">Reset</button>
+                <button id="teks-tambah" value="1">&plus;</button>
+            </span>
+        </li>
+        <?php if( isset( $_SESSION['jenis'] ) ) {?>
+        <li>
+            <a href="/<?=$jenis == 'murid' ? 'murid/pilih_latihan.php' : 'guru/'?>">Laman Utama</a>
+        </li>
+        
+        <li>
+            <a href="/logout.php">Logout</a>
+        </li>
 
-<hr>
-<?php
+        <?php } else {?>
 
-}
+        <li>
+            <a href="/">Login</a>
+        </li>
 
-?>
+        <?php }?>
+    </ul>
+</div>
+
+<script src="/saiz_teks.js"></script>

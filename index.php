@@ -65,110 +65,115 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>NSejarah</title>
+
+    <link rel="stylesheet" href="/base.css">
 </head>
 
 <body>
 
-    <main>
-        <?php require 'header.php'?>
-
-        <?php
-        # papar apabila pengguna belum lagi login
-        
-        if( !isset( $_SESSION['jenis'] ) )
-        {
-
-        ?>
-        <div class="login-form">
-            <form action="" method="post">
-
-                <label for="nokp" class="input-container">
-                    <span>No. Kad Pengenalan</span>
-                    <input type="text" name="nokp" id="nokp" class="input-field" placeholder="Cth. 111111111111" maxlength="12" minlength="12" required="required">
-                </label>
-
-                <label for="katalaluan" class="input-container">
-                    <span>Katalaluan</span>
-                    <input type="password" name="katalaluan" id="katalaluan" class="input-field" maxlength="15" required="required">
-                </label>
-
-                <div>
-                    <span>Jenis</span>
-                    <label for="murid" class="input-container">
-                       <input type="radio" name="jenis" id="murid" class="input-field" value="murid" checked required>
-                       <span>Murid</span>
-                    </label>
-
-                    <label for="guru">
-                        <input type="radio" name="jenis" id="guru" class="input-field"  value="guru" required>
-                        <span>Guru</span>
-                    </label>
-                </div>
-
-                <button type="submit" name="submit" value="login">Submit</button>
-
-            </form>
+    <div class="container">
+        <div id="navigasi">            
+            <?php require 'header.php'?>
         </div>
-        <?php
+        <main>
 
-        }
-        else
-        {
+            <?php
+            # papar apabila pengguna belum lagi login
+            
+            if( !isset( $_SESSION['jenis'] ) )
+            {
 
-        ?>
-        <a href="/logout.php" class="logout-btn">Log Keluar</a>
-        <?php
+            ?>
+            <div class="login-form">
+                <h3>Login</h3>
 
-        }
-        ?>
+                <form action="" method="post">
 
-        <div class="senarai-kuiz">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nama</th>
+                    <label for="nokp" class="input-container">
+                        <span>No. Kad Pengenalan</span>
+                        <input type="text" name="nokp" id="nokp" class="input-field" placeholder="Cth. 111111111111" maxlength="12" minlength="12" required="required">
+                    </label>
 
-                        <th>Guru</th>
+                    <label for="katalaluan" class="input-container">
+                        <span>Katalaluan</span>
+                        <input type="password" name="katalaluan" id="katalaluan" class="input-field" maxlength="15" required="required">
+                    </label>
 
-                        <th>Jenis</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <?php
-
-                    # [O] senarai kuiz
-                    $kuiz_list = getKuizList();
-
-                    # papar kuiz
-                    foreach( $kuiz_list as $kuiz )
-                    {
-
-                        $guru = getGuru( $kuiz['kz_guru'] );
+                    <div class="input-container">
+                        <span>Jenis: </span>
                         
+                        <label for="murid" class="input-containers no-margin">
+                            <input type="radio" name="jenis" id="murid" value="murid" checked required>
+                            <span>Murid</span>
+                        </label>
 
-                    ?>
-                        
+                        <label for="guru" class="input-containers no-margin">
+                            <input type="radio" name="jenis" id="guru"  value="guru" required>
+                            <span>Guru</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" name="submit" value="login">Submit</button>
+
+                </form>
+            </div>
+            <?php
+
+            }
+            ?>
+
+            <div class="senarai-kuiz">
+                <h3>Senarai Kuiz</h3>
+
+                <table border="1">
+                    <thead>
                         <tr>
-                            <td><?=$kuiz['kz_nama']?></td>
+                            <th>Nama</th>
 
-                            <td><?=$guru['g_nama']?></td>
+                            <th>Guru</th>
 
-                            <td><?=$kuiz['kz_jenis']?></td>
+                            <th>Jenis</th>
                         </tr>
+                    </thead>
 
-                    <?php
+                    <tbody>
+                        <?php
 
-                    }
+                        # [O] senarai kuiz
+                        $kuiz_list = getKuizList();
 
-                    ?>
-                </tbody>
-            </table>
-        </div>
+                        # papar kuiz
+                        foreach( $kuiz_list as $kuiz )
+                        {
+
+                            $guru = getGuru( $kuiz['kz_guru'] );
+                            
+
+                        ?>
+                            
+                            <tr>
+                                <td><?=$kuiz['kz_nama']?></td>
+
+                                <td><?=$guru['g_nama']?></td>
+
+                                <td><?=$kuiz['kz_jenis']?></td>
+                            </tr>
+
+                        <?php
+
+                        }
+
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+
+            
+        </main>
 
         <?php require 'footer.php'?>
-        
-    </main>
+
+    </div>
 
 </body>
 

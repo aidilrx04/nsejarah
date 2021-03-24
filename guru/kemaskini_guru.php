@@ -38,50 +38,60 @@ _assert( $guru = getGuru( $_GET['id_guru'] ), alert( 'ID tidak sah!' ) . back(),
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Kemaskini Guru</title>
+
+    <link rel="stylesheet" href="/base.css">
 </head>
 <body>
-    <main>
-        <?php require 'header_guru.php';?>
 
-        <form action="" method="post" class="kemaskini-form">
-            <input type="hidden" name="id" value="<?=$guru['g_id']?>">
+    <div class="container">
+        <div id="navigasi"><?php require 'header_guru.php';?></div>
 
-            <label for="nokp" class="input-container">
-                <span>No. Kad Pengenalan</span>
+        <main>
 
-                <input type="text" name="nokp" id="nokp" class="input-field" value="<?=$guru['g_nokp']?>" minlength="12" maxlength="12" required="required">
-            </label>
+            <div class="kemaskini-form">
+                <form action="" method="post">
+                    <input type="hidden" name="id" value="<?=$guru['g_id']?>">
 
-            <label for="nama" class="input-container">
-                <span>Nama</span>
+                    <label for="nokp" class="input-container">
+                        <span>No. Kad Pengenalan</span>
 
-                <input type="text" class="input-field" id="nama" name="nama" value="<?=$guru['g_nama']?>" maxlength="255" required="required">
-            </label>
+                        <input type="text" name="nokp" id="nokp" class="input-field" value="<?=$guru['g_nokp']?>" minlength="12" maxlength="12" required="required">
+                    </label>
 
-            <label for="katalaluan" class="input-container">
-                <span>Katalaluan</span>
+                    <label for="nama" class="input-container">
+                        <span>Nama</span>
 
-                <input type="password" name="katalaluan" id="katalaluan" class="input-field" value="<?=$guru['g_katalaluan']?>" maxlength="15" required="required">
-            </label>
+                        <input type="text" class="input-field" id="nama" name="nama" value="<?=$guru['g_nama']?>" maxlength="255" required="required">
+                    </label>
 
-            <label for="jenis" class="input-container">
-                <?php
-                $jenis = $guru['g_jenis'] == 'admin' ? 'guru' : 'admin';
-                ?>
+                    <label for="katalaluan" class="input-container">
+                        <span>Katalaluan</span>
 
-                <span>Jenis</span>
+                        <input type="password" name="katalaluan" id="katalaluan" class="input-field" value="<?=$guru['g_katalaluan']?>" maxlength="15" required="required">
+                    </label>
 
-                <select name="jenis" id="jenis" class="input-field">
-                    <option value="<?=$guru['g_jenis']?>" selected><?=$guru['g_jenis']?></option>
+                    <label for="jenis" class="input-container">
+                        <?php
+                        $jenis = $guru['g_jenis'] == 'admin' ? 'guru' : 'admin';
+                        ?>
 
-                    <option value="<?=$jenis?>"><?=$jenis?></option>
-                </select>
-            </label>
+                        <span>Jenis</span>
 
-            <button type="submit" name="submit" value="kemaskini_guru">Kemaskini</button>
-        </form>
+                        <select name="jenis" id="jenis" class="input-field">
+                            <option value="<?=$guru['g_jenis']?>" selected><?=$guru['g_jenis']?></option>
+
+                            <option value="<?=$jenis?>"><?=$jenis?></option>
+                        </select>
+                    </label>
+
+                    <button type="submit" name="submit" value="kemaskini_guru">Kemaskini</button>
+                </form>
+            </div>
+            
+        </main>
         <?php require '../footer.php';?>
-        
-    </main>
+
+    </div>
+
 </body>
 </html>
