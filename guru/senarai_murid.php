@@ -51,6 +51,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid' )
 
             <h2>Senarai murid</h2>
 
+            <a class="x-link" href="/guru/upload_murid.php?redirect=/guru/senarai_murid.php">[&plus;] Muatnaik data murid.</a>
+
             <table border="1">
                 <thead>
                     <tr>
