@@ -108,7 +108,7 @@ $kelas = getKelasById( $ting['kt_kelas'] );
 
                             <td><?=$murid['m_nokp']?></td>
 
-                            <td><?=$skor_murid ? $bil_betul . '/' . $jumlah : ''?></td>
+                            <td><?=$skor_murid ? $bil_betul . '/' . $jumlah : '----'?></td>
                             
                             <td><?=$skor_murid ? $skor_murid['sm_skor'] . '%' : 'Belum dijawab'?></td>
                         </tr>
