@@ -60,7 +60,8 @@ accessGuru( 'Akses tanpa kebenaran!' );
                     foreach( $kelas_data as $k )
                     {
 
-                        echo $k['kt_ting'] . ' ' . $k['kelas']['k_nama'] . ', ';
+                        $has_comma = count( $kelas_data ) != 1 && end( $kelas_data ) != $k ? ', ' : '';
+                        echo $k['kt_ting'] . ' ' . $k['kelas']['k_nama'] . $has_comma;
 
                     }
                     ?>
