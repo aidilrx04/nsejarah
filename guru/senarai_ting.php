@@ -199,8 +199,8 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
                             <td><?=$kelas['k_nama']?></td>
 
                             <td>
-                                <a href="#kemaskini" class="kemaskini">Kemaskini</a>
-                                <a href="#padam" class="padam">Padam</a>
+                                <a href="kemaskini_kelas.php?id_kelas=<?=$kelas['k_id']?>&redir=senarai_ting.php" class="kemaskini">Kemaskini</a>
+                                <a href="padam.php?table=kelas&col=k_id&val=<?=$kelas['k_id']?>&redir=senarai_ting.php" class="padam">Padam</a>
                             </td>
                         </tr>
                         <?php
