@@ -73,7 +73,7 @@ $kuiz_list = isAdmin() ? getKuizList( null, 10000 ) : getKuizByGuru( $_SESSION['
 
                         <td><?=$kuiz['kz_tarikh']?></td>
 
-                        <td><?=$kuiz['kz_masa']?></td>
+                        <td><?=$kuiz['kz_masa'] ? $kuiz['kz_masa'] : 'Tiada'?></td>
 
                         <td>
                             <a href="kemaskini_kuiz.php?id_kuiz=<?=$kuiz['kz_id']?>" class="kemaskini">Kemaskini</a>|
