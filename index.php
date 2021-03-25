@@ -15,6 +15,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
         $jenis = $_POST['jenis'];        
         $nokp = $_POST['nokp'];
         $katalaluan = $_POST['katalaluan'];
+        $status_login = false;
 
         if( $jenis == 'murid' )
         {
@@ -28,12 +29,13 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
                 $_SESSION['nama'] = $murid['m_nama'];
                 $_SESSION['kelas'] = $murid['m_kelas'];
                 $_SESSION['id'] = $murid['m_id'];
+                $status_login = true;
 
             }
             else
             {
 
-                die( alert( 'No. KP atau Katalaluan salah!' ) );
+                $status_login = false;
 
             }
 
@@ -49,8 +51,29 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
                 $_SESSION['nokp'] = $guru['g_nokp'];
                 $_SESSION['nama'] = $guru['g_nama'];
                 $_SESSION['id'] = $guru['g_id'];
+                $status_login = true;
 
             }
+            else
+            {
+
+                $status_login = false;
+
+            }
+
+        }
+
+        if( $status_login )
+        {
+
+            $redirect = $jenis == 'murid' ? '/murid/pilih_latihan.php' : '/guru/';
+            echo redirect( $redirect );
+
+        }
+        else
+        {
+
+            die( alert( 'No. KP atau Katalaluan salah!' ) . back() );
 
         }
 
