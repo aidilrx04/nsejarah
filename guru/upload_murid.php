@@ -65,27 +65,36 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'upload_murid' )
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Upload Data Murid</title>
+
+    <link rel="stylesheet" href="/base.css">
 </head>
 <body>
-    <main>
-        <?php require 'header_guru.php';?>
+    <div class="container">
+        <div id="navigasi"><?php require 'header_guru.php';?></div>
+        <main>
+            <div id="upload-murid">
+                <h2>[&bigoplus;] Muatnaik Data Murid</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <label for="data" class="input-container">
+                        <span>Data murid(.csv)</span>
 
+                        <input type="file" name="data" id="data" accept=".csv" required>
+                    </label>
 
-        <div id="upload-murid">
-            <form action="" method="post" enctype="multipart/form-data">
-                <label for="data" class="input-container">
-                    <span>Data murid(.csv)</span>
+                    <button type="submit" name="submit" value="upload_murid">Muat naik</button>
+                </form>
 
-                    <input type="file" name="data" id="data" accept=".csv" required>
-                </label>
-
-                <button type="submit" name="submit" value="upload_murid">Muat naik</button>
-            </form>
-        </div>
+                <p style="white-space: pre-wrap;">
+Untuk memuat naik data murid, pastikan anda
+menggunakan template yang telah disediakan.
+Muat turun <a href="/guru/data_murid.csv">di sini</a>.
+</p>
+            </div>
+        </main>
 
         <?php require '../footer.php';?>
-
-    </main>
+    </div>
+    
 
     <script>
         const uploadContainer = document.querySelector( '#upload-murid' ),
