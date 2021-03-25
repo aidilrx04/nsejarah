@@ -49,6 +49,7 @@ _assert( $guru = getGuru( $_GET['id_guru'] ), alert( 'ID tidak sah!' ) . back(),
         <main>
 
             <div class="kemaskini-form">
+                <h2>Kemaskini Maklumat Guru</h2>
                 <form action="" method="post">
                     <input type="hidden" name="id" value="<?=$guru['g_id']?>">
 

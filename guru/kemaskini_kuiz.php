@@ -131,6 +131,8 @@ _assert( isAdmin() || $kuiz['kz_guru'] == $_SESSION['id'], alert( 'Akses tanpa k
         <main>
 
             <div class="kemaskini-kuiz-form">
+                <h2>Kemaskini Kuiz</h2>
+
                 <form action="" method="post" enctype="multipart/form-data" style="width: 70%;">
                     <div class="maklumat-kuiz">
                         <h3>Maklumat kuiz</h3>
