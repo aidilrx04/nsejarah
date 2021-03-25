@@ -5,7 +5,7 @@
 
 require '../php/conn.php';
 
-isAdmin( 'Akses tanpa kebenaran!' );
+accessAdmin( 'Akses tanpa kebenaran!' );
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'kemaskini_tingkatan' )
 {
@@ -141,6 +141,8 @@ function updateTingkatan( int $id_ting,
                 </form>
             </div>
         </main>
+
+        <?php require '../footer.php';?>
     </div>
 </body>
 </html>
