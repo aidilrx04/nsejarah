@@ -62,7 +62,7 @@ $kuiz_list = getKuizByTing( $ting['kt_id'] );
 
                         <td>
                             <?php
-                            $skor = getSkorMuridByKuiz( $murid['m_id'], $kuiz['kz_id'] );
+                            $skor = getSkorByMurid( $murid['m_id'], $kuiz['kz_id'] );
                             /**
                              * p = ( n/t ) * 100
                              */

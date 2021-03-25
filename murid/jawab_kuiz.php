@@ -49,7 +49,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'submit_jawapan'
 _assert( isset( $_GET['id_kuiz'] ) && !empty( $_GET['id_kuiz'] ), alert( 'Sila masukkan ID Kuiz' ) . back(), 1 );
 
 // jika murid sudah jawab, pindah lokasi ke jawab_semak.php
-_assert( !( $sm = getSkorMuridByKuiz( $_SESSION['id'], $_GET['id_kuiz'] ) ), redirect( "jawab_semak.php?id_skor=" . ($sm ? $sm['sm_id'] : "") ), 1 );
+_assert( !( $sm = getSkorByMurid( $_SESSION['id'], $_GET['id_kuiz'] ) ), redirect( "jawab_semak.php?id_skor=" . ($sm ? $sm['sm_id'] : "") ), 1 );
 // var_dump( getSkorMuridByKuiz( $_SESSION['id'], $_GET['id_kuiz']) );
 
 $murid = getMuridById( $_SESSION['id'] );
