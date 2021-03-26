@@ -4,11 +4,11 @@ require '../php/conn.php';
 
 accessMurid( 'Akses tanpa kebenaran!' );
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'submit_jawapan' )
+if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit_form'] == 'submit_jawapan' )
 {
 
     # Jika murid sudah menjawab, paparan ralat akan dikeluarkan
-    _assert( ( $sm =  getSkorByMurid( $_SESSION['id'], $_POST['kuiz']['id'] ) ), alert( 'Anda telah menjawab kuiz. Tidak boleh mencuba lagi!' ), 0 );
+    _assert( !( $sm =  getSkorByMurid( $_SESSION['id'], $_POST['kuiz']['id'] ) ), alert( 'Anda telah menjawab kuiz. Tidak boleh mencuba lagi!' ), 0 );
 
     // var_dump( $sm );
 
@@ -22,13 +22,17 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'submit_jawapan'
     $jumlah = count( $soalan_list );
     $bil_berjaya = 0;
 
+
     foreach( $soalan_list as $iid=>$soalan )
     {
 
-        if( $betul = registerJawapanMurid( $_SESSION['id'], $soalan['id'], $soalan['j'] ) )
+        $id_soalan = $soalan['id'];
+        $jawapan_murid = isset( $soalan['j'] ) ? $soalan['j'] : NULL;
+
+        if( $berjaya = registerJawapanMurid( $_SESSION['id'], $id_soalan, $jawapan_murid ) )
         {
 
-            if( $betul ) $bil_berjaya++;
+            if( $berjaya ) $bil_berjaya++;
 
         }
 
@@ -110,7 +114,7 @@ $mula = isset( $_GET['m'] ) ? $_GET['m'] : 0;
 
         <main>
 
-            <h2><?=$kuiz['kz_nama']?></h2>
+            <h2><?=$kuiz['kz_nama']?> <span style="float: right;">Masa: <span id="masa"><?=$kuiz['kz_masa'] ? $kuiz['kz_masa'] . 'minit' : 'Tiada'?></span></span></h2>
         
             <?php
             if( !$mula )
@@ -163,7 +167,7 @@ $mula = isset( $_GET['m'] ) ? $_GET['m'] : 0;
 
                             ?>
                             <label for="<?=$jawapan_id?>" class="input-container">
-                                <input type="radio" name="s[<?=$soalan_id?>][j]" value="<?=$jawapan['j_id']?>" id="<?=$jawapan_id?>" required>
+                                <input type="radio" name="s[<?=$soalan_id?>][j]" value="<?=$jawapan['j_id']?>" id="<?=$jawapan_id?>">
                                 <span>
                                     <?=$jawapan['j_teks']?>
                                 </span>
@@ -182,7 +186,7 @@ $mula = isset( $_GET['m'] ) ? $_GET['m'] : 0;
                     }
                     ?>
                 
-                    <button type="submit" name="submit" value="submit_jawapan">Hantar</button>
+                    <button type="submit" name="submit_form" value="submit_jawapan">Hantar</button>
                 
                 </form>
 
@@ -192,6 +196,29 @@ $mula = isset( $_GET['m'] ) ? $_GET['m'] : 0;
                 ?>
                 <script>
                 const form = document.querySelector( "#jawab-form" );
+                const submitBtn = form.querySelector( 'button[type="submit"]' );
+                const masa_minit = parseInt( <?=$kuiz['kz_masa']?> );
+
+                const submitForm = setTimeout( function() { submitBtn.click(); }, masa_minit * 60 * 1000 );
+
+                function countTimer( masa, elem )
+                {
+
+                    var jum_masa = masa * 60;
+
+                    setInterval( function()
+                    {
+                        const minit = parseInt( jum_masa / 60 );
+                        const saat = jum_masa % 60;
+
+                        elem.innerHTML = `<b>${minit} minit ${saat} saat</b>`;
+                        // console.log( elem.innerHTML );
+                        jum_masa--;
+
+                    }, 1000 );
+
+                }
+                countTimer( masa_minit, document.querySelector( '#masa' ) );
 
                 </script>
                 <?php

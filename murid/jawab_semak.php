@@ -93,7 +93,7 @@ foreach( $jawapan_murid_raw as $j )
                     $jawapan_betul = getJawapanToSoalan( $soalan['s_id'] )['sj_jawapan'];
 
                 ?>
-                <div class="soalan" style="background-color: <?=$jawapan_soalan == $jawapan_betul ? "#00ff0066" : "#ff000066"?>" >
+                <div class="soalan" style="background-color: <?=$jawapan_soalan == NULL ? "#FFFF0066" : ( $jawapan_soalan == $jawapan_betul ? "#00ff0066" : "#ff000066" )?>" >
                     <p>
                     <b><?=++$bil?>. </b>
 

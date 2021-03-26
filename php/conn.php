@@ -1334,6 +1334,9 @@ function isJawapanToSoalan( $id_jawapan, $id_soalan )
 {
 
     global $conn;
+
+    if( $id_jawapan == NULL ) return NULL;
+
     $query = "SELECT * FROM soalan_jawapan WHERE sj_soalan = ? AND sj_jawapan = ? LIMIT 1";
 
     if( $stmt = $conn->prepare( $query ) ) 

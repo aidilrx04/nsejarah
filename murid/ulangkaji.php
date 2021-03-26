@@ -112,6 +112,8 @@ $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
                             <br>
 
                             <b>Jawapan anda: </b><?php
+
+                            
                             
                             $jawapan_murid = array_filter( getJawapanMurid( $murid['m_id'], $kuiz['kz_id'] ), function( $j ) 
                             {
@@ -119,11 +121,21 @@ $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
                                 return $j['jm_soalan'] == $soalan['s_id'] && $j['jm_murid'] == $murid['m_id'];
                             } );
 
-                            foreach( $jawapan_murid as $j ) echo getJawapanById( $j['jm_jawapan'] )['j_teks'];
+                            $jm = $jawapan_murid[array_key_first( $jawapan_murid )];
+
+                            if( $jm['jm_jawapan'] == NULL ) echo 'Tidak dijawab';
+
+                            // foreach( $jawapan_murid as $j ) echo getJawapanById( $j['jm_jawapan'] )['j_teks'];
+                            else echo getJawapanById( $jm['jm_jawapan'] )['j_teks'];
+
+                            
+                            $jm_status = $jm['jm_status'];
+
+                            $status = $jm_status === NULL ? "Tidak Dijawab" : ( $jm_status == 1 ? "BETUL <b style=\"color: green\">&check;</b>" : "SALAH <b style=\"color: red;\">&times;</b>" );
                             ?>
                             <br>
 
-                            <b>Status: </b><?php foreach( $jawapan_murid as $j ) echo $j['jm_status'] ? "BETUL <b style=\"color: green\">&check;</b>" : "SALAH <b style=\"color: red;\">&times;</b>"?>
+                            <b>Status: </b><?=$status?>
 
                         </div>
 
