@@ -62,20 +62,22 @@ $kuiz_list = getKuizByTing( $ting['kt_id'] );
 
                         <td>
                             <?php
-                            $skor = getSkorByMurid( $murid['m_id'], $kuiz['kz_id'] );
+                            // $skor = getSkorByMurid( $murid['m_id'], $kuiz['kz_id'] );
+                            $jawapan_murid = getJawapanMurid( $murid['m_id'], $kuiz['kz_id'] );
+                            $skor = $jawapan_murid ? countSkorMurid( $jawapan_murid ) : false;
                             /**
                              * p = ( n/t ) * 100
                              */
                             ?>
-                            <?=$skor ? (round( $skor['sm_skor'] / 100 * count( $soalan_list ) ) ) : 0 ?>
+                            <?=$skor ? $skor['betul'] : 0 ?>
                             /
                             <?=count( $soalan_list )?>
                         </td>
 
-                        <td><?=$skor ? $skor['sm_skor'] : 0?>%</td>
+                        <td><?=$skor ? $skor['peratus'] : 0?>%</td>
 
                         <td>
-                            <?=!$skor ? "<a href=\"jawab_kuiz.php?id_kuiz={$kuiz['kz_id']}\">Pilih</a>" : "<a href=\"ulangkaji.php?id_skor={$skor['sm_id']}\">Ulangkaji</a>"?>
+                            <?=!$skor ? "<a href=\"jawab_kuiz.php?id_kuiz={$kuiz['kz_id']}\">Pilih</a>" : "<a href=\"ulangkaji.php?id_murid={$murid['m_id']}&id_kuiz={$kuiz['kz_id']}\">Ulangkaji</a>"?>
                         </td>
                     </tr>
                     <?php

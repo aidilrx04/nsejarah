@@ -6,15 +6,18 @@ require '../php/conn.php';
 // accessMurid( 'Akses tanpa kebenaran' );
 
 // check jika parameter id_skor wujud
-_assert( isset( $_GET['id_skor'] ) && !empty( $_GET['id_skor'] ), alert( 'Sila masukkan ID Skor' ) . back(), 1 );
+_assert( isset( $_GET['id_murid'] ), alert( 'Sila masukkan ID Murid' ) . back(), 1 );
+_assert( $murid = getMuridById( $_GET['id_murid'] ), alert( 'ID Murid tidak Sah!' ) . back(), 1 );
 
-_assert( $skor_murid = getSkorMurid( $_GET['id_skor'] ), alert( 'ID Skor tidak sah!' ) . back(), 1 );
+_assert( isset( $_GET['id_kuiz'] ), alert( 'Sila masukkan ID Kuiz' ) . back(), 1 );
+_assert( $kuiz  = getKuizById( $_GET['id_kuiz'] ), alert( 'ID Kuiz tidak Sah!' ) . back() );
 
-$murid = getMuridById( $skor_murid['sm_murid'] );
-$kuiz  = getKuizById( $skor_murid['sm_kuiz'] );
-$skor  = $skor_murid['sm_skor'];
+_assert( $jm = getJawapanMurid( $murid['m_id'], $kuiz['kz_id'] ), alert( 'Murid belum menjawab kuiz ini!' ) . back(), 1 );
+
+
+$skor = countSkorMurid( $jm );
 $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
-$jawapan_murid_raw = getJawapanMurid( $murid['m_id'], $kuiz['kz_id'] );
+$jawapan_murid_raw = $jm;
 $jawapan_murid = [];
 
 
@@ -75,9 +78,9 @@ foreach( $jawapan_murid_raw as $j )
         <main>
             <div id="keputusan">
                 <h2>Keputusan</h2>
-                Jumlah markah: <?=round( $skor/100 * count( $soalan_list ) )?> / <?=count( $soalan_list )?>
+                Jumlah markah: <?=$skor['betul']?> / <?=count( $soalan_list )?>
                 <br>
-                Peratus: <?=$skor?>%
+                Peratus: <?=$skor['peratus']?>%
                 <hr>
 
             </div>
