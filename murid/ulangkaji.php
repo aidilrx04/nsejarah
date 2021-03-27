@@ -9,12 +9,16 @@ require '../php/conn.php';
 // public view ?
 // accessMurid( 'Akses tanpa kebenaran!' );
 
-_assert( isset( $_GET['id_skor'] ), alert( 'Sila masukkan ID Skor' ) . back(), 1 );
+_assert( isset( $_GET['id_murid'] ) && isset( $_GET['id_kuiz'] ), alert( 'Sila masukkan ID Murid dan ID Kuiz' ) . back(), 1 );
 
-_assert( $skor_murid = getSkorMurid( $_GET['id_skor'] ), alert( 'ID Skor tidak sah!' ) . back(), 1);
+// _assert( $skor_murid = getSkorMurid( $_GET['id_skor'] ), alert( 'ID Skor tidak sah!' ) . back(), 1);
 
-$kuiz = getKuizById( $skor_murid['sm_kuiz'] );
-$murid = getMuridById( $skor_murid['sm_murid'] );
+$kuiz = getKuizById( $_GET['id_kuiz'] );
+$murid = getMuridById( $_GET['id_murid'] );
+
+_assert( $jm = getJawapanMurid( $murid['m_id'], $kuiz['kz_id'] ), alert( 'Murid tidak menjawab kuiz lagi!' ) . back(), 1 );
+
+$skor = countSkorMurid( $jm );
 $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
 ?>
 <!DOCTYPE html>
@@ -70,9 +74,9 @@ $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
                 <p>
                     <b>Nama Kuiz: </b><?=$kuiz['kz_nama']?>
                     <br>
-                    <b>Skor: </b><?=round($skor_murid['sm_skor'] / 100 * count( $soalan_list ))?> / <?=count( $soalan_list )?>
+                    <b>Skor: </b><?=$skor['betul']?> / <?=count( $soalan_list )?>
                     <br>
-                    <b>Peratus: </b><?=$skor_murid['sm_skor']?>% 
+                    <b>Peratus: </b><?=$skor['peratus']?>% 
                 </p>
 
                 <hr>
@@ -123,13 +127,13 @@ $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
 
                             $jm = $jawapan_murid[array_key_first( $jawapan_murid )];
 
-                            if( $jm['jm_jawapan'] == NULL ) echo 'Tidak dijawab';
+                            if( $jm['jm_jawapan'] === NULL ) echo 'Tidak dijawab';
 
                             // foreach( $jawapan_murid as $j ) echo getJawapanById( $j['jm_jawapan'] )['j_teks'];
                             else echo getJawapanById( $jm['jm_jawapan'] )['j_teks'];
 
                             
-                            $jm_status = $jm['jm_status'];
+                            $jm_status = $jm['jm_jawapan'] === NULL ? NULL : (bool)isJawapanToSoalan( $jm['jm_jawapan'], $soalan['s_id'] );
 
                             $status = $jm_status === NULL ? "Tidak Dijawab" : ( $jm_status == 1 ? "BETUL <b style=\"color: green\">&check;</b>" : "SALAH <b style=\"color: red;\">&times;</b>" );
                             ?>

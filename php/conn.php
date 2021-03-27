@@ -283,6 +283,52 @@ function getSkorByMurid( $id_murid, $id_kuiz )
 
 }
 
+function countSkorMurid( array $jawapan_murid )
+{
+
+    $betul = 0;
+    $salah = 0;
+    $tidak_dijawab = 0;
+    $jumlah = count( $jawapan_murid );
+    $peratus = 0;
+    
+    foreach( $jawapan_murid as $i=>$j )
+    {
+
+        $id_soalan = $j['jm_soalan'];
+        $id_jawapan = $j['jm_jawapan'];
+
+        if( $id_jawapan === NULL )
+        {
+
+            ++$tidak_dijawab;
+            continue;
+
+        }
+
+        $jawapan_betul = isJawapantoSoalan( $id_jawapan, $id_soalan );
+        
+        if( $jawapan_betul ) ++$betul;
+        else ++$salah;
+
+    }
+
+    $peratus = ( $betul / $jumlah ) * 100;
+
+    return [
+        'betul' => $betul, 
+        'salah' => $salah, 
+        'tidak_dijawab' => $tidak_dijawab, 
+        'jumlah' => $jumlah,
+        'peratus' => round( $peratus, 2 )
+    ];
+
+}
+
+// $jm = getJawapanMurid( '15', '33' );
+// $skor_murid = countSkorMurid( $jm );
+// var_dump( $skor_murid );
+
 function getJawapanMurid( $id_murid, $id_kuiz )
 {
 

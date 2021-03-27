@@ -8,28 +8,23 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit_form'] == 'submit_jaw
 {
 
     # Jika murid sudah menjawab, paparan ralat akan dikeluarkan
-    _assert( !( $sm =  getSkorByMurid( $_SESSION['id'], $_POST['kuiz']['id'] ) ), alert( 'Anda telah menjawab kuiz. Tidak boleh mencuba lagi!' ), 0 );
-
-    // var_dump( $sm );
-
-    // echo '<br>';
-
-
-    // print_r( $_POST );
+    _assert( !( $jm =  getJawapanMurid( $_SESSION['id'], $_POST['kuiz']['id'] ) ), alert( 'Anda telah menjawab kuiz. Tidak boleh mencuba lagi!' ), 0 );
 
     $kuiz = getKuizById( $_POST['kuiz']['id'] );
+    $murid = getMuridById( $_SESSION['id'] );
     $soalan_list = $_POST['s'];
     $jumlah = count( $soalan_list );
     $bil_berjaya = 0;
 
 
+    $conn->begin_transaction();
     foreach( $soalan_list as $iid=>$soalan )
     {
 
         $id_soalan = $soalan['id'];
         $jawapan_murid = isset( $soalan['j'] ) ? $soalan['j'] : NULL;
 
-        if( $berjaya = registerJawapanMurid( $_SESSION['id'], $id_soalan, $jawapan_murid ) )
+        if( $berjaya = registerJawapanMurid( $murid['m_id'], $id_soalan, $jawapan_murid ) )
         {
 
             if( $berjaya ) $bil_berjaya++;
@@ -40,24 +35,36 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit_form'] == 'submit_jaw
 
     // register skor_murid
     $skor = ( $bil_berjaya / $jumlah ) * 100;
-    if( $id_skor = registerSkorMurid( $_SESSION['id'], $kuiz['kz_id'], $skor ) )
+    if( $id_skor = registerSkorMurid( $murid['m_id'], $kuiz['kz_id'], $skor ) )
     {
 
-        echo alert( 'Jawapan berjaya dimuatnaik!' ) . redirect( "jawab_semak.php?id_skor={$id_skor}" );
+        echo alert( 'Jawapan berjaya dimuatnaik!' ) . redirect( "jawab_semak.php?id_murid={$murid['id']}&id_kuiz={$kuiz['kz_id']}" );
+
+        // simpan semua executed query ke dalam database
+        $conn->commit();
 
     }
-    else die( alert( 'Jawapan gagal dimuatnaik!' ) . back() );
+    else
+    {
+
+        //reset semula semua query yang telah di-execute
+        $conn->rollback();
+        die( alert( 'Jawapan gagal dimuatnaik!' ) );
+
+    }
     
 }
 
 _assert( isset( $_GET['id_kuiz'] ) && !empty( $_GET['id_kuiz'] ), alert( 'Sila masukkan ID Kuiz' ) . back(), 1 );
 
-// jika murid sudah jawab, pindah lokasi ke jawab_semak.php
-_assert( !( $sm = getSkorByMurid( $_SESSION['id'], $_GET['id_kuiz'] ) ), redirect( "jawab_semak.php?id_skor=" . ($sm ? $sm['sm_id'] : "") ), 1 );
-// var_dump( getSkorMuridByKuiz( $_SESSION['id'], $_GET['id_kuiz']) );
-
 $murid = getMuridById( $_SESSION['id'] );
 $kuiz = getKuizById( $_GET['id_kuiz'] );
+
+// jika murid sudah jawab, pindah lokasi ke jawab_semak.php
+_assert( !( $jm = getJawapanMurid( $_SESSION['id'], $_GET['id_kuiz'] ) ), redirect( "jawab_semak.php?id_murid={$murid['m_id']}&id_kuiz={$kuiz['kz_id']}" ), 1 );
+// var_dump( getSkorMuridByKuiz( $_SESSION['id'], $_GET['id_kuiz']) );
+
+
 
 
 _assert( $murid['m_kelas'] == $kuiz['kz_ting'], alert( 'Akses tanpa kebenaran!' ) . back(), 1 );
