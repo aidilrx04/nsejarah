@@ -90,27 +90,17 @@ $kelas = getKelasById( $ting['kt_kelas'] );
                         foreach( $murid_list as $murid )
                         {
 
-                            $skor_murid = getSkorByMurid( $murid['m_id'], $kuiz['kz_id'] );
-
-                            if ( $skor_murid )
-                            {
-                                // echo $kuiz['kz_id'];
-                                $jm_list = getJawapanMurid( $murid['m_id'], $skor_murid['sm_kuiz'] );
-                                $jumlah = count( $jm_list );
-                                $bil_betul = 0;
-
-                                foreach( $jm_list as $jm ) if( $jm['jm_status'] ) $bil_betul++;
-                            }
-
+                            $jawapan_murid = getJawapanMurid( $murid['m_id'], $kuiz['kz_id'] );
+                            $skor_murid = $jawapan_murid ? countSkorMurid( $jawapan_murid ) : false;
                         ?>
                         <tr>
                             <td><?=$murid['m_nama']?></td>
 
                             <td><?=$murid['m_nokp']?></td>
 
-                            <td><?=$skor_murid ? $bil_betul . '/' . $jumlah : '----'?></td>
+                            <td><?=$skor_murid ? $skor_murid['betul'] . '/' . $skor_murid['jumlah'] : '----'?></td>
                             
-                            <td><?=$skor_murid ? $skor_murid['sm_skor'] . '%' : 'Belum dijawab'?></td>
+                            <td><?=$skor_murid ? $skor_murid['peratus'] . '%' : 'Belum dijawab'?></td>
                         </tr>
                         <?php
 
