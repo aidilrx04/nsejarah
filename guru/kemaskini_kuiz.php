@@ -23,7 +23,20 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
         $update = $soalan['u'];
         $baru = isset( $soalan['b'] ) ? $soalan['b'] : [];
         $padam = isset( $soalan['d'] ) ? $soalan['d'] : [];
+        $padam_gambar = isset( $soalan['dg'] ) ? $soalan['dg'] : [];
         // print_r( $_POST );
+
+        //padam gambar terlebih dahulu
+        //kerana gambar akan dikemaskini(masuk baru)
+        //selepas foreach ini
+        foreach( $padam_gambar as $pg )
+        {
+
+            $soalan = getSoalanById( $pg );
+
+            deleteImage( $soalan['s_id'] );
+            removeImage( $soalan['s_gambar'] );
+        }
 
         foreach( $update as $uid=>$us )
         {
@@ -35,8 +48,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
             $jawapan_list = $us['j'];
             
 
-            if( $uid_soalan = updateSoalan( $sId, $sTeks, $sImage ) )
+            if( $uid_soalan = updateSoalan( $sId, $sTeks ) )
             {
+
+                //update image
+                removeImage( getSoalanById( $sId )['s_gambar'] );
+                updateImage( $sId, $sImage );
 
                 foreach( $jawapan_list as $jawapan )
                 {
@@ -110,6 +127,106 @@ _assert( $kuiz = getKuizById( $_GET['id_kuiz'] ), alert( 'ID Kuiz tidak sah!' ) 
 # halang daripada guru lain mengubah isi kandungan kuiz ini tanpa kebenaran guru pencipta
 # admin automatik mendapat kebenaran mengubah :)
 _assert( isAdmin() || $kuiz['kz_guru'] == $_SESSION['id'], alert( 'Akses tanpa kebenaran!' ) .back(), 1 );
+
+
+/**
+ * Data soalan berdasarkan ID
+ * @param int $id_soalan ID Soalan
+ * @return array|bool Data Soalan
+ */
+function getSoalanById( int $id_soalan )
+{
+
+    global $conn;
+    $query = "SELECT * FROM soalan WHERE s_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_soalan );
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if( $res->num_rows > 0  ) return $res->fetch_assoc();
+
+    }
+    return false;
+
+}
+
+/**
+ * Kemaskini Gambar Sesuatu Soalan
+ * @param int $id_soalan ID Soalan
+ * @param resource $image Gambar hendak dikemaskini
+ * @return bool TRUE jika berjaya, FALSE sebaliknya
+ */
+function updateImage( $id_soalan, $image )
+{
+
+    global $conn;
+    $gambar_url = uploadImage( $image );
+    $query = "UPDATE soalan SET s_gambar = ? WHERE s_id = ?";
+
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 'ss', $gambar_url, $id_soalan );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return true;
+
+    }
+
+    return false;
+
+}
+
+/**
+ * Padam data gambar sesuatu soalan
+ * @param int $id_soalan ID Soalan
+ * @return bool TRUE jika berjaya, FALSE sebaliknya
+ */
+function deleteImage( $id_soalan )
+{
+
+    global $conn;
+    $query = "UPDATE soalan SET s_gambar = NULL WHERE s_id = ?";
+    
+    if( $stmt = $conn->prepare( $query ) )
+    {
+
+        $stmt->bind_param( 's', $id_soalan );
+        $stmt->execute();
+        $stmt->store_result();
+
+        if( $stmt && !$stmt->errno ) return true;
+
+    }
+
+    return false;
+
+}
+
+/**
+ * Padam data gambar dari server
+ * @param string $path Lokasi serta nama gambar
+ * @return bool TRUE jika berjaya, FALSE sebaliknya.
+ */
+function removeImage( $path )
+{
+
+    $path2check = '/images/';
+    $path_gambar = substr( $path, 0, strlen( $path2check ) ) === $path2check ? '..' . $path : '';
+
+    $dirpath = dirname( $path_gambar );
+    $exist = file_exists( $path_gambar );
+    $isReal = realpath( $dirpath );
+
+    if( $exist && $isReal ) return unlink( $path_gambar );
+    return false;
+
+}
 
 
 ?>
@@ -201,6 +318,22 @@ _assert( isAdmin() || $kuiz['kz_guru'] == $_SESSION['id'], alert( 'Akses tanpa k
                                     <input type="text" name="s[u][<?=$idSoalan?>][teks]" value="<?=$soalan['s_teks']?>" class="input-field">
                                 </label>
 
+                                <?php
+                                //papar gambar jika ada
+                                if( isset( $soalan['s_gambar'] ) && $gambar = $soalan['s_gambar'] )
+                                {
+
+                                ?>
+                                <div style="padding:10px; background-color: #ddd;display:flex;justify-content:left;" class="gambar-container">
+                                    <img style="max-width: 300px;" src="<?=$gambar?>" alt="<?=$gambar?>">
+
+                                    <button type="button" style="margin: 0 10px;" class="padam-gambar" data-padam-gambar="<?=$soalan['s_id']?>"> <b>&minus;</b> Padam Gambar</button>
+                                </div>
+                                <?php
+
+                                }
+                                ?>
+
                                 <label class="input-container">
                                     <input type="file" name="<?=$idSoalan?>" id="">
 
@@ -245,6 +378,7 @@ _assert( isAdmin() || $kuiz['kz_guru'] == $_SESSION['id'], alert( 'Akses tanpa k
                         </div>
 
                         <div id="soalan-padam"></div>
+                        <div id="gambar-padam"></div>
 
                         <button id="tambah-soalan" class="btn btn-success" type="button" style="background: blue; color: white;">
                             <i class="fas fa-plus"></i>
@@ -295,6 +429,37 @@ _assert( isAdmin() || $kuiz['kz_guru'] == $_SESSION['id'], alert( 'Akses tanpa k
                                 } )
                                 .appendTo( deleteContainer );
                 
+                container.remove();
+
+            } );
+
+        }
+
+        //padam gambar
+        const deleteImageBtns = $( '.padam-gambar' );
+        const deleteImageContainer = $( '#gambar-padam' );
+
+        for( let i = 0; i < deleteImageBtns.length; i++ )
+        {
+
+            const btn = $( deleteImageBtns[i] );
+
+            btn.click( function()
+            {
+                
+                const btn = $( this );
+                const idSoalan = btn.attr( 'data-padam-gambar' );
+                const container = btn.closest( '.gambar-container' );
+                console.log( container );
+
+                const deleteElem = $( document.createElement( 'input' ) )
+                                   .attr({
+                                       type: 'hidden',
+                                       name: `s[dg][]`,
+                                       value: `${idSoalan}`
+                                   })
+                                   .appendTo( deleteImageContainer );
+
                 container.remove();
 
             } );

@@ -101,7 +101,7 @@ body {
 .container main [class$=-form] form [name=submit] {
   margin-top: 10px;
 }
-.container main [class$=-form] form .delete-exist {
+.container main [class$=-form] form .delete-exist, .container main [class$=-form] form .padam-gambar {
   cursor: pointer;
   background: red;
   color: white;

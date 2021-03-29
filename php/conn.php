@@ -1054,17 +1054,17 @@ function updateKuiz( $id_kuiz, $nama, $tarikh, $jenis, $masa )
 
 }
 
-function updateSoalan( $id_soalan, $teks, $gambar )
+function updateSoalan( $id_soalan, $teks )
 {
 
     global $conn;
-    $gambar_url = $gambar ? uploadImage( $gambar ) : NULL;
-    $query = "UPDATE soalan SET s_teks = ?, s_gambar = ? WHERE s_id = ?";
+    // $gambar_url = $gambar ? uploadImage( $gambar ) : NULL;
+    $query = "UPDATE soalan SET s_teks = ? WHERE s_id = ?";
 
     if( $stmt = $conn->prepare( $query ) )
     {
 
-        $stmt->bind_param( 'sss', $teks, $gambar_url, $id_soalan );
+        $stmt->bind_param( 'ss', $teks, $id_soalan );
         $stmt->execute();
         $stmt->store_result();
 
