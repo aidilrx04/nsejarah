@@ -43,7 +43,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
 
             $sId = $us['id'];
             $sTeks = $us['teks'];
-            $sImage = $_FILES[$uid];
+            $sImage = $_FILES[$uid]['size'] > 0 ? $_FILES[$uid] : NULL;
             $jBetul = $us['jBetul'];
             $jawapan_list = $us['j'];
             
@@ -52,8 +52,13 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
             {
 
                 //update image
-                removeImage( getSoalanById( $sId )['s_gambar'] );
-                updateImage( $sId, $sImage );
+                if( $sImage !== NULL )
+                {
+
+                    removeImage( getSoalanById( $sId )['s_gambar'] );
+                    updateImage( $sId, $sImage );
+
+                }
 
                 foreach( $jawapan_list as $jawapan )
                 {
