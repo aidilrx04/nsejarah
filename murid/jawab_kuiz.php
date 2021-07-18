@@ -83,7 +83,7 @@ $mula = isset( $_GET['m'] ) ? $_GET['m'] : 0;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><?=$kuiz['kz_nama']?> | Nsejarah</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
     <style>
         /** Custom style */
         .soalan

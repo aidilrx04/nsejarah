@@ -9,4 +9,4 @@ session_unset();
 session_destroy();
 
 # redirect
-header('Location: /');
+header('Location: ./');

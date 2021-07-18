@@ -39,7 +39,7 @@ _assert( $guru = getGuru( $_GET['id_guru'] ), alert( 'ID tidak sah!' ) . back(),
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Kemaskini Guru</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
 

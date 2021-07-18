@@ -31,7 +31,7 @@ $kelas = getKelasById( $ting['kt_kelas'] );
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Analisis</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
     <div class="container">

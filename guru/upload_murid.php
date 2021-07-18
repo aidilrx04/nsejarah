@@ -66,7 +66,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'upload_murid' )
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Upload Data Murid</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
     <div class="container">
@@ -87,7 +87,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'upload_murid' )
                 <p style="white-space: pre-wrap;">
 Untuk memuat naik data murid, pastikan anda
 menggunakan template yang telah disediakan.
-Muat turun <a href="/guru/data_murid.csv">di sini</a>.
+Muat turun <a href="../guru/data_murid.csv">di sini</a>.
 </p>
             </div>
         </main>

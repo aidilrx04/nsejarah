@@ -209,7 +209,7 @@ function isMurid()
 
 }
 
-function accessMurid( $err_msg = '', $reroute = '/' )
+function accessMurid( $err_msg = '', $reroute = '../' )
 {
 
     if( !( isMurid() ) ) 
@@ -610,7 +610,7 @@ function isAdmin()
  * @param string $reroute Lokasi hendak ditukar
  * @return bool True jika akses adalah guru/admin
  */
-function accessGuru( $err_msg = '', $reroute = '/' )
+function accessGuru( $err_msg = '', $reroute = '../' )
 {
 
     if( !( isGuru() || isAdmin() ) ) 
@@ -627,7 +627,7 @@ function accessGuru( $err_msg = '', $reroute = '/' )
  * @param string $reroute Lokasi hendak ditukar
  * @return bool True jika akses adalah admin
  */
-function accessAdmin( $err_msg = '', $reroute = '/' )
+function accessAdmin( $err_msg = '', $reroute = '../' )
 {
 
     if( !( isAdmin() ) ) 
@@ -925,7 +925,7 @@ function registerSoalan( int $kuiz, string $teks, $image )
 {
 
     global $conn;
-    $img_url = $image ? uploadImage( $image ) : NULL;
+    $img_url = $image ? uploadImage( $image, '../images/' ) : NULL;
     $query = "INSERT INTO soalan(s_kuiz, s_teks, s_gambar) VALUE (?,?,?)";
 
     if( $stmt = $conn->prepare( $query ) )
@@ -1001,7 +1001,7 @@ function registerSoalanJawapan( $soalan, $jawapan )
  * @param string $path Lokasi simpanan gambar
  * @return string|null URL gambar
  */
-function uploadImage( $img, $path = '/images/' )
+function uploadImage( $img, $path = '../images/' )
 {
 
     global $root;
@@ -1023,7 +1023,7 @@ function uploadImage( $img, $path = '/images/' )
     if( move_uploaded_file( $tmp, $target_file ) )
     {
 
-        $url = '/images/' . $ufilename;
+        $url = $path . $ufilename;
 
         return $url;
 

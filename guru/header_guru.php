@@ -39,7 +39,7 @@
             </span>
         </li>
         <li>
-            <a href="/guru">Laman Utama</a>
+            <a href="../guru">Laman Utama</a>
         </li>
         <?php if( isAdmin() ) {?>
 
@@ -67,7 +67,7 @@
         </li>
 
         <li>
-            <a href="/logout.php">Logout</a>
+            <a href="../logout.php">Logout</a>
         </li>
     </ul>
 </div>

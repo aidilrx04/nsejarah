@@ -42,7 +42,7 @@ _assert( $murid = getMuridById( $_GET['id_murid'] ), alert( 'ID Murid tidak sah!
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Kemaskini Murid</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
     <div class="container">

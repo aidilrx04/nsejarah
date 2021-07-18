@@ -221,7 +221,7 @@ function deleteImage( $id_soalan )
 function removeImage( $path )
 {
 
-    $path2check = '/images/';
+    $path2check = '../images/';
     $path_gambar = substr( $path, 0, strlen( $path2check ) ) === $path2check ? '..' . $path : '';
 
     $dirpath = dirname( $path_gambar );
@@ -242,7 +242,7 @@ function removeImage( $path )
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Kemaskini kuiz</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
     <div class="container">

@@ -77,7 +77,7 @@ function updateTingkatan( int $id_ting,
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Kemaskini Tingkatan | NSejarah</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
     <div class="container">

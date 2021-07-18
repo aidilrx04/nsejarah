@@ -66,7 +66,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
         if( $status_login )
         {
 
-            $redirect = $jenis == 'murid' ? '/murid/pilih_latihan.php' : '/guru/';
+            $redirect = $jenis == 'murid' ? './murid/pilih_latihan.php' : './guru/';
             echo redirect( $redirect );
 
         }
@@ -89,7 +89,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' )
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>NSejarah</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="./base.css">
 </head>
 
 <body>

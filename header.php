@@ -4,7 +4,9 @@
     <hr>
 
     <?php if( isset( $_SESSION['jenis'] ) && $jenis = $_SESSION['jenis'] ) {?>
-    <span class="nama"><b>Nama <?=$_SESSION['jenis'] == 'murid' ? "Murid" : "Guru"?>: </b> <?=$_SESSION['nama']?></span>
+    <span class="nama">
+        <b>Nama <?=$_SESSION['jenis'] == 'murid' ? "Murid" : "Guru"?>: </b> <?=$_SESSION['nama']?>
+    </span>
     <?php }?>
 
     <ul>
@@ -18,17 +20,17 @@
         </li>
         <?php if( isset( $_SESSION['jenis'] ) ) {?>
         <li>
-            <a href="/<?=$jenis == 'murid' ? 'murid/pilih_latihan.php' : 'guru/'?>">Laman Utama</a>
+            <a href="<?=$jenis == 'murid' ? '../murid/pilih_latihan.php' : '../guru/'?>">Laman Utama</a>
         </li>
         
         <li>
-            <a href="/logout.php">Logout</a>
+            <a href="../logout.php">Logout</a>
         </li>
 
         <?php } else {?>
 
         <li>
-            <a href="/">Login</a>
+            <a href="./">Login</a>
         </li>
 
         <?php }?>

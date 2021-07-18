@@ -53,7 +53,7 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Senarai Tingkatan</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
     <div class="container">

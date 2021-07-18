@@ -67,7 +67,7 @@ function updateKelas( int $id_kelas, string $n_nama )
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Kemaskini Kelas | NSejarah</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
     <div class="container">

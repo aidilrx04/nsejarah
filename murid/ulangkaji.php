@@ -28,7 +28,7 @@ $soalan_list = getSoalanByKuiz( $kuiz['kz_id'] );
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Ulangkaji</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 
     <style>
         /** Custom style */

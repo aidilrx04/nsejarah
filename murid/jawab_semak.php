@@ -38,7 +38,7 @@ foreach( $jawapan_murid_raw as $j )
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Semak Jawapan</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 
     <style>
         /** Custom style */

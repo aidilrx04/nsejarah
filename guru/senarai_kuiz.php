@@ -18,7 +18,7 @@ $kuiz_list = isAdmin() ? getKuizList( null, 10000 ) : getKuizByGuru( $_SESSION['
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Senarai Kuiz</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
     <div class="container">

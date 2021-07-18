@@ -82,7 +82,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz')
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Cipta Kuiz</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 <body>
     <div class="container">
