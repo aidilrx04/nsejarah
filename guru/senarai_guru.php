@@ -1,3 +1,4 @@
+<base href="../">
 <?php
 
 /**
@@ -6,22 +7,17 @@
 
 require '../php/conn.php';
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'daftar_guru' )
-{
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'daftar_guru') {
 
     $nokp = $_POST['nokp'];
     $nama = $_POST['nama'];
     $katalaluan = $_POST['katalaluan'];
     $jenis = $_POST['jenis'];
 
-    if( $berjaya = registerGuru( $nokp, $nama, $katalaluan, $jenis ) )
-    {
+    if ($berjaya = registerGuru($nokp, $nama, $katalaluan, $jenis)) {
 
-        echo alert( 'Data berjaya dimuatnaik!' ) . ( isset( $_GET['redir'] ) ? redirect( $_GET['redir'] ) : '' );
-
-    }
-    else die( alert( 'Data gagal dimuatnaik!' ) . back() );
-
+        echo alert('Data berjaya dimuatnaik!') . (isset($_GET['redir']) ? redirect($_GET['redir']) : '');
+    } else die(alert('Data gagal dimuatnaik!') . back());
 }
 
 # hanya benarkan admin sahaja mengakses laman ini
@@ -30,16 +26,18 @@ accessAdmin('Akses tanpa kebenaran!');
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Senarai Guru</title>
-    
-    <link rel="stylesheet" href="/base.css">
+
+    <link rel="stylesheet" href="base.css">
 </head>
+
 <body>
     <div class="container">
-        <div id="navigasi"><?php require 'header_guru.php';?></div>
+        <div id="navigasi"><?php require 'header_guru.php'; ?></div>
 
         <main>
 
@@ -51,7 +49,7 @@ accessAdmin('Akses tanpa kebenaran!');
                         <th>Nama Guru</th>
 
                         <th>No. KP</th>
-                        
+
                         <th>Katalaluan</th>
 
                         <th>Jenis</th>
@@ -93,25 +91,24 @@ accessAdmin('Akses tanpa kebenaran!');
 
                     $guru_list = getGuruList(1000);
 
-                    foreach( $guru_list as $guru )
-                    {
+                    foreach ($guru_list as $guru) {
 
                     ?>
-                    <tr>
-                        <td><?=$guru['g_nama']?></td>
+                        <tr>
+                            <td><?= $guru['g_nama'] ?></td>
 
-                        <td><?=$guru['g_nokp']?></td>
+                            <td><?= $guru['g_nokp'] ?></td>
 
-                        <td><?=$guru['g_katalaluan']?></td>
+                            <td><?= $guru['g_katalaluan'] ?></td>
 
-                        <td><?=$guru['g_jenis']?></td>
+                            <td><?= $guru['g_jenis'] ?></td>
 
-                        <td>
-                            <a href="kemaskini_guru.php?id_guru=<?=$guru['g_id']?>&redir=senarai_guru.php" class="kemaskini">Kemaskini</a>
+                            <td>
+                                <a href="guru/kemaskini_guru.php?id_guru=<?= $guru['g_id'] ?>&redir=guru/senarai_guru.php" class="kemaskini">Kemaskini</a>
 
-                            <a href="padam.php?table=guru&col=g_id&val=<?=$guru['g_id']?>&redir=senarai_guru.php" class="padam">Padam</a>
-                        </td>
-                    </tr>
+                                <a href="guru/padam.php?table=guru&col=g_id&val=<?= $guru['g_id'] ?>&redir=guru/senarai_guru.php" class="padam">Padam</a>
+                            </td>
+                        </tr>
                     <?php
 
                     }
@@ -123,8 +120,9 @@ accessAdmin('Akses tanpa kebenaran!');
 
         </main>
 
-        <?php require '../footer.php';?>
+        <?php require '../footer.php'; ?>
 
     </div>
 </body>
+
 </html>

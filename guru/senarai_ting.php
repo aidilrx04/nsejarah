@@ -1,64 +1,55 @@
+<base href="../">
 <?php
+
 /**
  * Senarai Kelas
  */
 
 require '../php/conn.php';
 
-accessAdmin( 'Akses tanpa kebenaran!' );
+accessAdmin('Akses tanpa kebenaran!');
 
-if( $_SERVER['REQUEST_METHOD'] == "POST" )
-{
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     $jenis_submit = $_POST['submit'];
 
-    if( $jenis_submit == 'tambah_ting' )
-    {
+    if ($jenis_submit == 'tambah_ting') {
 
         $ting = $_POST['ting'];
         $kelas = $_POST['kelas'];
         $guru = $_POST['guru'];
 
-        if( registerTing( $ting, $kelas, $guru ) )
-        {
+        if (registerTing($ting, $kelas, $guru)) {
 
-            echo alert( 'Data berjaya dimuatnaik!' );
-
-        }
-        else die( alert( 'Data gagal dimuatnaik!' ) . back() ); 
-
-    }
-    else if( $jenis_submit == 'tambah_kelas' )
-    {
+            echo alert('Data berjaya dimuatnaik!');
+        } else die(alert('Data gagal dimuatnaik!') . back());
+    } else if ($jenis_submit == 'tambah_kelas') {
 
         $nama_kelas = $_POST['nama'];
 
-        if( registerKelas( $nama_kelas ) )
-        {
+        if (registerKelas($nama_kelas)) {
 
-            echo alert( 'Data berjaya dimuatnaik!' );
-
-        }
-        else die( alert( 'Data gagal dimuatnaik!' ) . back() );
-
+            echo alert('Data berjaya dimuatnaik!');
+        } else die(alert('Data gagal dimuatnaik!') . back());
     }
-
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Senarai Tingkatan</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="base.css">
 </head>
+
 <body>
     <div class="container">
         <div id="navigasi">
-            <?php require 'header_guru.php';?> 
+            <?php require 'header_guru.php'; ?>
         </div>
 
         <main>
@@ -92,11 +83,10 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
                                         <?php
                                         $kelas_list = getKelasList(-1);
 
-                                        foreach( $kelas_list as $kelas )
-                                        {
+                                        foreach ($kelas_list as $kelas) {
 
                                         ?>
-                                        <option value="<?=$kelas['k_id']?>"><?=$kelas['k_nama']?></option>
+                                            <option value="<?= $kelas['k_id'] ?>"><?= $kelas['k_nama'] ?></option>
                                         <?php
 
                                         }
@@ -109,11 +99,10 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
                                         <?php
                                         $guru_list = getGuruList();
 
-                                        foreach( $guru_list as $guru )
-                                        {
+                                        foreach ($guru_list as $guru) {
 
                                         ?>
-                                        <option value="<?=$guru['g_id']?>"><?=$guru['g_nama']?></option>
+                                            <option value="<?= $guru['g_id'] ?>"><?= $guru['g_nama'] ?></option>
                                         <?php
 
                                         }
@@ -122,36 +111,35 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
                                 </td>
 
                                 <td>
-                                        <button type="submit" name="submit" value="tambah_ting">Simpan</button>
+                                    <button type="submit" name="submit" value="tambah_ting">Simpan</button>
                                 </td>
                             </form>
                         </tr>
 
                         <?php
-                        
+
                         $ting_list = getTingList(-1);
 
-                        foreach( $ting_list as $ting )
-                        {
+                        foreach ($ting_list as $ting) {
 
-                            $kelas = getKelasById( $ting['kt_kelas'] );
-                            $guru = getGuru( $ting['kt_guru'] );
+                            $kelas = getKelasById($ting['kt_kelas']);
+                            $guru = getGuru($ting['kt_guru']);
 
                         ?>
 
-                        <tr>
-                            <td><?=$ting['kt_ting']?></td>
+                            <tr>
+                                <td><?= $ting['kt_ting'] ?></td>
 
-                            <td><?=$kelas['k_nama']?></td>
+                                <td><?= $kelas['k_nama'] ?></td>
 
-                            <td><?=$guru['g_nama']?></td>
+                                <td><?= $guru['g_nama'] ?></td>
 
-                            <td>
-                                <a href="kemaskini_ting.php?id_ting=<?=$ting['kt_id']?>&redir=senarai_ting.php" class="kemaskini">Kemaskini</a>
+                                <td>
+                                    <a href="guru/kemaskini_ting.php?id_ting=<?= $ting['kt_id'] ?>&redir=guru/senarai_ting.php" class="kemaskini">Kemaskini</a>
 
-                                <a href="padam.php?table=kelas_tingkatan&col=kt_id&val=<?=$ting['kt_id']?>&redir=senarai_ting.php" class="padam">Padam</a>
-                            </td>
-                        </tr>
+                                    <a href="guru/padam.php?table=kelas_tingkatan&col=kt_id&val=<?= $ting['kt_id'] ?>&redir=guru/senarai_ting.php" class="padam">Padam</a>
+                                </td>
+                            </tr>
 
                         <?php
 
@@ -188,21 +176,20 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
                         </tr>
 
                         <?php
-                        
+
                         $kelas_list = getKelasList(-1);
 
-                        foreach( $kelas_list as $kelas )
-                        {
+                        foreach ($kelas_list as $kelas) {
 
                         ?>
-                        <tr>
-                            <td><?=$kelas['k_nama']?></td>
+                            <tr>
+                                <td><?= $kelas['k_nama'] ?></td>
 
-                            <td>
-                                <a href="kemaskini_kelas.php?id_kelas=<?=$kelas['k_id']?>&redir=senarai_ting.php" class="kemaskini">Kemaskini</a>
-                                <a href="padam.php?table=kelas&col=k_id&val=<?=$kelas['k_id']?>&redir=senarai_ting.php" class="padam">Padam</a>
-                            </td>
-                        </tr>
+                                <td>
+                                    <a href="guru/kemaskini_kelas.php?id_kelas=<?= $kelas['k_id'] ?>&redir=guru/senarai_ting.php" class="kemaskini">Kemaskini</a>
+                                    <a href="guru/padam.php?table=kelas&col=k_id&val=<?= $kelas['k_id'] ?>&redir=guru/senarai_ting.php" class="padam">Padam</a>
+                                </td>
+                            </tr>
                         <?php
 
                         }
@@ -215,8 +202,9 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" )
 
         </main>
 
-        <?php require '../footer.php';?>
+        <?php require '../footer.php'; ?>
     </div>
 
 </body>
+
 </html>

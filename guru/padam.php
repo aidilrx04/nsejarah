@@ -1,3 +1,4 @@
+<base href="../">
 <?php
 
 /**
@@ -8,22 +9,17 @@ require '../php/conn.php';
 
 accessGuru();
 
-_assert( $table = $_GET['table'], alert( 'Sila masukkan jadual!' ) . back(), 1 );
-_assert( $col = $_GET['col'], alert( 'Sila masukkan medan!' ) . back(), 1 );
-_assert( $val = $_GET['val'], alert( 'Sila masukkan nilai!' ) . back(), 1 );
+_assert($table = $_GET['table'], alert('Sila masukkan jadual!') . back(), 1);
+_assert($col = $_GET['col'], alert('Sila masukkan medan!') . back(), 1);
+_assert($val = $_GET['val'], alert('Sila masukkan nilai!') . back(), 1);
 
 $query = "DELETE FROM {$table} WHERE {$col} = '{$val}'";
-$res = $conn->query( $query );
+$res = $conn->query($query);
 
-if( $res )
-{
+if ($res) {
 
-    echo alert( 'Data berjaya dipadam.' ) . ( isset( $_GET['redir'] ) ? redirect( $_GET['redir'] ) : back() );
+    echo alert('Data berjaya dipadam.') . (isset($_GET['redir']) ? redirect($_GET['redir']) : back());
+} else {
 
-}
-else
-{
-
-    die( alert( 'Data gagal dipadam.' ) . back() );
-
+    die(alert('Data gagal dipadam.') . back());
 }

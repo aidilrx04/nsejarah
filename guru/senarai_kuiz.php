@@ -1,3 +1,4 @@
+<base href="../">
 <?php
 
 /**
@@ -6,31 +7,33 @@
 
 require '../php/conn.php';
 
-accessGuru( 'Akses tanpa kebenaran!' );
+accessGuru('Akses tanpa kebenaran!');
 
-$kuiz_list = isAdmin() ? getKuizList( null, 10000 ) : getKuizByGuru( $_SESSION['id'] );
+$kuiz_list = isAdmin() ? getKuizList(null, 10000) : getKuizByGuru($_SESSION['id']);
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Senarai Kuiz</title>
 
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="base.css">
 </head>
+
 <body>
     <div class="container">
         <div id="navigasi">
-            <?php require 'header_guru.php';?>
+            <?php require 'header_guru.php'; ?>
         </div>
 
         <main>
 
             <h2>Senarai Kuiz</h2>
 
-            <a href="cipta_kuiz.php">Cipta kuiz baharu &plus;</a>
+            <a href="guru/cipta_kuiz.php">Cipta kuiz baharu &plus;</a>
 
             <table id="senarai-kuiz" border="1">
                 <thead>
@@ -39,7 +42,7 @@ $kuiz_list = isAdmin() ? getKuizList( null, 10000 ) : getKuizByGuru( $_SESSION['
 
                         <th>Jenis</th>
 
-                        <?=isAdmin() ? "<th>Guru</th>" : ""?>
+                        <?= isAdmin() ? "<th>Guru</th>" : "" ?>
 
                         <th>Tarikh</th>
 
@@ -51,36 +54,34 @@ $kuiz_list = isAdmin() ? getKuizList( null, 10000 ) : getKuizByGuru( $_SESSION['
 
                 <tbody>
                     <?php
-                    
-                    foreach( $kuiz_list as $kuiz )
-                    {
+
+                    foreach ($kuiz_list as $kuiz) {
 
                     ?>
-                    <tr>
-                        <td><?=$kuiz['kz_nama']?></td>
+                        <tr>
+                            <td><?= $kuiz['kz_nama'] ?></td>
 
-                        <td><?=$kuiz['kz_jenis']?></td>
+                            <td><?= $kuiz['kz_jenis'] ?></td>
 
-                        <?php
-                        if( isAdmin() )
-                        {
-                            $guru = getGuru( $kuiz['kz_guru'] );
-                            ?>
-                            <td><?=$guru['g_nama']?></td>
                             <?php
-                        }
-                        ?>
+                            if (isAdmin()) {
+                                $guru = getGuru($kuiz['kz_guru']);
+                            ?>
+                                <td><?= $guru['g_nama'] ?></td>
+                            <?php
+                            }
+                            ?>
 
-                        <td><?=$kuiz['kz_tarikh']?></td>
+                            <td><?= $kuiz['kz_tarikh'] ?></td>
 
-                        <td><?=$kuiz['kz_masa'] ? $kuiz['kz_masa'] : 'Tiada'?></td>
+                            <td><?= $kuiz['kz_masa'] ? $kuiz['kz_masa'] : 'Tiada' ?></td>
 
-                        <td>
-                            <a href="kemaskini_kuiz.php?id_kuiz=<?=$kuiz['kz_id']?>" class="kemaskini">Kemaskini</a>|
-                            <a href="padam.php?table=kuiz&col=kz_id&val=<?=$kuiz['kz_id']?>" class="padam">Padam</a>
-                        </td>
+                            <td>
+                                <a href="guru/kemaskini_kuiz.php?id_kuiz=<?= $kuiz['kz_id'] ?>&redir=guru/senarai_kuiz.php" class="kemaskini">Kemaskini</a>|
+                                <a href="guru/padam.php?table=kuiz&col=kz_id&val=<?= $kuiz['kz_id'] ?>&redir=guru/senarai_kuiz.php" class="padam">Padam</a>
+                            </td>
 
-                    </tr>
+                        </tr>
                     <?php
 
                     }
@@ -90,9 +91,10 @@ $kuiz_list = isAdmin() ? getKuizList( null, 10000 ) : getKuizByGuru( $_SESSION['
             </table>
 
         </main>
-        <?php require '../footer.php';?>
+        <?php require '../footer.php'; ?>
 
     </div>
-    
+
 </body>
+
 </html>
