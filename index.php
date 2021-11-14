@@ -3,9 +3,10 @@
 
 #start session
 session_start();
+session_regenerate_id();
 
 #conn and stuffs
-require 'php/conn.php';
+require_once 'php/conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -20,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($murid = loginMurid($nokp, $katalaluan)) {
 
-                session_regenerate_id();
                 $_SESSION['jenis'] = 'murid';
                 $_SESSION['nokp'] = $murid['m_nokp'];
                 $_SESSION['nama'] = $murid['m_nama'];
@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($guru = loginGuru($nokp, $katalaluan)) {
 
-                session_regenerate_id();
                 $_SESSION['jenis'] = $guru['g_jenis'];
                 $_SESSION['nokp'] = $guru['g_nokp'];
                 $_SESSION['nama'] = $guru['g_nama'];
@@ -72,11 +71,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
 
+
+
     <div class="container">
         <div id="navigasi">
             <?php require 'header.php' ?>
         </div>
         <main>
+
+            <!-- Page Title -->
+            <h2>Laman Utama</h2>
 
             <?php
             # papar apabila pengguna belum lagi login

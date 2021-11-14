@@ -54,9 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <main>
 
+            <h2>Senarai Tingkatan & Kelas</h2>
 
             <div id="senarai-tingkatan">
-                <h2>Senarai Tingkatan</h2>
+                <h3>Senarai Tingkatan</h3>
 
                 <table border="1">
                     <thead>
@@ -67,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                             <th>Guru</th>
 
-                            <td>Aksi</td>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
 
@@ -151,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </div>
 
             <div id="senarai-kelas">
-                <h2>Senarai Kelas</h2>
+                <h3>Senarai Kelas</h3>
 
                 <table border="1">
                     <thead>

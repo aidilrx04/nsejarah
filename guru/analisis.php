@@ -44,6 +44,9 @@ $kelas = getKelasById($ting['kt_kelas']);
         </div>
 
         <main>
+
+            <h2>Analisis Prestasi</h2>
+
             <div id="analisis">
                 <form action="" method="get">
                     <label for="tajuk" class="input-container">
@@ -67,11 +70,13 @@ $kelas = getKelasById($ting['kt_kelas']);
                     <button type="submit">Papar</button>
                 </form>
 
+                <br>
                 <hr>
+                <br>
 
-                <h3>Nama Guru: <?= $guru['g_nama'] ?></h3>
+                <div><b>Nama Guru:</b> <?= $guru['g_nama'] ?></div>
 
-                <h3>Kelas: <?= $ting['kt_ting'] ?> <?= $kelas['k_nama'] ?></h3>
+                <div><b>Kelas:</b> <?= $ting['kt_ting'] ?> <?= $kelas['k_nama'] ?></div>
 
                 <table border="1">
                     <thead>

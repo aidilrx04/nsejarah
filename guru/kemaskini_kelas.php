@@ -68,8 +68,11 @@ function updateKelas(int $id_kelas, string $n_nama)
             <?php require 'header_guru.php'; ?>
         </div>
         <main>
+
+            <h2>[&bigoplus;] Kemaskini Kelas</h2>
+
+
             <div id="kemaskini-kelas" class="kemaskini-kelas-form">
-                <h2>[&bigoplus;] Kemaskini Kelas</h2>
 
                 <form action="" method="post">
                     <input type="hidden" name="id" value="<?= $kelas['k_id'] ?>">

@@ -24,7 +24,7 @@ _assert($kuiz  = getKuizById($_GET['id_kuiz']), alert('ID Kuiz tidak Sah!') . ba
 _assert($jm = getJawapanMurid($murid['m_id'], $kuiz['kz_id']), alert('Murid belum menjawab kuiz ini!') . back(), 1);
 
 
-$skor = countSkorMurid($jm);
+$skor = countSkorMurid($jm, $kuiz['kz_id']);
 $soalan_list = getSoalanByKuiz($kuiz['kz_id']);
 $jawapan_murid_raw = $jm;
 $jawapan_murid = [];
@@ -50,7 +50,7 @@ foreach ($jawapan_murid_raw as $j) {
 
     <style>
         /** Custom style */
-        .soalan {
+        /*        .soalan {
             padding: 10px 5px;
             margin-bottom: 10px;
         }
@@ -73,7 +73,7 @@ foreach ($jawapan_murid_raw as $j) {
 
             display: block;
 
-        }
+        } */
     </style>
 </head>
 
@@ -82,64 +82,78 @@ foreach ($jawapan_murid_raw as $j) {
         <div id="navigasi"><?php require '../header.php' ?></div>
 
         <main>
+            <h2>Keputusan</h2>
+
+
             <div id="keputusan">
-                <h2>Keputusan</h2>
-                Jumlah markah: <?= $skor['betul'] ?> / <?= count($soalan_list) ?>
-                <br>
-                Peratus: <?= $skor['peratus'] ?>%
-                <hr>
 
-            </div>
+                <div class=" skor">
 
-            <div id="semak-jawapan">
-                <?php
+                    <h3>Skor</h3>
+                    <div class="informasi-kuiz">
+                        <div>
+                            <b>Jumlah markah: </b><?= $skor['betul'] ?> / <?= count($soalan_list) ?>
+                        </div>
+                        <div>
+                            <b>Peratus:</b> <?= $skor['peratus'] ?>%
 
-                foreach ($soalan_list as $bil => $soalan) {
-
-                    $jawapan_list = getJawapanBySoalan($soalan['s_id']);
-                    $jawapan_soalan = $jawapan_murid[$soalan['s_id']];
-                    $jawapan_betul = getJawapanToSoalan($soalan['s_id'])['sj_jawapan'];
-
-                ?>
-                    <div class="soalan" style="background-color: <?= $jawapan_soalan == NULL ? "#FFFF0066" : ($jawapan_soalan == $jawapan_betul ? "#00ff0066" : "#ff000066") ?>">
-                        <p>
-                            <b><?= ++$bil ?>. </b>
-
-                            <?= $soalan['s_teks'] ?>
-                            <br>
-                            <?= $soalan['s_gambar'] ? "<img src=\"{$IMAGE_DIR}{$soalan['s_gambar']}\" style=\"max-width: 300px;\">" : "" ?>
-                        </p>
-                        <div class="jawapan">
-                            <b>Jawapan</b>
-                            <br>
-                            <?php
-
-                            foreach ($jawapan_list as $jawapan) {
-                                //check samada jawapan ialah jawapan murid atau jawapan sebenar
-                                $isJawapan = isJawapanToSoalan($jawapan['j_id'], $soalan['s_id']);
-                                $jawapan_ = ($jawapan['j_id'] == $jawapan_soalan) || ($isJawapan);
-
-                            ?>
-                                <label>
-                                    <input type="checkbox" <?= $jawapan_ ? "checked" : "" ?> disabled>
-
-                                    <span style="color: <?= $isJawapan ? "green" : ($jawapan_ ? "red" : "black") ?>"><?= $jawapan['j_teks'] ?>&nbsp;<?= $isJawapan ? "&check;" : ($jawapan_ ? "&times;" : "") ?></span>
-                                </label>
-
-                                <br>
-                            <?php
-
-                            }
-                            ?>
                         </div>
                     </div>
-                <?php
+                </div>
 
-                }
+                <div id="semak-jawapan">
+                    <?php
 
-                ?>
-                <hr>
+                    foreach ($soalan_list as $bil => $soalan) {
+
+                        $jawapan_list = getJawapanBySoalan($soalan['s_id']);
+                        $jawapan_soalan = $jawapan_murid[$soalan['s_id']];
+                        $jawapan_betul = getJawapanToSoalan($soalan['s_id'])['sj_jawapan'];
+
+                    ?>
+                        <!-- style="background-color: <?= $jawapan_soalan == NULL ? "#FFFF0066" : ($jawapan_soalan == $jawapan_betul ? "#00ff0066" : "#ff000066") ?>" -->
+                        <div class="soalan <?= $jawapan_soalan === NULL ? "tidak-dijawab" : ($jawapan_soalan == $jawapan_betul ? 'betul' : 'salah') ?>">
+
+                            <div class="no-soalan">
+                                <b>Soalan: </b><?= ++$bil ?>
+                            </div>
+
+                            <div class="soalan-info">
+                                <span class="s-teks"><?= $soalan['s_teks'] ?></span>
+                                <?= $soalan['s_gambar'] ? "<img class=\"s-gambar\" src=\"{$IMAGE_DIR}{$soalan['s_gambar']}\" style=\"max-width: 300px;\">" : "" ?>
+                            </div>
+                            <div class="jawapan">
+                                <b>Jawapan</b>
+                                <br>
+                                <?php
+
+                                foreach ($jawapan_list as $jawapan) {
+                                    //check samada jawapan ialah jawapan murid atau jawapan sebenar
+                                    $isJawapan = isJawapanToSoalan($jawapan['j_id'], $soalan['s_id']);
+                                    $jawapan_ = ($jawapan['j_id'] == $jawapan_soalan) || ($isJawapan);
+
+                                ?>
+                                    <label>
+                                        <input type="checkbox" <?= $jawapan_ ? "checked" : "" ?> disabled>
+
+                                        <span style="color: <?= $isJawapan ? "green" : ($jawapan_ ? "red" : "black") ?>"><?= $jawapan['j_teks'] ?>&nbsp;<?= $isJawapan ? "&check;" : ($jawapan_ ? "&times;" : "") ?></span>
+                                    </label>
+
+                                    <br>
+                                <?php
+
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    <?php
+
+                    }
+
+                    ?>
+                </div>
             </div>
+
 
         </main>
 

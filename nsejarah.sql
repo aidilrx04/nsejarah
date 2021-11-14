@@ -260,7 +260,7 @@ INSERT INTO `soalan_jawapan` (`sj_id`, `sj_soalan`, `sj_jawapan`) VALUES
 (1, 1, 1),
 (2, 2, 5),
 (3, 3, 9),
-(4, 4, 13;
+(4, 4, 13);
 
 --
 -- Constraints for dumped tables

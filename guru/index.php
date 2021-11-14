@@ -30,6 +30,7 @@ accessGuru('Akses tanpa kebenaran!');
 
         <main>
 
+            <h2>Laman Admin</h2>
 
             <div id="maklumat-guru">
                 <?php

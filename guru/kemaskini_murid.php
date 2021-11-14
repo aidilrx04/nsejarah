@@ -49,8 +49,11 @@ _assert($murid = getMuridById($_GET['id_murid']), alert('ID Murid tidak sah!') .
         </div>
 
         <main>
+
+            <h2>Kemaskini Maklumat Murid</h2>
+
+
             <div class="kemaskini-form">
-                <h2>Kemaskini Maklumat Murid</h2>
 
                 <form action="" method="post">
                     <input type="hidden" name="id" value="<?= $murid['m_id'] ?>">

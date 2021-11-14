@@ -79,8 +79,11 @@ function updateTingkatan(
             <?php require 'header_guru.php'; ?>
         </div>
         <main>
+
+            <h2>[&bigoplus;] Kemaskini Tingkatan</h2>
+
+
             <div id="kemaskini-tingkatan" class="kemaskini-tingkatan-form">
-                <h2>[&bigoplus;] Kemaskini Tingkatan</h2>
 
                 <form action="" method="post">
                     <input type="hidden" name="id" value="<?= $ting['kt_id'] ?>">

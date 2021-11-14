@@ -79,6 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz') {
 
         <main>
 
+            <h2>Cipta Kuiz</h2>
+
             <div class="cipta-kuiz-form">
                 <form action="" method="post" enctype="multipart/form-data">
                     <div class="maklumat-kuiz">
@@ -134,7 +136,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz') {
                         </div>
                     </div>
 
-                    <hr>
 
                     <div id="soalan">
                         <h3>Soalan</h3>

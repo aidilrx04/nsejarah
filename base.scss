@@ -1,311 +1,446 @@
-*
-{
+$green: #0fc69a;
+$blue: #476bb5;
+$gray: #494748;
+$darkblue: #556b78;
+$yellow: #f8fca3;
+$red: #cb2c45;
 
+$head-pad: 10px;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    justify-content: center;
-    align-items: center;
-
 }
 
-body
-{
-    
-    background-color: grey;
-    font-family: Arial, Helvetica, sans-serif;
-
+body {
+    background-color: whitesmoke;
+    font-family: Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    // background-image: url('images/bg.png');
+    // background-size: cover;
+    overflow-x: hidden;
 }
 
-.container
-{
-
+.container {
     width: 1150px;
-    height: 550px;
+    height: 650px;
     max-width: 100%;
     max-height: 90%;
     margin: 0 auto;
     margin-top: 20px;
-    background-color: #eee;
     display: flex;
     position: relative;
+    background-color: white;
 
-    & > *
-    {
-
-        height: 100%;
-
-    }
-    
-
-    #navigasi
-    {
-
-        flex: 2.5;
+    #navigasi {
+        min-width: 20%;
         overflow-y: auto;
-        padding: 10px;
-        
-        #nav
-        {
+        background-color: darken($darkblue, 10);
 
-            h1
-            {
-
-                text-align: center;
-                padding: 10px 0;
-
-            }
-
-            .nama
-            {
-
-                text-align: center;
-                margin-top: 20px;
-                display: block;
-                padding: 10px;
-                background-color: #ccc;
-
-            }
-
-            ul
-            {
-
-                margin-top: 20px;
-                text-align: right;
-                
-                li
-                {
-
-                    margin-bottom: 2px;
-
-                    a, .nav-link
-                    {
-
-                        display: block;
-                        padding: 10px;
-                        background-color: #ddd;
-                        color: #111;
-
-                        &.resize
-                        {
-
-                            button
-                            {
-
-                                background-color: transparent;
-                                border: 1px solid black;
-                                padding: 5px 10px;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
+        h1 {
+            padding: $head-pad 15px;
+            text-align: center;
+            color: white;
+            background-color: $blue;
         }
 
+        span.nama {
+            padding: 5px 10px;
+            display: block;
+            background-color: $darkblue;
+            color: white;
+            text-align: center;
+
+            b {
+                display: block;
+            }
+        }
+
+        ul {
+            padding: 10px 0;
+
+            li {
+                background-color: $darkblue;
+                color: white;
+
+                span.nav-link {
+                    padding: 5px 0;
+                }
+
+                span {
+                    display: block;
+                    text-align: center;
+                }
+                button {
+                    padding: 5px 15px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    background-color: $blue;
+                    color: white;
+                    border: 1px solid darken($blue, 5);
+                    border-radius: 3px;
+                    transition: background .1s;
+
+                    &:hover  {
+                        background-color: darken($blue, 10);
+                    }
+                }
+
+                a {
+                    display: block;
+                    padding: 10px;
+                    color: white;
+                    text-decoration: none;
+                    background-color: darken($darkblue, 5);
+                    border-top: 1px solid $darkblue;
+                    transition: background .1s;
+
+                    &:hover {
+                        background-color: $darkblue;
+                    }
+                }
+            }
+        }
     }
 
-    main
-    {
-        flex: 9.5;
-        padding: 10px;
+    main {
+        flex: 1;
         overflow: auto;
+        position: relative;
+
+        & > h2 {
+            padding: calc(#{$head-pad} + (.4em / 2)) 10px;
+            background-color: darken($blue, 5);
+            color: white;
+            position: sticky;
+            top: 0;
+            left: 0;
+
+             & * {
+                 color: inherit !important;
+             }
+        }
+
+        & > *:not(h2)
+        {
+            padding: 10px;
+        }
+
+        // workaround for table in senarai_guru.php
         
+
+        h3 {
+            padding: 5px 0;
+        }
+
+        b {
+            color: $gray;
+        }
+
+        a.cipta-link {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: $green;
+            text-decoration: none;
+            color: darken($green, 30);
+            border-radius: 3px;
+            transition: background .1s;
+
+            &:hover {
+                background-color: darken($green, 5);
+            }
+        }
+
+        /*INPUTS AND BTNs*/
+
+        [class$="-form"], form
+        {
+            .input-container:not(.input-containers) {
+                margin-bottom: 5px;
+                display: block;
+
+                & > span {
+                    display: block;
+                    padding: 2px 0;
+                }
+                input:not([type="radio"]):not([type="checkbox"]), select, textarea {
+                    width: 100%;
+                    padding: 10px;
+                    border-radius: 3px;
+                    border: 1px solid $gray;
+                    
+                    &:focus {
+                        outline: 2px solid $gray
+                    }
+                }
+                input[type="radio"], input[type="checkbox"] {
+                    cursor: pointer;
+                    
+                    & + span {
+                        display: inline;
+                    }
+                }
+
+                input:disabled {
+                    background-color: #21212122;
+                }
+            }
+        }
 
         button[type="submit"]
         {
-
-            padding: 10px;
-            font-weight: bold;
-            background-color: green;
+            padding: 5px 10px;
+            background-color: darken($green, 7);
             color: white;
-            border: none;
-            border-radius: 5px;
-            outline: none;
+            border: 1px solid $green;
+            border-radius: 3px;
+            font-size: 16px;
             cursor: pointer;
+            transition: background .1s;
 
+            &:hover {
+                background-color: darken($green, 10);
+            }
         }
 
-        input, select, button
-        {
-
-            padding: 7px 10px;
-            border: 1px solid grey;
-            border-radius: 5px;
-            outline: 0;
-
-        }
-
-        [class$="-form"]
-        {
-
-            form
-            {
-
-                width: 450px;
-                // margin: 10px auto;
+        table {
+            border-collapse: collapse;
+            border-color: $gray;
+            width: 100%;
+            
+            th {
                 padding: 10px;
+                background-color: rgba($darkblue, .9);
+                color: white;
+            }
+            
+            tr {
+                td {
+                        // background-color: rgba($darkblue, .05);
+                        padding: 5px 10px;
 
-                .input-container
-                {
-
-                    display: block;
-                    margin-top: 10px;
-
-                    &.no-margin
-                    {
-
-                        margin-top: 0;
-
-                    }
-
-                    span
-                    {
-
-                        font-size: 17px;
-                        font-weight: bold;
-
-                    }
-
-                    .input-field
-                    {
-
-                       width: 100%;          
-
-                    }
-
-                }
-
-                [name="submit"]
-                {
-
-                    margin-top: 10px;
-
-                }
-
-                .delete-exist, .padam-gambar
-                {
-
-                    cursor: pointer;
-                    background: red;
-                    color: white;
-
-                }
-
-                .delete-new
-                {
-
-                    background-color: rgba( 255, 0, 0, .8 );
-                    color: white;
-
-                }
-
-                .jawapan-container
-                {
-
-                    div
-                    {
-
-                        margin: 2px 10px;
-
-                        input[type="text"]
-                        {
-
-                            width: 90%;
-
+                        input, select {
+                            width: 100%;
+                            padding: 5px 10px;
+                            border-radius: 3px;
+                            border: 1px solid $gray;
                         }
 
-                    }
+                        a {
+                            &.kemaskini {
+                                color: darken($green, 4);
+                            }
 
+                            &.padam {
+                                color: $red;
+                            }
+                        }
                 }
 
-            }
-
-        }
-
-        table
-        {
-
-            width: 100%;
-            max-width: 100%;
-            border-collapse: collapse;
-           
-
-            thead 
-            {
-
-                background-color: #ddd;
-
-                th
+                &:nth-of-type(even)
                 {
-
-                    padding: 10px;
-
+                    td {
+                        background-color: rgba($darkblue, .05);
+                    }
                 }
-
             }
-
-            tbody td
-            {
-
-                padding: 3px;
-
-            }
-
-        }
-
-        h3, h2
-        {
             
-            margin: 10px 0;
-            border-bottom: 2px solid #555;
-
         }
-
-        a
-        {
-
-            &.kemaskini
-            {
-
-                font-weight: bold;
-                color: green;
-
-            }
-
-            &.padam
-            {
-
-                font-weight: bold;
-                color: red;
-
-            }
-
-        }
-    
-        hr
-        {
-
-            margin: 5px 0;
-
-        }
-
     }
 
-    footer
-    {
+    footer {
         position: absolute;
         top: 100%;
         left: 0;
         width: 100%;
-        height: auto;
-        padding: 5px;
-        background-color: inherit;
+        background-color: $blue;
+        color: white;
+        padding: 10px;
     }
+}
 
+.cipta-kuiz-form, .kemaskini-kuiz-form {
+    .maklumat-kuiz {
+        padding: 10px 0;
+        border-bottom: 3px solid $gray;
+    }
+    #soalan {
+        margin: 10px 0;
+
+        button {
+            padding: 5px 10px;
+            // font-size: 16px;
+            cursor: pointer;
+            color: white;
+            transition: background .1s;
+            border-radius: 3px;
+
+            &#tambah-soalan
+            {
+            background-color: $blue;
+            border: 2px solid $blue;
+
+                &:hover {
+                    background-color: darken($blue, 5);
+                }    
+            }
+
+            &.padam-soalan, &.delete-exist, &.padam-gambar {
+                white-space: nowrap;
+                margin: 0 5px;
+                height: max-content;
+                background-color: $red;
+                border: 2px solid $red;
+
+                &:hover {
+                    background-color: darken($red, 5);
+                }    
+            
+            }
+
+        }
+
+        .soalan {
+            border-bottom: 2px solid $gray;
+            padding: 10px 0;
+            margin-bottom: 5px;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .gambar-container {
+                margin-bottom: 5px;
+                background: rgba($gray, .1);
+                display: flex;
+                align-items: center;
+            }
+
+            .input-answers {
+                display: flex;
+                align-items: center;
+                margin: 5px 0;
+    
+    
+                input:not([type="radio"]):not([type="checkbox"]) {
+                    flex: 1;
+                }
+    
+                .jb-container {
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0 2px;
+                    border-radius: 3px;
+                    background-color: #80808044;
+                    cursor: pointer;
+    
+                    &.selected {
+                        background-color: $green;
+                    }
+    
+                    input {
+                        // visibility: hidden;
+                        opacity: .01;
+                        position: absolute;
+                    }
+                }
+    
+            }
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+#ulangkaji, #jawab-kuiz, #keputusan {
+    .skor {
+        border-bottom: 2px solid $gray;
+        padding: 10px 0;
+
+        .informasi-kuiz {
+            padding: 10px 5px;
+            background-color: rgba($darkblue, .1);
+
+            div {
+                background-color: transparent;
+                padding: 5px 0;
+            }
+        }
+    }
+    .soalan {
+        // padding: 10px 5px;
+        margin: 10px 0;
+        border-radius: 3px;
+        overflow: hidden;
+
+        background-color: rgba($blue, .1);
+
+        &.tidak-dijawab {
+            background-color: rgba($yellow, .5);
+        }
+
+        &.betul {
+            background-color: rgba($green, .2);
+        }
+
+        &.salah {
+            background-color: rgba($red, .2)
+        }
+
+        .no-soalan {
+            display: block;
+            padding: 10px 10px;
+            background-color: $blue;
+            color: white;
+
+            b {
+                color: inherit;
+            }
+        }
+
+        .soalan-info {
+            // padding: 10px 5px;
+
+            .s-teks {
+                display: block;
+                background-color: rgba(black, .5);
+                padding: 10px 10px;
+                color: white;
+
+                & * {
+                    color: inherit;
+                }
+            }
+
+            .s-gambar {
+                display: block;
+                padding: 10px;
+            }
+        }
+
+        .jawapan, .status-jawapan {
+            padding: 10px;
+            background-color: rgba(black, .01);
+            
+        }
+        
+        .jawapan {
+            li {
+                margin-left: 20px;
+            }
+
+            label {
+                cursor: pointer;
+            }
+        }
+    }
 }

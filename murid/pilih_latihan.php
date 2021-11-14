@@ -27,8 +27,10 @@ $kuiz_list = getKuizByTing($ting['kt_id']);
         <div id="navigasi"><?php require '../header.php' ?></div>
 
         <main>
+
+            <h2>Pilih Latihan</h2>
+
             <div id="pilih-latihan">
-                <h2>Pilih Latihan</h2>
 
                 <table border="1">
                     <thead>
@@ -66,7 +68,7 @@ $kuiz_list = getKuizByTing($ting['kt_id']);
                                     <?php
                                     // $skor = getSkorByMurid( $murid['m_id'], $kuiz['kz_id'] );
                                     $jawapan_murid = getJawapanMurid($murid['m_id'], $kuiz['kz_id']);
-                                    $skor = $jawapan_murid ? countSkorMurid($jawapan_murid) : false;
+                                    $skor = $jawapan_murid ? countSkorMurid($jawapan_murid, $kuiz['kz_id']) : false;
                                     /**
                                      * p = ( n/t ) * 100
                                      */

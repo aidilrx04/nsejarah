@@ -65,8 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'upload_murid') 
     <div class="container">
         <div id="navigasi"><?php require 'header_guru.php'; ?></div>
         <main>
+            <h2>[&bigoplus;] Muatnaik Data Murid</h2>
+
             <div id="upload-murid">
-                <h2>[&bigoplus;] Muatnaik Data Murid</h2>
                 <form action="" method="post" enctype="multipart/form-data">
                     <label for="data" class="input-container">
                         <span>Data murid(.csv)</span>

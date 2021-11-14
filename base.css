@@ -1,158 +1,435 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 * {
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 body {
-  background-color: grey;
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: whitesmoke;
+  font-family: Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
 }
 
 .container {
   width: 1150px;
-  height: 550px;
+  height: 650px;
   max-width: 100%;
   max-height: 90%;
   margin: 0 auto;
   margin-top: 20px;
-  background-color: #eee;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   position: relative;
+  background-color: white;
 }
-.container > * {
-  height: 100%;
-}
+
 .container #navigasi {
-  flex: 2.5;
+  min-width: 20%;
   overflow-y: auto;
-  padding: 10px;
+  background-color: #40505a;
 }
-.container #navigasi #nav h1 {
+
+.container #navigasi h1 {
+  padding: 10px 15px;
   text-align: center;
+  color: white;
+  background-color: #476bb5;
+}
+
+.container #navigasi span.nama {
+  padding: 5px 10px;
+  display: block;
+  background-color: #556b78;
+  color: white;
+  text-align: center;
+}
+
+.container #navigasi span.nama b {
+  display: block;
+}
+
+.container #navigasi ul {
   padding: 10px 0;
 }
-.container #navigasi #nav .nama {
+
+.container #navigasi ul li {
+  background-color: #556b78;
+  color: white;
+}
+
+.container #navigasi ul li span.nav-link {
+  padding: 5px 0;
+}
+
+.container #navigasi ul li span {
+  display: block;
   text-align: center;
-  margin-top: 20px;
+}
+
+.container #navigasi ul li button {
+  padding: 5px 15px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #476bb5;
+  color: white;
+  border: 1px solid #4060a3;
+  border-radius: 3px;
+  -webkit-transition: background .1s;
+  transition: background .1s;
+}
+
+.container #navigasi ul li button:hover {
+  background-color: #395590;
+}
+
+.container #navigasi ul li a {
   display: block;
   padding: 10px;
-  background-color: #ccc;
+  color: white;
+  text-decoration: none;
+  background-color: #4a5e69;
+  border-top: 1px solid #556b78;
+  -webkit-transition: background .1s;
+  transition: background .1s;
 }
-.container #navigasi #nav ul {
-  margin-top: 20px;
-  text-align: right;
+
+.container #navigasi ul li a:hover {
+  background-color: #556b78;
 }
-.container #navigasi #nav ul li {
-  margin-bottom: 2px;
+
+.container main {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow: auto;
+  position: relative;
+  /*INPUTS AND BTNs*/
 }
-.container #navigasi #nav ul li a, .container #navigasi #nav ul li .nav-link {
+
+.container main > h2 {
+  padding: calc(10px + (.4em / 2)) 10px;
+  background-color: #4060a3;
+  color: white;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+.container main > h2 * {
+  color: inherit !important;
+}
+
+.container main > *:not(h2) {
+  padding: 10px;
+}
+
+.container main h3 {
+  padding: 5px 0;
+}
+
+.container main b {
+  color: #494748;
+}
+
+.container main a.cipta-link {
   display: block;
   padding: 10px;
-  background-color: #ddd;
-  color: #111;
+  margin: 5px 0;
+  background-color: #0fc69a;
+  text-decoration: none;
+  color: #04382b;
+  border-radius: 3px;
+  -webkit-transition: background .1s;
+  transition: background .1s;
 }
-.container #navigasi #nav ul li a.resize button, .container #navigasi #nav ul li .nav-link.resize button {
-  background-color: transparent;
-  border: 1px solid black;
+
+.container main a.cipta-link:hover {
+  background-color: #0dae88;
+}
+
+.container main [class$="-form"] .input-container:not(.input-containers), .container main form .input-container:not(.input-containers) {
+  margin-bottom: 5px;
+  display: block;
+}
+
+.container main [class$="-form"] .input-container:not(.input-containers) > span, .container main form .input-container:not(.input-containers) > span {
+  display: block;
+  padding: 2px 0;
+}
+
+.container main [class$="-form"] .input-container:not(.input-containers) input:not([type="radio"]):not([type="checkbox"]), .container main [class$="-form"] .input-container:not(.input-containers) select, .container main [class$="-form"] .input-container:not(.input-containers) textarea, .container main form .input-container:not(.input-containers) input:not([type="radio"]):not([type="checkbox"]), .container main form .input-container:not(.input-containers) select, .container main form .input-container:not(.input-containers) textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 3px;
+  border: 1px solid #494748;
+}
+
+.container main [class$="-form"] .input-container:not(.input-containers) input:not([type="radio"]):not([type="checkbox"]):focus, .container main [class$="-form"] .input-container:not(.input-containers) select:focus, .container main [class$="-form"] .input-container:not(.input-containers) textarea:focus, .container main form .input-container:not(.input-containers) input:not([type="radio"]):not([type="checkbox"]):focus, .container main form .input-container:not(.input-containers) select:focus, .container main form .input-container:not(.input-containers) textarea:focus {
+  outline: 2px solid #494748;
+}
+
+.container main [class$="-form"] .input-container:not(.input-containers) input[type="radio"], .container main [class$="-form"] .input-container:not(.input-containers) input[type="checkbox"], .container main form .input-container:not(.input-containers) input[type="radio"], .container main form .input-container:not(.input-containers) input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.container main [class$="-form"] .input-container:not(.input-containers) input[type="radio"] + span, .container main [class$="-form"] .input-container:not(.input-containers) input[type="checkbox"] + span, .container main form .input-container:not(.input-containers) input[type="radio"] + span, .container main form .input-container:not(.input-containers) input[type="checkbox"] + span {
+  display: inline;
+}
+
+.container main [class$="-form"] .input-container:not(.input-containers) input:disabled, .container main form .input-container:not(.input-containers) input:disabled {
+  background-color: #21212122;
+}
+
+.container main button[type="submit"] {
+  padding: 5px 10px;
+  background-color: #0ca580;
+  color: white;
+  border: 1px solid #0fc69a;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+  -webkit-transition: background .1s;
+  transition: background .1s;
+}
+
+.container main button[type="submit"]:hover {
+  background-color: #0b9775;
+}
+
+.container main table {
+  border-collapse: collapse;
+  border-color: #494748;
+  width: 100%;
+}
+
+.container main table th {
+  padding: 10px;
+  background-color: rgba(85, 107, 120, 0.9);
+  color: white;
+}
+
+.container main table tr td {
   padding: 5px 10px;
 }
-.container main {
-  flex: 9.5;
-  padding: 10px;
-  overflow: auto;
-}
-.container main button[type=submit] {
-  padding: 10px;
-  font-weight: bold;
-  background-color: green;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  cursor: pointer;
-}
-.container main input, .container main select, .container main button {
-  padding: 7px 10px;
-  border: 1px solid grey;
-  border-radius: 5px;
-  outline: 0;
-}
-.container main [class$=-form] form {
-  width: 450px;
-  padding: 10px;
-}
-.container main [class$=-form] form .input-container {
-  display: block;
-  margin-top: 10px;
-}
-.container main [class$=-form] form .input-container.no-margin {
-  margin-top: 0;
-}
-.container main [class$=-form] form .input-container span {
-  font-size: 17px;
-  font-weight: bold;
-}
-.container main [class$=-form] form .input-container .input-field {
+
+.container main table tr td input, .container main table tr td select {
   width: 100%;
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: 1px solid #494748;
 }
-.container main [class$=-form] form [name=submit] {
-  margin-top: 10px;
+
+.container main table tr td a.kemaskini {
+  color: #0eb38b;
 }
-.container main [class$=-form] form .delete-exist, .container main [class$=-form] form .padam-gambar {
-  cursor: pointer;
-  background: red;
-  color: white;
+
+.container main table tr td a.padam {
+  color: #cb2c45;
 }
-.container main [class$=-form] form .delete-new {
-  background-color: rgba(255, 0, 0, 0.8);
-  color: white;
+
+.container main table tr:nth-of-type(even) td {
+  background-color: rgba(85, 107, 120, 0.05);
 }
-.container main [class$=-form] form .jawapan-container div {
-  margin: 2px 10px;
-}
-.container main [class$=-form] form .jawapan-container div input[type=text] {
-  width: 90%;
-}
-.container main table {
-  width: 100%;
-  max-width: 100%;
-  border-collapse: collapse;
-}
-.container main table thead {
-  background-color: #ddd;
-}
-.container main table thead th {
-  padding: 10px;
-}
-.container main table tbody td {
-  padding: 3px;
-}
-.container main h3, .container main h2 {
-  margin: 10px 0;
-  border-bottom: 2px solid #555;
-}
-.container main a.kemaskini {
-  font-weight: bold;
-  color: green;
-}
-.container main a.padam {
-  font-weight: bold;
-  color: red;
-}
-.container main hr {
-  margin: 5px 0;
-}
+
 .container footer {
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  height: auto;
-  padding: 5px;
-  background-color: inherit;
+  background-color: #476bb5;
+  color: white;
+  padding: 10px;
 }
 
+.cipta-kuiz-form .maklumat-kuiz, .kemaskini-kuiz-form .maklumat-kuiz {
+  padding: 10px 0;
+  border-bottom: 3px solid #494748;
+}
+
+.cipta-kuiz-form #soalan, .kemaskini-kuiz-form #soalan {
+  margin: 10px 0;
+}
+
+.cipta-kuiz-form #soalan button, .kemaskini-kuiz-form #soalan button {
+  padding: 5px 10px;
+  cursor: pointer;
+  color: white;
+  -webkit-transition: background .1s;
+  transition: background .1s;
+  border-radius: 3px;
+}
+
+.cipta-kuiz-form #soalan button#tambah-soalan, .kemaskini-kuiz-form #soalan button#tambah-soalan {
+  background-color: #476bb5;
+  border: 2px solid #476bb5;
+}
+
+.cipta-kuiz-form #soalan button#tambah-soalan:hover, .kemaskini-kuiz-form #soalan button#tambah-soalan:hover {
+  background-color: #4060a3;
+}
+
+.cipta-kuiz-form #soalan button.padam-soalan, .cipta-kuiz-form #soalan button.delete-exist, .cipta-kuiz-form #soalan button.padam-gambar, .kemaskini-kuiz-form #soalan button.padam-soalan, .kemaskini-kuiz-form #soalan button.delete-exist, .kemaskini-kuiz-form #soalan button.padam-gambar {
+  white-space: nowrap;
+  margin: 0 5px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  background-color: #cb2c45;
+  border: 2px solid #cb2c45;
+}
+
+.cipta-kuiz-form #soalan button.padam-soalan:hover, .cipta-kuiz-form #soalan button.delete-exist:hover, .cipta-kuiz-form #soalan button.padam-gambar:hover, .kemaskini-kuiz-form #soalan button.padam-soalan:hover, .kemaskini-kuiz-form #soalan button.delete-exist:hover, .kemaskini-kuiz-form #soalan button.padam-gambar:hover {
+  background-color: #b6273e;
+}
+
+.cipta-kuiz-form #soalan .soalan, .kemaskini-kuiz-form #soalan .soalan {
+  border-bottom: 2px solid #494748;
+  padding: 10px 0;
+  margin-bottom: 5px;
+}
+
+.cipta-kuiz-form #soalan .soalan:last-child, .kemaskini-kuiz-form #soalan .soalan:last-child {
+  border-bottom: none;
+}
+
+.cipta-kuiz-form #soalan .soalan .gambar-container, .kemaskini-kuiz-form #soalan .soalan .gambar-container {
+  margin-bottom: 5px;
+  background: rgba(73, 71, 72, 0.1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.cipta-kuiz-form #soalan .soalan .input-answers, .kemaskini-kuiz-form #soalan .soalan .input-answers {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 5px 0;
+}
+
+.cipta-kuiz-form #soalan .soalan .input-answers input:not([type="radio"]):not([type="checkbox"]), .kemaskini-kuiz-form #soalan .soalan .input-answers input:not([type="radio"]):not([type="checkbox"]) {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.cipta-kuiz-form #soalan .soalan .input-answers .jb-container, .kemaskini-kuiz-form #soalan .soalan .input-answers .jb-container {
+  width: 40px;
+  height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0 2px;
+  border-radius: 3px;
+  background-color: #80808044;
+  cursor: pointer;
+}
+
+.cipta-kuiz-form #soalan .soalan .input-answers .jb-container.selected, .kemaskini-kuiz-form #soalan .soalan .input-answers .jb-container.selected {
+  background-color: #0fc69a;
+}
+
+.cipta-kuiz-form #soalan .soalan .input-answers .jb-container input, .kemaskini-kuiz-form #soalan .soalan .input-answers .jb-container input {
+  opacity: .01;
+  position: absolute;
+}
+
+.cipta-kuiz-form #soalan .flex, .kemaskini-kuiz-form #soalan .flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#ulangkaji .skor, #jawab-kuiz .skor, #keputusan .skor {
+  border-bottom: 2px solid #494748;
+  padding: 10px 0;
+}
+
+#ulangkaji .skor .informasi-kuiz, #jawab-kuiz .skor .informasi-kuiz, #keputusan .skor .informasi-kuiz {
+  padding: 10px 5px;
+  background-color: rgba(85, 107, 120, 0.1);
+}
+
+#ulangkaji .skor .informasi-kuiz div, #jawab-kuiz .skor .informasi-kuiz div, #keputusan .skor .informasi-kuiz div {
+  background-color: transparent;
+  padding: 5px 0;
+}
+
+#ulangkaji .soalan, #jawab-kuiz .soalan, #keputusan .soalan {
+  margin: 10px 0;
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: rgba(71, 107, 181, 0.1);
+}
+
+#ulangkaji .soalan.tidak-dijawab, #jawab-kuiz .soalan.tidak-dijawab, #keputusan .soalan.tidak-dijawab {
+  background-color: rgba(248, 252, 163, 0.5);
+}
+
+#ulangkaji .soalan.betul, #jawab-kuiz .soalan.betul, #keputusan .soalan.betul {
+  background-color: rgba(15, 198, 154, 0.2);
+}
+
+#ulangkaji .soalan.salah, #jawab-kuiz .soalan.salah, #keputusan .soalan.salah {
+  background-color: rgba(203, 44, 69, 0.2);
+}
+
+#ulangkaji .soalan .no-soalan, #jawab-kuiz .soalan .no-soalan, #keputusan .soalan .no-soalan {
+  display: block;
+  padding: 10px 10px;
+  background-color: #476bb5;
+  color: white;
+}
+
+#ulangkaji .soalan .no-soalan b, #jawab-kuiz .soalan .no-soalan b, #keputusan .soalan .no-soalan b {
+  color: inherit;
+}
+
+#ulangkaji .soalan .soalan-info .s-teks, #jawab-kuiz .soalan .soalan-info .s-teks, #keputusan .soalan .soalan-info .s-teks {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 10px;
+  color: white;
+}
+
+#ulangkaji .soalan .soalan-info .s-teks *, #jawab-kuiz .soalan .soalan-info .s-teks *, #keputusan .soalan .soalan-info .s-teks * {
+  color: inherit;
+}
+
+#ulangkaji .soalan .soalan-info .s-gambar, #jawab-kuiz .soalan .soalan-info .s-gambar, #keputusan .soalan .soalan-info .s-gambar {
+  display: block;
+  padding: 10px;
+}
+
+#ulangkaji .soalan .jawapan, #ulangkaji .soalan .status-jawapan, #jawab-kuiz .soalan .jawapan, #jawab-kuiz .soalan .status-jawapan, #keputusan .soalan .jawapan, #keputusan .soalan .status-jawapan {
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+#ulangkaji .soalan .jawapan li, #jawab-kuiz .soalan .jawapan li, #keputusan .soalan .jawapan li {
+  margin-left: 20px;
+}
+
+#ulangkaji .soalan .jawapan label, #jawab-kuiz .soalan .jawapan label, #keputusan .soalan .jawapan label {
+  cursor: pointer;
+}
 /*# sourceMappingURL=base.css.map */

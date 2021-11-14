@@ -85,7 +85,7 @@ $mula = isset($_GET['m']) ? $_GET['m'] : 0;
     <link rel="stylesheet" href="base.css">
     <style>
         /** Custom style */
-        .soalan {
+        /*  .soalan {
             padding: 10px 5px;
             margin-bottom: 10px;
         }
@@ -108,7 +108,7 @@ $mula = isset($_GET['m']) ? $_GET['m'] : 0;
 
             display: block;
 
-        }
+        } */
     </style>
 </head>
 
@@ -147,13 +147,14 @@ $mula = isset($_GET['m']) ? $_GET['m'] : 0;
                         ?>
                             <div class="soalan">
                                 <input type="hidden" name="s[<?= $soalan_id ?>][id]" value="<?= $soalan['s_id'] ?>">
-                                <p>
-                                    <b><?= $bil++ ?>.</b>
-                                    <?= $soalan['s_teks'] ?>
+                                <p class="soalan-info">
+                                    <span class="s-teks">
+                                        <b><?= $bil++ ?>.</b>
+                                        <?= $soalan['s_teks'] ?>
+                                    </span>
 
-                                <div style="max-width: 300px;"><?= $soalan['s_gambar'] ? "<img style=\"max-width: 100%;\" src=\"{$IMAGE_DIR}{$soalan['s_gambar']}\">" : '' ?></div>
+                                    <?= $soalan['s_gambar'] ? "<img class=\"s-gambar\" style=\"max-width: 300px;\" src=\"{$IMAGE_DIR}{$soalan['s_gambar']}\">" : '' ?>
                                 </p>
-
                                 <div class="jawapan">
                                     <?php
                                     // randomize jawapan position
@@ -165,12 +166,14 @@ $mula = isset($_GET['m']) ? $_GET['m'] : 0;
                                         $jawapan_id = uniqid();
 
                                     ?>
-                                        <label for="<?= $jawapan_id ?>" class="input-container">
-                                            <input type="radio" name="s[<?= $soalan_id ?>][j]" value="<?= $jawapan['j_id'] ?>" id="<?= $jawapan_id ?>">
-                                            <span>
-                                                <?= $jawapan['j_teks'] ?>
-                                            </span>
-                                        </label>
+                                        <div class="input-containers flex">
+                                            <label for="<?= $jawapan_id ?>" class="input-container">
+                                                <input type="radio" name="s[<?= $soalan_id ?>][j]" value="<?= $jawapan['j_id'] ?>" id="<?= $jawapan_id ?>">
+                                                <span>
+                                                    <?= $jawapan['j_teks'] ?>
+                                                </span>
+                                            </label>
+                                        </div>
                                     <?php
 
                                     }

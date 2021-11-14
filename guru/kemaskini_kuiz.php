@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sbImage = $_FILES[$bid];
             $jBetul = $b[1];
 
-            if ($id_soalan = registerSoalan($id_kuiz, $sbTeks, $sbImage)) {
+            if ($id_soalan = registerSoalan($id_kuiz, $sbTeks, $sbImage, '/images/')) {
 
                 $jawapan_list = $b['j'];
 
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         echo alert('Kuiz berjaya dikemaskini');
         if ($redir = $_GET['redir']) {
-            echo redirect($redir);
+            //echo redirect($redir);
         }
     }
 }
@@ -221,6 +221,7 @@ function removeImage($path)
 </head>
 
 <body>
+
     <div class="container">
         <div id="navigasi">
             <?php require 'header_guru.php'; ?>
@@ -228,10 +229,12 @@ function removeImage($path)
 
         <main>
 
-            <div class="kemaskini-kuiz-form">
-                <h2>Kemaskini Kuiz</h2>
+            <h2>Kemaskini Kuiz</h2>
 
-                <form action="" method="post" enctype="multipart/form-data" style="width: 70%;">
+
+            <div class="kemaskini-kuiz-form">
+
+                <form action="" method="post" enctype="multipart/form-data">
                     <div class="maklumat-kuiz">
                         <h3>Maklumat kuiz</h3>
 
@@ -303,17 +306,19 @@ function removeImage($path)
                                     if (isset($soalan['s_gambar']) && $gambar = $soalan['s_gambar']) {
 
                                     ?>
-                                        <div style="padding:10px; background-color: #ddd;display:flex;justify-content:left;" class="gambar-container">
+                                        <div class="gambar-container">
                                             <img style="max-width: 300px;" src="<?= $IMAGE_DIR ?><?= $gambar ?>" alt="<?= $gambar ?>">
 
-                                            <button type="button" style="margin: 0 10px;" class="padam-gambar" data-padam-gambar="<?= $soalan['s_id'] ?>"> <b>&minus;</b> Padam Gambar</button>
+                                            <button type="button" style="margin: 0 10px;" class="padam-gambar" data-padam-gambar="<?= $soalan['s_id'] ?>">
+                                                <!-- <b>&minus;</b> --> Padam Gambar
+                                            </button>
                                         </div>
                                     <?php
 
                                     }
                                     ?>
 
-                                    <label class="input-container">
+                                    <label class="input-container flex">
                                         <input type="file" name="<?= $idSoalan ?>" id="">
 
                                         <button type="button" data-padam="<?= $soalan['s_id'] ?>" class="delete-exist">Padam soalan</button>
@@ -332,12 +337,15 @@ function removeImage($path)
                                             $jBetul = isJawapanToSoalan($jawapan['j_id'], $soalan['s_id']);
 
                                         ?>
-                                            <div>
+                                            <div class="input-answers">
                                                 <input type="hidden" name="s[u][<?= $idSoalan ?>][j][<?= $idJawapan ?>][id]" value="<?= $jawapan['j_id'] ?>">
 
                                                 <input type="text" name="s[u][<?= $idSoalan ?>][j][<?= $idJawapan ?>][teks]" value="<?= $jawapan['j_teks'] ?>">
 
-                                                <input type="radio" name="s[u][<?= $idSoalan ?>][jBetul]" value="<?= $jawapan['j_id'] ?>" <?= $jBetul ? ' checked ' : '' ?> required>
+                                                <div class="jb-container <?= $jBetul ? 'selected' : '' ?>" onclick="javascript:clickTheRadioButton(getFirstChild(this))">
+                                                    <input type="radio" name="s[u][<?= $idSoalan ?>][jBetul]" value="<?= $jawapan['j_id'] ?>" <?= $jBetul ? ' checked ' : '' ?> required onclick="javascript:selectBox(this)">
+                                                    <span><?= $jBetul ? '&check;' : '-' ?></span>
+                                                </div>
                                             </div>
                                         <?php
 
@@ -347,7 +355,6 @@ function removeImage($path)
 
                                     </div>
                                 </div>
-                                <hr>
                             <?php
 
                             }
@@ -382,6 +389,10 @@ function removeImage($path)
         /**
          * Custom scriipt
          */
+        function getFirstChild(el) {
+            return el.children[0]
+        }
+
         $(function() {
 
             const deleteBtns = $('.delete-exist');
