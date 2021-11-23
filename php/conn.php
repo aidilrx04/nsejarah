@@ -51,10 +51,14 @@ function getAbsolutePath($append = '')
 }
 
 var_dump(getAbsolutePath());
- */
+
+*/
+
+
 /* 
     MURID
 */
+
 
 /**
  * Daftar murid
@@ -929,7 +933,7 @@ function uploadImage($img, $path = '/images/')
 
     $target_file = $target_dir . $filename;
 
-    var_dump($target_file);
+    //var_dump($target_file);
 
 
     while (file_exists($target_file)) {
@@ -1257,7 +1261,7 @@ function isJawapanToSoalan($id_jawapan, $id_soalan)
 
 /* MISCELLANEOUS */
 /**
- * Memaparkan amaran(alert) Javascript
+ * Memaparkan korat pop-up amaran(alert) Javascript
  * @param string $msg Mesej|Paparan yang dikehendaki
  * @return string Blok kod javascript
  */
@@ -1305,7 +1309,12 @@ function back()
 }
 
 ?>
-
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+<style>
+    body {
+        overflow-x: hidden;
+    }
+</style>
 <svg style="
 position: absolute;
 top: 0;
@@ -1374,3 +1383,9 @@ height: 100%;
     </style>
     <path d="M 0,600 C 0,600 0,400 0,400 C 99.86410256410255,402.0230769230769 199.7282051282051,404.0461538461538 282,379 C 364.2717948717949,353.9538461538462 428.9512820512821,301.83846153846156 491,330 C 553.0487179487179,358.16153846153844 612.4666666666667,466.59999999999997 698,463 C 783.5333333333333,459.40000000000003 895.1820512820511,343.76153846153846 977,326 C 1058.8179487179489,308.23846153846154 1110.8051282051283,388.3538461538462 1183,417 C 1255.1948717948717,445.6461538461538 1347.5974358974358,422.8230769230769 1440,400 C 1440,400 1440,600 1440,600 Z" stroke="none" stroke-width="0" fill="#476bb5ff" class="transition-all duration-300 ease-in-out delay-150 path-1"></path>
 </svg>
+
+<script>
+    function deleteConfirmation() {
+        return confirm('Anda pasti ingin padam data ini?');
+    }
+</script>
