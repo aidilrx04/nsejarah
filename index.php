@@ -8,8 +8,10 @@ session_regenerate_id();
 #conn and stuffs
 require_once 'php/conn.php';
 
+// semak jika permintaan adalah POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    // semak jika permintaan ialah login
     if (isset($_POST['submit']) && $_POST['submit'] == 'login') {
 
         $jenis = $_POST['jenis'];
@@ -17,41 +19,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $katalaluan = $_POST['katalaluan'];
         $status_login = false;
 
+        // semak jika login ialah murid
         if ($jenis == 'murid') {
 
+            // mencuba login murid
             if ($murid = loginMurid($nokp, $katalaluan)) {
 
+                // set login data jika berjaya
                 $_SESSION['jenis'] = 'murid';
                 $_SESSION['nokp'] = $murid['m_nokp'];
                 $_SESSION['nama'] = $murid['m_nama'];
                 $_SESSION['kelas'] = $murid['m_kelas'];
                 $_SESSION['id'] = $murid['m_id'];
                 $status_login = true;
-            } else {
-
-                $status_login = false;
             }
         } else if ($jenis == 'guru') {
 
+            // mencuba login murid
             if ($guru = loginGuru($nokp, $katalaluan)) {
 
+                // set login data jika berjaya
                 $_SESSION['jenis'] = $guru['g_jenis'];
                 $_SESSION['nokp'] = $guru['g_nokp'];
                 $_SESSION['nama'] = $guru['g_nama'];
                 $_SESSION['id'] = $guru['g_id'];
                 $status_login = true;
-            } else {
-
-                $status_login = false;
             }
         }
 
+        // jika pengguna berjaya login.
+        // pindah pengguna ke tempat pilih latihan(jika murid) dan laman guru(jika guru)
         if ($status_login) {
-
             $redirect = $jenis == 'murid' ? 'murid/pilih_latihan.php' : 'guru/';
             echo redirect($redirect);
         } else {
-
+            // papar ralat jika gagal login
             die(alert('No. KP atau Katalaluan salah!') . back());
         }
     }
@@ -125,6 +127,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             }
             ?>
+
+            <div class="ads-section">
+                <div class="ad blue">
+                    <i class="fas fa-user-graduate ad-icon "></i>
+                    <span class="ad-text">Membantu Anda Mencapai Kejayaan</span>
+                </div>           
+                <div class="ad green">
+                    <i class="fas fa-graduation-cap ad-icon "></i>
+                    <span class="ad-text">Kemudahan Untuk Ulangkaji Semula</span>
+                </div>           
+                <div class="ad red">
+                    <i class="fas fa-chalkboard-teacher ad-icon "></i>
+                    <span class="ad-text">Cara Penggunaan Yang Mudah</span>
+                </div>           
+                <!-- <div class="ad">
+                    <i class="fas fa-user-graduate ad-icon"></i>
+                    <span class="ad-text">Membantu anda mencapai kejayaan</span>
+                </div>    -->        
+            </div>
+
 
             <div class="senarai-kuiz">
                 <h3>Senarai Kuiz</h3>

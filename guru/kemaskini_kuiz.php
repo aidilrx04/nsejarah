@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($id_kuiz = updateKuiz($id, $nama, $tarikh, $jenis, $masa)) {
 
-        $soalan = $_POST['s'];
-        $update = $soalan['u'];
+        $soalan = $_POST['s'] ?? [];
+        $update = $soalan['u'] ?? [];
         $baru = isset($soalan['b']) ? $soalan['b'] : [];
         $padam = isset($soalan['d']) ? $soalan['d'] : [];
         $padam_gambar = isset($soalan['dg']) ? $soalan['dg'] : [];
@@ -365,7 +365,7 @@ function removeImage($path)
                         <div id="soalan-padam"></div>
                         <div id="gambar-padam"></div>
 
-                        <button id="tambah-soalan" class="btn btn-success" type="button" style="background: blue; color: white;">
+                        <button id="tambah-soalan" class="btn btn-success" type="button" >
                             <i class="fas fa-plus"></i>
                             <span>Tambah Soalan</span>
                         </button>

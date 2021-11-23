@@ -223,12 +223,24 @@ body {
   border: 1px solid #494748;
 }
 
+.container main table tr td a {
+  -webkit-transition: -webkit-filter .1s;
+  transition: -webkit-filter .1s;
+  transition: filter .1s;
+  transition: filter .1s, -webkit-filter .1s;
+}
+
 .container main table tr td a.kemaskini {
   color: #0eb38b;
 }
 
 .container main table tr td a.padam {
   color: #cb2c45;
+}
+
+.container main table tr td a:hover {
+  -webkit-filter: brightness(80%);
+          filter: brightness(80%);
 }
 
 .container main table tr:nth-of-type(even) td {
@@ -431,5 +443,94 @@ body {
 
 #ulangkaji .soalan .jawapan label, #jawab-kuiz .soalan .jawapan label, #keputusan .soalan .jawapan label {
   cursor: pointer;
+}
+
+.ads-section {
+  background: rgba(248, 252, 163, 0.8);
+  padding: 20px 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.ads-section .ad {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding: 10px;
+  background-color: rgba(71, 107, 181, 0.04);
+  margin: 5px 5px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.ads-section .ad.green {
+  color: #0fc69a;
+}
+
+.ads-section .ad.blue {
+  color: #476bb5;
+}
+
+.ads-section .ad.red {
+  color: #cb2c45;
+}
+
+.ads-section .ad .ad-icon {
+  display: block;
+  font-weight: bold;
+  font-size: 100px;
+  margin-bottom: 5px;
+}
+
+.ads-section .ad .ad-text {
+  font-weight: bold;
+}
+
+.search-box form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 5px 0;
+}
+
+.search-box form input {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding: 10px 5px;
+  border-radius: 3px;
+  border: 1px solid #494748;
+}
+
+.search-box form button {
+  margin-left: 5px;
+  padding: 10px 15px;
+  height: 100%;
+  border-radius: 3px;
+  border: 1px solid #0fc69a;
+  background-color: #0dae88;
+  color: #fff;
+  cursor: pointer;
+  -webkit-transition: background .1s;
+  transition: background .1s;
+}
+
+.search-box form button:hover {
+  background-color: #0a7f63;
 }
 /*# sourceMappingURL=base.css.map */

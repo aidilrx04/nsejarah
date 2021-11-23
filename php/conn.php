@@ -24,7 +24,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // idk why i implement this
-/* 
+/*
 function getAbsolutePath($append = '')
 {
     global $PROJECT_ROOT_DIR;
@@ -55,7 +55,54 @@ var_dump(getAbsolutePath());
 */
 
 
-/* 
+/**
+ * Get or fetch data from db only
+ * @param string query Query String
+ * @param array $data Data to insert into query
+ */
+function get_query($query, ...$data)
+{
+    global $conn;
+    if ($stmt = $conn->prepare($query)) {
+        if (count($data) > 0) {
+            $stmt->bind_param(str_repeat('s', count($data)), ...$data);
+        }
+        $stmt->execute();
+        // $stmt->store_result();
+        $res = $stmt->get_result();
+
+        $data = [];
+
+        while ($row = $res->fetch_assoc()) {
+            array_push($data, $row);
+        }
+
+
+        return $data;
+    }
+
+    return NULL;
+}
+
+function insert_query($query, ...$data)
+{
+    global $conn;
+    if ($stmt = $conn->prepare($query)) {
+        if (count($data) > 0) {
+            $stmt->bind_param(str_repeat('s', count($data)), ...$data);
+        }
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt && !$stmt->errno) {
+            return $stmt->insert_id !== 0 ? $stmt->insert_id : true;
+        }
+    }
+
+    return NULL;
+}
+
+
+/*
     MURID
 */
 
@@ -71,16 +118,10 @@ var_dump(getAbsolutePath());
 function registerMurid(string $nokp, string $nama, string $katalaluan, int $kelas)
 {
 
-    global $conn;
     $query = "INSERT INTO murid(m_nokp, m_nama, m_katalaluan, m_kelas) VALUE (?,?,?,?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ssss', $nokp, $nama, $katalaluan, $kelas);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return true;
+    if ($murid = insert_query($query, $nokp, $nama, $katalaluan, $kelas)) {
+        if ($murid) return true;
     }
 
     return false;
@@ -95,26 +136,20 @@ function registerMurid(string $nokp, string $nama, string $katalaluan, int $kela
 function loginMurid($nokp, $password)
 {
 
-    global $conn;
     $table = 'murid';
     $col_1 = 'm_nokp';
     $col_2 = 'm_katalaluan';
 
     $query = "SELECT * FROM {$table} WHERE {$col_1} = ? AND {$col_2} = ?";
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ss', $nokp, $password);
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) {
-
-            return $res->fetch_assoc();
+    if ($murid = get_query($query, $nokp, $password)) {
+        if (count($murid) > 0) {
+            return $murid[0];
         }
     }
 
     return;
 }
+
 
 /**
  * Dapatkan senarai murid
@@ -125,22 +160,10 @@ function loginMurid($nokp, $password)
 function getMuridList(int $limit = 10, int $offset = 0)
 {
 
-    global $conn;
     $tambahan = $limit <= 0 ? '' : ' LIMIT ' . $limit . ' OFFSET ' . $offset;
     $query = "SELECT * FROM murid {$tambahan}";
-    $murid_list = [];
+    $murid_list = get_query($query) ?? [];
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) {
-
-            # simpan data
-            while ($murid = $res->fetch_assoc()) array_push($murid_list, $murid);
-        }
-    }
     return $murid_list;
 }
 
@@ -152,12 +175,11 @@ function getMuridList(int $limit = 10, int $offset = 0)
 function getMuridById(int $id_murid)
 {
 
-    global $conn;
     $col_1 = 'm_id';
     $query = "SELECT * FROM murid WHERE {$col_1} = '{$id_murid}'";
-    $res = $conn->query($query);
-
-    if ($res->num_rows > 0) return $res->fetch_assoc();
+    if ($murid = get_query($query)) {
+        return $murid[0] ?? NULL;
+    }
 
     return;
 }
@@ -165,21 +187,9 @@ function getMuridById(int $id_murid)
 function getMuridByTing(int $id_ting)
 {
 
-    global $conn;
     $query = "SELECT * FROM murid WHERE m_kelas = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id_ting);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $murid_list = [];
-
-        if ($res->num_rows > 0) {
-
-            while ($murid = $res->fetch_assoc()) array_push($murid_list, $murid);
-        }
-
+    if ($murid_list = get_query($query, $id_ting)) {
         return $murid_list;
     }
 
@@ -198,20 +208,15 @@ function getMuridByTing(int $id_ting)
 function updateMurid(int $id_murid, string $nnokp, string $nnama, string $nkatalaluan, int $nkelas)
 {
 
-    global $conn;
     $query = "UPDATE murid SET m_nokp = ?, m_nama = ?, m_katalaluan = ?, m_kelas = ? WHERE m_id = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('sssss', $nnokp, $nnama, $nkatalaluan, $nkelas, $id_murid);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt) return true;
+    if ($murid = insert_query($query, $nnokp, $nnama, $nkatalaluan, $nkelas, $id_murid)) {
+        var_dump($murid);
+        return true;
     }
-
     return false;
 }
+
 
 function isMurid()
 {
@@ -232,16 +237,10 @@ function accessMurid($err_msg = '', $reroute = '/')
 function getSkorMurid($id_skor)
 {
 
-    global $conn;
     $query = "SELECT * FROM skor_murid WHERE sm_id = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id_skor);
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) return $res->fetch_assoc();
+    if ($skor_murid_list = get_query($query, $id_skor)) {
+        return $skor_murid_list;
     }
 
     return false;
@@ -271,16 +270,19 @@ function getSkorMurid($id_skor)
 function getSkorByMurid($id_murid, $id_kuiz)
 {
 
-    global $conn;
     $query = "SELECT * FROM skor_murid WHERE sm_murid = ? AND sm_kuiz = ?";
 
-    if ($stmt = $conn->prepare($query)) {
+    /* if ($stmt = $conn->prepare($query)) {
 
         $stmt->bind_param('ss', $id_murid, $id_kuiz);
         $stmt->execute();
         $res = $stmt->get_result();
 
         if ($res->num_rows > 0) return $res->fetch_assoc();
+    } */
+
+    if ($skor_murid = get_query($query, $id_murid, $id_kuiz)) {
+        return $skor_murid[0];
     }
 
     return false;
@@ -296,7 +298,9 @@ function countSkorMurid(array $jawapan_murid, $id_kuiz)
 
     // change jumlah cuz $jawapan_murid jawapan can be less than total soalan
     // get soalan total
-    $jumlah = (int)$conn->query("SELECT COUNT(s_id) as jumlah FROM soalan WHERE s_kuiz = '{$id_kuiz}'")->fetch_assoc()['jumlah'];
+    $query = "SELECT COUNT(s_id) as jumlah FROM soalan WHERE s_kuiz = ?";
+    // $jumlah = (int)$conn->query("SELECT COUNT(s_id) as jumlah FROM soalan WHERE s_kuiz = '{$id_kuiz}'")->fetch_assoc()['jumlah'];
+    $jumlah = (int)get_query($query, $id_kuiz)[0]['jumlah'];
     $peratus = 0;
 
     foreach ($jawapan_murid as $i => $j) {
@@ -334,7 +338,7 @@ function countSkorMurid(array $jawapan_murid, $id_kuiz)
 function getJawapanMurid($id_murid, $id_kuiz)
 {
 
-    global $conn;
+    // global $conn;
     // echo $id_kuiz;
     $kuiz = getKuizById($id_kuiz);
     $soalan_list = getSoalanByKuiz($kuiz['kz_id']);
@@ -347,24 +351,12 @@ function getJawapanMurid($id_murid, $id_kuiz)
 
     foreach ($id_soalan as $id) {
 
-        // echo $id."<br>";
-        $query = "SELECT * FROM jawapan_murid WHERE jm_murid = {$id_murid} AND jm_soalan = {$id}";
-        // echo $query;
-
-        if ($stmt = $conn->prepare($query)) {
-
-            // $stmt->bind_param( 'ss', $id_murid, $id );
-            $stmt->execute();
-            $res = $stmt->get_result();
-
-            if ($res->num_rows > 0) {
-
-                // while( $jm = $res->fetch_assoc() ) array_push( $jm_list , $jm );
-                array_push($jm_list, $res->fetch_assoc());
-            }
+        $query = "SELECT * FROM jawapan_murid WHERE jm_murid = ? AND jm_soalan = ?";
+        $jawapan_murid = get_query($query, $id_murid, $id);
+        // if exists, push
+        if (count($jawapan_murid) > 0) {
+            array_push($jm_list, $jawapan_murid[0]);
         }
-        // var_dump( $jm_list );
-
     }
 
     return !empty($jm_list) ? $jm_list : false;
@@ -373,16 +365,10 @@ function getJawapanMurid($id_murid, $id_kuiz)
 function registerSkorMurid($id_murid, $id_kuiz, $skor)
 {
 
-    global $conn;
     $query = "INSERT INTO skor_murid(sm_murid, sm_kuiz, sm_skor) VALUES(?,?,?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('sss', $id_murid, $id_kuiz, $skor);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return $stmt->insert_id;
+    if ($skor_murid = insert_query($query, $id_murid, $id_kuiz, $skor)) {
+        return $skor_murid;
     }
 
     return false;
@@ -393,16 +379,11 @@ function registerJawapanMurid($id_murid, $id_soalan, $id_jawapan)
 
     global $conn;
     $betul = isJawapanToSoalan($id_jawapan, $id_soalan);
-    $query = "INSERT INTO jawapan_murid(jm_murid, jm_soalan, jm_jawapan, jm_status) 
+    $query = "INSERT INTO jawapan_murid(jm_murid, jm_soalan, jm_jawapan, jm_status)
               VALUES (?,?,?,?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ssss', $id_murid, $id_soalan, $id_jawapan, $betul);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return $betul ? true : false;
+    if (insert_query($query, $id_murid, $id_soalan, $id_jawapan, $betul)) {
+        return $betul ? true : false;
     }
 
     return null;
@@ -419,22 +400,13 @@ function registerJawapanMurid($id_murid, $id_soalan, $id_jawapan)
 function loginGuru($nokp, $password)
 {
 
-    global $conn;
     $table = 'guru';
     $col_1 = 'g_nokp';
     $col_2 = 'g_katalaluan';
     $query = "SELECT * FROM {$table} WHERE {$col_1} = ? AND {$col_2} = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ss', $nokp, $password);
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) {
-
-            return $res->fetch_assoc();
-        }
+    if ($guru = get_query($query, $nokp, $password)) {
+        return $guru[0] ?? NULL;
     }
 
     return;
@@ -451,16 +423,10 @@ function loginGuru($nokp, $password)
 function registerGuru(string $nokp, string $nama, string $katalaluan, string $jenis = 'guru')
 {
 
-    global $conn;
     $query = "INSERT INTO guru(g_nokp, g_nama, g_katalaluan, g_jenis) VALUE(?,?,?,?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ssss', $nokp, $nama, $katalaluan, $jenis);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return true;
+    if (insert_query($query, $nokp, $nama, $katalaluan, $jenis)) {
+        return true;
     }
 
     return false;
@@ -478,16 +444,10 @@ function registerGuru(string $nokp, string $nama, string $katalaluan, string $je
 function updateGuru(int $id_guru, string $nnokp, string $nnama, string $nkatalaluan, string $njenis)
 {
 
-    global $conn;
     $query = "UPDATE guru SET g_nokp = ?, g_nama = ?, g_katalaluan = ?, g_jenis = ? WHERE g_id = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('sssss', $nnokp, $nnama, $nkatalaluan, $njenis, $id_guru);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt) return true;
+    if (insert_query($query, $nnokp, $nnama, $nkatalaluan, $njenis, $id_guru)) {
+        return true;
     }
 
     return false;
@@ -502,16 +462,8 @@ function updateGuru(int $id_guru, string $nnokp, string $nnama, string $nkatalal
 function getGuruList(int $limit = 10, int $offset = 0)
 {
 
-    global $conn;
-    $query = "SELECT * FROM guru LIMIT {$limit} OFFSET {$offset}";
-    $res = $conn->query($query);
-    $guru_list = [];
-
-    if ($res->num_rows > 0) {
-
-        # simpan guru
-        while ($guru = $res->fetch_assoc()) array_push($guru_list, $guru);
-    }
+    $query = "SELECT * FROM guru LIMIT ? OFFSET ?";
+    $guru_list = get_query($query, $limit, $offset) ?? [];
 
     return $guru_list;
 }
@@ -524,28 +476,15 @@ function getGuruList(int $limit = 10, int $offset = 0)
 function getGuru($id)
 {
 
-    global $conn;
     $table = 'guru';
     $col_1 = 'g_id';
     $query = "SELECT * FROM {$table} WHERE {$col_1} = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id);
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) {
-
-            return $res->fetch_assoc();
-        } else {
-
-            return;
-        }
-    } else {
-
-        return;
+    if ($guru = get_query($query, $id)) {
+        return $guru[0];
     }
+
+    return;
 }
 
 /**
@@ -609,17 +548,11 @@ function accessAdmin($err_msg = '', $reroute = '/')
 function registerKelas(string $nama)
 {
 
-    global $conn;
     $query = "INSERT INTO kelas(k_nama) VALUE(?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $nama);
-        $stmt->execute();
-
-        if ($stmt && !$stmt->errno) return true;
+    if (insert_query($query, $nama)) {
+        return true;
     }
-
     return false;
 }
 
@@ -633,24 +566,9 @@ function registerKelas(string $nama)
 function getKelasList(int $limit = 10, int $offset = 0)
 {
 
-    global $conn;
     $query = "SELECT * FROM kelas ";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $kelas_list = [];
-
-        if ($res->num_rows > 0) {
-
-            # simpan semua kelas ke dalam kelas list
-            while ($kelas = $res->fetch_assoc()) {
-
-                array_push($kelas_list, $kelas);
-            }
-        }
-
+    if ($kelas_list = get_query($query)) {
         return $kelas_list;
     }
 
@@ -665,20 +583,11 @@ function getKelasList(int $limit = 10, int $offset = 0)
 function getKelasById(int $id_kelas)
 {
 
-    global $conn;
     $col_1 = 'k_id';
     $query = "SELECT * FROM kelas WHERE {$col_1} = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id_kelas);
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) {
-
-            return $res->fetch_assoc();
-        }
+    if ($kelas = get_query($query, $id_kelas)) {
+        return $kelas[0];
     }
 
     return;
@@ -694,16 +603,10 @@ function getKelasById(int $id_kelas)
 function registerTing(int $ting, int $kelas, int $guru)
 {
 
-    global $conn;
     $query = "INSERT INTO kelas_tingkatan(kt_ting, kt_kelas, kt_guru) VALUE(?,?,?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('iii', $ting, $kelas, $guru);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return true;
+    if (insert_query($query, $ting, $kelas, $guru)) {
+        return true;
     }
 
     return false;
@@ -718,17 +621,9 @@ function registerTing(int $ting, int $kelas, int $guru)
 function getTingList(int $limit = 10, int $offset = 0)
 {
 
-    global $conn;
     $tambahan = $limit <= 0 ? '' : ' LIMIT ' . $limit . ' OFFSET ' . $offset;
     $query = "SELECT * FROM kelas_tingkatan {$tambahan}";
-    $res = $conn->query($query);
-    $ting_list = [];
-
-    if ($res->num_rows > 0) {
-
-        # simpan ting
-        while ($ting = $res->fetch_assoc()) array_push($ting_list, $ting);
-    }
+    $ting_list = get_query($query) ?? [];
 
     return $ting_list;
 }
@@ -741,14 +636,10 @@ function getTingList(int $limit = 10, int $offset = 0)
 function getTingById(int $id_ting)
 {
 
-    global $conn;
     $col_1 = 'kt_id';
-    $query = "SELECT * FROM kelas_tingkatan WHERE {$col_1} = '{$id_ting}'";
-    $res = $conn->query($query);
-
-    if ($res->num_rows > 0) {
-
-        return $res->fetch_assoc();
+    $query = "SELECT * FROM kelas_tingkatan WHERE {$col_1} = ?";
+    if ($ting =  get_query($query, $id_ting)) {
+        return $ting[0];
     }
 
     return;
@@ -762,23 +653,10 @@ function getTingById(int $id_ting)
 function getTingByGuru(int $id_guru)
 {
 
-    global $conn;
     $col_1 = 'kt_guru';
     $query = "SELECT * FROM kelas_tingkatan WHERE {$col_1} = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id_guru);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $kelas_list = [];
-
-        if ($res->num_rows > 0) {
-
-            # simpan kelas
-            while ($kelas = $res->fetch_assoc()) array_push($kelas_list, $kelas);
-        }
-
+    if ($kelas_list = get_query($query, $id_guru)) {
         return $kelas_list;
     }
 
@@ -793,20 +671,11 @@ function getTingByGuru(int $id_guru)
 function getKelasJumlah(int $id_kelas)
 {
 
-    global $conn;
     $col_1 = 'kt.kt_id';
     $query = "select count(m.m_id) as jumlah from murid as m, kelas_tingkatan as kt where kt.kt_id = m.m_kelas and {$col_1} = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id_kelas);
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) {
-
-            return (int)($res->fetch_assoc()['jumlah']);
-        }
+    if ($jumlah_kelas = get_query($query, $id_kelas)) {
+        return $jumlah_kelas[0]['jumlah'];
     }
 
     return 0;
@@ -826,17 +695,11 @@ function getKelasJumlah(int $id_kelas)
 function registerKuiz(string $nama, int $guru, int $id_ting, string $tarikh, string $jenis = 'latihan', ?int $masa = null)
 {
 
-    global $conn;
     $masa = ($jenis == 'kuiz' ? $masa : null);
     $query = "INSERT INTO kuiz(kz_nama, kz_guru, kz_ting, kz_tarikh, kz_jenis, kz_masa) VALUE (?,?,?,?,?,?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ssssss', $nama, $guru, $id_ting, $tarikh, $jenis, $masa);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return $stmt->insert_id;
+    if ($id_kuiz = insert_query($query, $nama, $guru, $id_ting, $tarikh, $jenis, $masa)) {
+        return $id_kuiz;
     }
 
     return false;
@@ -852,17 +715,11 @@ function registerKuiz(string $nama, int $guru, int $id_ting, string $tarikh, str
 function registerSoalan(int $kuiz, string $teks, $image, $image_path = '')
 {
 
-    global $conn;
     $img_url = $image ? uploadImage($image, $image_path) : NULL;
     $query = "INSERT INTO soalan(s_kuiz, s_teks, s_gambar) VALUE (?,?,?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('sss', $kuiz, $teks, $img_url);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return $stmt->insert_id;
+    if ($id_soalan = insert_query($query, $kuiz, $teks, $img_url)) {
+        return $id_soalan;
     }
 
     return false;
@@ -877,15 +734,10 @@ function registerSoalan(int $kuiz, string $teks, $image, $image_path = '')
 function registerJawapan($soalan, $teks)
 {
 
-    global $conn;
     $query = "INSERT INTO jawapan(j_soalan, j_teks) VALUE(?,?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ss', $soalan, $teks);
-        $stmt->execute();
-
-        if ($stmt && !$stmt->errno) return $stmt->insert_id;
+    if ($id_jawapan = insert_query($query, $soalan, $teks)) {
+        return $id_jawapan;
     }
 
     return false;
@@ -899,18 +751,11 @@ function registerJawapan($soalan, $teks)
  */
 function registerSoalanJawapan($soalan, $jawapan)
 {
-
-    global $conn;
     $query = "INSERT INTO soalan_jawapan(sj_soalan, sj_jawapan) VALUE(?,?)";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ss', $soalan, $jawapan);
-        $stmt->execute();
-
-        if ($stmt && !$stmt->errno) return $stmt->insert_id;
+    if ($id_sj = insert_query($query, $soalan, $jawapan)) {
+        return $id_sj;
     }
-
     return false;
 }
 
@@ -954,16 +799,10 @@ function uploadImage($img, $path = '/images/')
 function updateKuiz($id_kuiz, $nama, $tarikh, $jenis, $masa)
 {
 
-    global $conn;
     $query = "UPDATE kuiz SET kz_nama = ?, kz_tarikh = ?, kz_jenis = ?, kz_masa = ? WHERE kz_id = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('sssss', $nama, $tarikh, $jenis, $masa, $id_kuiz);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return $id_kuiz;
+    if (insert_query($query, $nama, $tarikh, $jenis, $masa, $id_kuiz)) {
+        return $id_kuiz;
     }
 
     return false;
@@ -971,18 +810,11 @@ function updateKuiz($id_kuiz, $nama, $tarikh, $jenis, $masa)
 
 function updateSoalan($id_soalan, $teks)
 {
-
-    global $conn;
     // $gambar_url = $gambar ? uploadImage( $gambar ) : NULL;
     $query = "UPDATE soalan SET s_teks = ? WHERE s_id = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ss', $teks, $id_soalan);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return $id_soalan;
+    if (insert_query($query, $teks, $id_soalan)) {
+        return $id_soalan;
     }
 
     return false;
@@ -990,35 +822,20 @@ function updateSoalan($id_soalan, $teks)
 
 function updateJawapan($id_jawapan, $teks)
 {
-
-    global $conn;
     $query = "UPDATE jawapan SET j_teks = ? WHERE j_id = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ss', $teks, $id_jawapan);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return $id_jawapan;
+    if (insert_query($query, $teks, $id_jawapan)) {
+        return $id_jawapan;
     }
-
     return false;
 }
 
 function updateSoalanJawapan($soalan, $jawapan)
 {
-
-    global $conn;
     $query = "UPDATE soalan_jawapan SET sj_jawapan = ? WHERE sj_soalan = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ss', $jawapan, $soalan);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return true;
+    if (insert_query($query, $jawapan, $soalan)) {
+        return true;
     }
 
     return false;
@@ -1026,17 +843,10 @@ function updateSoalanJawapan($soalan, $jawapan)
 
 function deleteSoalan($id_soalan)
 {
-
-    global $conn;
     $query = "DELETE FROM soalan WHERE s_id = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id_soalan);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt && !$stmt->errno) return 1;
+    if (insert_query($query, $id_soalan)) {
+        return true;
     }
 
     return 0;
@@ -1051,52 +861,38 @@ function deleteSoalan($id_soalan)
 function getKuizList(int $id_guru = null, int $limit = 10, int $offset = 0)
 {
 
-    global $conn;
     $col_1 = 'kz_guru';
     $tambahan = $id_guru ? " WHERE {$col_1} = ? " : '';
     $query = "SELECT * FROM kuiz {$tambahan} LIMIT {$limit} OFFSET {$offset}";
 
-    if ($stmt = $conn->prepare($query)) {
+    $kuiz_list = $tambahan !== '' ? get_query($query, $id_guru) : get_query($query);
 
-        if ($id_guru) $stmt->bind_param('s', $id_guru);
-
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) {
-
-            # simpan semua kuiz
-            $kuiz_list = [];
-
-            while ($kuiz = $res->fetch_assoc()) {
-
-                array_push($kuiz_list, $kuiz);
-            }
-
-            return $kuiz_list;
-        } else {
-
-            return [];
-        }
+    if ($kuiz_list) {
+        return $kuiz_list;
     }
+
+    return [];
 }
 
 function getKuizById(int $id_kuiz)
 {
 
-    global $conn;
     $query = "SELECT * FROM kuiz WHERE kz_id = ?";
 
-    if ($stmt = $conn->prepare($query)) {
+    // if ($stmt = $conn->prepare($query)) {
 
-        $stmt->bind_param('s', $id_kuiz);
-        $stmt->execute();
-        $res = $stmt->get_result();
+    //     $stmt->bind_param('s', $id_kuiz);
+    //     $stmt->execute();
+    //     $res = $stmt->get_result();
 
-        if ($res->num_rows > 0) {
+    //     if ($res->num_rows > 0) {
 
-            return $res->fetch_assoc();
-        }
+    //         return $res->fetch_assoc();
+    //     }
+    // }
+
+    if ($kuiz = get_query($query, $id_kuiz)) {
+        return $kuiz[0];
     }
 
     return false;
@@ -1105,22 +901,11 @@ function getKuizById(int $id_kuiz)
 function getKuizByGuru(int $id_guru)
 {
 
-    global $conn;
     $query = "SELECT * FROM kuiz WHERE kz_guru = ?";
 
-    if ($stmt = $conn->prepare($query)) {
+    $kuiz_list = get_query($query, $id_guru);
 
-        $stmt->bind_param('s', $id_guru);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $kuiz_list = [];
-
-        if ($res->num_rows > 0) {
-
-            #simpan kuiz
-            while ($kuiz = $res->fetch_assoc()) array_push($kuiz_list, $kuiz);
-        }
-
+    if ($kuiz_list || is_array($kuiz_list)) {
         return $kuiz_list;
     }
 
@@ -1130,22 +915,11 @@ function getKuizByGuru(int $id_guru)
 function getKuizByTing(int $id_ting)
 {
 
-    global $conn;
     $query = "SELECT * FROM kuiz WHERE kz_ting = ?";
 
-    if ($stmt = $conn->prepare($query)) {
+    $kuiz_list = get_query($query, $id_ting);
 
-        $stmt->bind_param('s', $id_ting);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $kuiz_list = [];
-
-        if ($res->num_rows > 0) {
-
-            #simpan kuiz
-            while ($kuiz = $res->fetch_assoc()) array_push($kuiz_list, $kuiz);
-        }
-
+    if ($kuiz_list || is_array($kuiz_list)) {
         return $kuiz_list;
     }
 
@@ -1155,84 +929,37 @@ function getKuizByTing(int $id_ting)
 function getSoalanByKuiz(int $id_kuiz)
 {
 
-    global $conn;
     $query = "SELECT * FROM soalan WHERE s_kuiz = ?";
 
-    if ($stmt = $conn->prepare($query)) {
+    $soalan_list = get_query($query, $id_kuiz);
 
-        $stmt->bind_param('s', $id_kuiz);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $soalan_list = [];
-
-        if ($res->num_rows > 0) {
-
-            #simpan soalan
-            while ($soalan = $res->fetch_assoc()) array_push($soalan_list, $soalan);
-        }
-
-        return $soalan_list;
-    }
-
-    return false;
+    return $soalan_list ?? [];
 }
 
 function getJawapanBySoalan(int $id_soalan)
 {
-
-    global $conn;
     $query = "SELECT * FROM jawapan WHERE j_soalan = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id_soalan);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $jawapan_list = [];
-
-        if ($res->num_rows > 0) {
-
-            #simpan jawapan
-            while ($jawapan = $res->fetch_assoc()) array_push($jawapan_list, $jawapan);
-        }
-
-        return $jawapan_list;
-    }
-
-    return false;
+    $jawapan_list = get_query($query, $id_soalan);
+    return $jawapan_list ?? [];
 }
 
 function getJawapanToSoalan(int $id_soalan)
 {
-
-    global $conn;
     $query = "SELECT * FROM soalan_jawapan WHERE sj_soalan = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id_soalan);
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) return $res->fetch_assoc();
+    if ($sj = get_query($query, $id_soalan)) {
+        return $sj[0];
     }
-
     return false;
 }
 
 function getJawapanById(int $id_jawapan)
 {
-
-    global $conn;
     $query = "SELECT * FROM jawapan WHERE j_id = ?";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('s', $id_jawapan);
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows > 0) return $res->fetch_assoc();
+    if ($jawapan = get_query($query, $id_jawapan)) {
+        return $jawapan[0];
     }
 
     return false;
@@ -1240,20 +967,12 @@ function getJawapanById(int $id_jawapan)
 
 function isJawapanToSoalan($id_jawapan, $id_soalan)
 {
-
-    global $conn;
-
     if ($id_jawapan == NULL) return NULL;
 
     $query = "SELECT * FROM soalan_jawapan WHERE sj_soalan = ? AND sj_jawapan = ? LIMIT 1";
 
-    if ($stmt = $conn->prepare($query)) {
-
-        $stmt->bind_param('ss', $id_soalan, $id_jawapan);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows > 0) return 1;
+    if ($sj = get_query($query, $id_soalan, $id_jawapan)) {
+        return true;
     }
 
     return false;

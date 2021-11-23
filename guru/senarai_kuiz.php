@@ -10,6 +10,14 @@ require '../php/conn.php';
 accessGuru('Akses tanpa kebenaran!');
 
 $kuiz_list = isAdmin() ? getKuizList(null, 10000) : getKuizByGuru($_SESSION['id']);
+$q = $_GET['q'] ?? NULL;
+
+if ($q) {
+    $kuiz_list = array_filter($kuiz_list, function ($kuiz) {
+        global $q;
+        return strpos(strtolower($kuiz['kz_nama']), strtolower($q)) !== false;
+    });
+}
 
 ?>
 <!DOCTYPE html>
@@ -34,7 +42,17 @@ $kuiz_list = isAdmin() ? getKuizList(null, 10000) : getKuizByGuru($_SESSION['id'
             <h2>Senarai Kuiz</h2>
 
             <div>
+
                 <a class="cipta-link" href="guru/cipta_kuiz.php">Cipta kuiz baharu &plus;</a>
+
+                <!-- QUERY -->
+                <div class="search-box">
+                    <form action="guru/senarai_kuiz.php">
+                        <input type="text" name="q" value="<?= $q ?>" placeholder="Cari" <?= $q ? 'autofocus' : '' ?>>
+                        <button> <i class="fas fa-search"></i> Cari</button>
+                    </form>
+                </div>
+
 
                 <table id="senarai-kuiz" border="1">
                     <thead>
@@ -79,7 +97,7 @@ $kuiz_list = isAdmin() ? getKuizList(null, 10000) : getKuizByGuru($_SESSION['id'
 
                                 <td>
                                     <a href="guru/kemaskini_kuiz.php?id_kuiz=<?= $kuiz['kz_id'] ?>&redir=guru/senarai_kuiz.php" class="kemaskini">Kemaskini</a>
-                                    <a href="guru/padam.php?table=kuiz&col=kz_id&val=<?= $kuiz['kz_id'] ?>&redir=guru/senarai_kuiz.php" class="padam">Padam</a>
+                                    <a onclick="return deleteConfirmation()" href="guru/padam.php?table=kuiz&col=kz_id&val=<?= $kuiz['kz_id'] ?>&redir=guru/senarai_kuiz.php" class="padam">Padam</a>
                                 </td>
 
                             </tr>

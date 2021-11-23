@@ -22,9 +22,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid') {
         echo alert('Data berjaya dimuat naik!') . (isset($_GET['redir']) ? redirect($_GET['redir']) : '');
     } else {
 
+        // echo alert('Data gagal dimuat naik!');
         die(alert('Data gagal dimuat naik!') . back());
     }
 }
+
+$murid_list = getMuridList(-1);
+
+
+$q = $_GET['q'] ?? NULL;
+
+
+if ($q) {
+    $murid_list = array_filter($murid_list, function ($murid) {
+        global $q;
+        return strpos(strtolower($murid['m_nama']), strtolower($q)) !== false;
+    });
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -49,8 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid') {
 
             <h2>Senarai murid</h2>
 
+
             <div>
                 <a class="x-link cipta-link" href="guru/upload_murid.php?redirect=guru/senarai_murid.php">[&plus;] Muatnaik data murid.</a>
+
+                <!-- QUERY -->
+                <div class="search-box">
+                    <form action="guru/senarai_murid.php">
+                        <input type="text" name="q" value="<?= $q ?>" placeholder="Cari" <?= $q ? 'autofocus' : '' ?>>
+                        <button> <i class="fas fa-search"></i> Cari</button>
+                    </form>
+                </div>
 
                 <table border="1">
                     <thead>
@@ -85,6 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid') {
                                 <td>
                                     <select name="kelas" id="kelas">
                                         <?php
+
                                         $ting_list = getTingList(-1);
 
                                         foreach ($ting_list as $ting) {
@@ -107,7 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid') {
                         </tr>
 
                         <?php
-                        $murid_list = getMuridList(-1);
 
 
                         foreach ($murid_list as $murid) {
@@ -127,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] = 'submit_murid') {
                                 <td>
                                     <a href="guru/kemaskini_murid.php?id_murid=<?= $murid['m_id'] ?>&redir=guru/senarai_murid.php" class="kemaskini">Kemaskini</a>
 
-                                    <a href="guru/padam.php?table=murid&col=m_id&val=<?= $murid['m_id'] ?>&redir=guru/senarai_murid.php" class="padam">Padam</a>
+                                    <a onclick="return deleteConfirmation()" href="guru/padam.php?table=murid&col=m_id&val=<?= $murid['m_id'] ?>&redir=guru/senarai_murid.php" class="padam">Padam</a>
                                 </td>
                             </tr>
                         <?php

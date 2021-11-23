@@ -10,6 +10,16 @@ $ting = getTingById($murid['m_kelas']);
 
 $kuiz_list = getKuizByTing($ting['kt_id']);
 
+$q = $_GET['q'] ?? NULL;
+
+if ($q) {
+    $kuiz_list = array_filter($kuiz_list, function ($kuiz) {
+        global $q;
+
+        return strpos(strtolower($kuiz['kz_nama']), strtolower($q)) !== false;
+    });
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,6 +41,15 @@ $kuiz_list = getKuizByTing($ting['kt_id']);
             <h2>Pilih Latihan</h2>
 
             <div id="pilih-latihan">
+
+                <!-- QUERY -->
+                <div class="search-box">
+                    <form action="murid/pilih_latihan.php">
+                        <input type="text" name="q" <?= $q ? 'autofocus' : '' ?> value="<?= $q ?>" placeholder="Cari">
+                        <button> <i class="fas fa-search"></i> Cari</button>
+                    </form>
+                </div>
+
 
                 <table border="1">
                     <thead>

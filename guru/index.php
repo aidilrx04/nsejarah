@@ -10,6 +10,25 @@ require '../php/conn.php';
 accessGuru('Akses tanpa kebenaran!');
 
 
+$guru = getGuru($_SESSION['id']);
+$ting =  getTingByGuru($guru['g_id']);
+$kuiz = getKuizList($guru['g_id']);
+
+//query
+
+// query handler
+$qk = $_GET['qk'] ?? NULL; // query kuiz
+
+
+
+if ($qk) {
+    $kuiz = array_filter($kuiz, function ($k) {
+        global $qk;
+        return strpos(strtolower($k['kz_nama']), strtolower($qk)) !== false;
+    });
+}
+
+
 
 ?>
 <!DOCTYPE html>
@@ -30,14 +49,12 @@ accessGuru('Akses tanpa kebenaran!');
 
         <main>
 
-            <h2>Laman Admin</h2>
+            <h2>Laman Guru</h2>
 
             <div id="maklumat-guru">
                 <?php
 
-                $guru = getGuru($_SESSION['id']);
-                $ting = getTingByGuru($guru['g_id']);
-                $kuiz = getKuizList($guru['g_id']);
+
                 $kelas_data = array_map(function ($t) {
 
                     return ['kt_id' => $t['kt_id'], 'kt_ting' => $t['kt_ting'], 'kelas' => getKelasById($t['kt_kelas'])];
@@ -68,9 +85,12 @@ accessGuru('Akses tanpa kebenaran!');
                         ?>
                     </span>
                 </div>
+                <br>
 
                 <div id="kelas">
                     <h3>Kelas Guru</h3>
+
+
 
                     <table border="1">
                         <thead>
@@ -101,8 +121,18 @@ accessGuru('Akses tanpa kebenaran!');
                     </table>
                 </div>
 
+                <br>
+
                 <div id="kuiz">
                     <h3>Senarai Kuiz</h3>
+
+                    <!-- QUERY -->
+                    <div class="search-box">
+                        <form action="guru/#kuiz">
+                            <input type="text" name="qk" value="<?= $qk ?>" placeholder="Cari" <?= $qk ? 'autofocus' : '' ?>>
+                            <button> <i class="fas fa-search"></i> Cari</button>
+                        </form>
+                    </div>
 
                     <table border="1">
                         <thead>

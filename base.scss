@@ -230,12 +230,17 @@ body {
                         }
 
                         a {
+                            transition: filter .1s;
                             &.kemaskini {
                                 color: darken($green, 4);
                             }
 
                             &.padam {
                                 color: $red;
+                            }
+
+                            &:hover {
+                                filter: brightness(80%);
                             }
                         }
                 }
@@ -441,6 +446,78 @@ body {
             label {
                 cursor: pointer;
             }
+        }
+    }
+}
+
+.ads-section {
+    background: rgba($yellow, .8);
+    padding: 20px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    .ad {
+        flex: 1;
+        padding: 10px;
+        background-color: rgba($blue, .04);
+        margin: 5px 5px;
+        border-radius: 3px;
+        text-align: center;
+
+
+        &.green {
+            color: $green;
+        }
+        &.blue {
+            color: $blue;
+        }
+        &.red {
+            color: $red;
+        }
+
+        .ad-icon {
+            display: block;
+            font-weight: bold;
+            font-size: 100px;
+            margin-bottom: 5px;
+        }
+
+        .ad-text {
+            font-weight: bold;
+            
+        }
+    }
+}
+
+.search-box form
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0;
+
+    input {
+        flex: 1;
+        padding: 10px 5px;
+        border-radius: 3px;
+        border: 1px solid $gray;
+    }
+
+    button{
+        margin-left: 5px;
+        padding: 10px 15px;
+        height: 100%;
+        border-radius: 3px;
+        border: 1px solid $green;
+        background-color: darken($green, 5);
+        color: #fff;
+        cursor: pointer;
+        transition: background .1s;
+
+        &:hover {
+            background-color: darken($green, 15);
         }
     }
 }

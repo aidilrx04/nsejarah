@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2021 at 07:56 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.9
+-- Generation Time: Jul 04, 2021 at 03:09 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `guru` (
   `g_jenis` enum('admin','guru') DEFAULT 'guru',
   PRIMARY KEY (`g_id`),
   UNIQUE KEY `g_nokp` (`g_nokp`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `guru`
@@ -59,33 +60,32 @@ CREATE TABLE IF NOT EXISTS `jawapan` (
   `j_teks` text NOT NULL,
   PRIMARY KEY (`j_id`),
   KEY `j_soalan` (`j_soalan`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `jawapan`
 --
 
 INSERT INTO `jawapan` (`j_id`, `j_soalan`, `j_teks`) VALUES
-(1, 1, 'Professor Emeritus Dato\' Dr. Nik hassan Shuhaimi Nik Abdul Rahman'),
-(2, 1, 'Abdul Hadi Haji Hassan'),
-(3, 1, 'Alfred Russel Wallace'),
-(4, 1, 'Sultan Takdir Alisjahbana'),
-(5, 2, 'Kepulauan Melayu meliputi Tanah Melayu hingga Tenasserim dan kepulauan Nicobar, Filipina dan Kepulauan Solomon hingga Papua New Guinea'),
-(6, 2, 'Dunia Melayu merupakan sebuah kawasa yang luas meliputi Malaysia, Indonesia, Brunei, Singapura, selatan Thailand dan Filipina.'),
-(7, 2, 'Alam Melayu merupakan suatu lingkungan geografi yang luas meliputi Kepulauan Melayu hingga selatan Thailand'),
-(8, 2, 'Alam Melayu meliputi kawasan dari Madagaskar ke Tanah Melayu, Papua New guinea, Australia, New Zealand, Kepulauan Pasifik dan sampai ke Taiwan'),
-(9, 3, 'China'),
-(10, 3, 'Funan'),
-(11, 3, 'Angkor'),
-(12, 3, 'Majapahit'),
-(13, 4, 'Chu-Lien'),
-(14, 4, 'Vyadhapura'),
-(15, 4, 'Dapunta Hyang Seri'),
-(16, 4, 'Jayavarman II'),
-(17, 5, 'Chola'),
-(18, 5, 'Dinasti Han'),
-(19, 5, 'Empayar Parsi'),
-(20, 5, 'Empayar Rom');
+(1, 1, 'Cicak'),
+(2, 1, 'Ikan'),
+(3, 1, 'Ayam'),
+(4, 1, 'Lipas'),
+
+(5, 2, 'Betul kot'),
+(6, 2, 'Hmm entahlah'),
+(7, 2, 'Tak tau'),
+(8, 2, 'Mungkin'),
+
+(9, 3, 'Cicak - Kuiz'),
+(10, 3, 'Ikan - Kuiz'),
+(11, 3, 'Ayam - Kuiz'),
+(12, 3, 'Lipas - Kuiz'),
+
+(13, 4, 'Betul kot - Kuiz'),
+(14, 4, 'Hmm entahlah - Kuiz'),
+(15, 4, 'Tak tau - Kuiz'),
+(16, 4, 'Mungkin - Kuiz');
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,12 @@ CREATE TABLE IF NOT EXISTS `jawapan_murid` (
   KEY `jm_murid` (`jm_murid`),
   KEY `jm_soalan` (`jm_soalan`),
   KEY `jm_jawapan` (`jm_jawapan`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `jawapan_murid`
+--
+
 
 -- --------------------------------------------------------
 
@@ -115,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `kelas` (
   `k_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `k_nama` varchar(255) NOT NULL,
   PRIMARY KEY (`k_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `kelas`
@@ -142,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `kelas_tingkatan` (
   PRIMARY KEY (`kt_id`),
   KEY `kt_kelas` (`kt_kelas`),
   KEY `kt_guru` (`kt_guru`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `kelas_tingkatan`
@@ -172,19 +177,15 @@ CREATE TABLE IF NOT EXISTS `kuiz` (
   PRIMARY KEY (`kz_id`),
   KEY `kz_guru` (`kz_guru`),
   KEY `kz_ting` (`kz_ting`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `kuiz`
 --
 
 INSERT INTO `kuiz` (`kz_id`, `kz_nama`, `kz_guru`, `kz_ting`, `kz_tarikh`, `kz_jenis`, `kz_masa`) VALUES
-(1, 'Bab 1.1: Konsep Alam Melayu', 1, 1, '2025-04-02', 'latihan', NULL),
-(2, 'Bab 1.3: Kerajaan Alam Melayu yang Masyhur', 1, 1, '2021-06-16', 'kuiz', 12),
-(3, 'Bab 1.4: Kerajaan Luar Sezaman', 2, 2, '2021-11-15', 'latihan', NULL),
-(6, 'Bab 2.1: Sistem pemerintahan', 2, 2, '2021-11-15', 'latihan', NULL),
-(7, 'Bab 2.2: Kegiatan Ekonomi', 2, 2, '2021-11-15', 'latihan', NULL),
-(8, 'Bab 3.1: Sistem dan Tulisan', 2, 2, '2021-11-15', 'latihan', NULL);
+(1, 'Gunggung', 1, 1, '2025-04-02', 'latihan', NULL),
+(2, 'Bab 3: Kuiz GUNGGUNG', 1, 1, '2021-06-16', 'kuiz', 12);
 
 -- --------------------------------------------------------
 
@@ -201,32 +202,15 @@ CREATE TABLE IF NOT EXISTS `murid` (
   PRIMARY KEY (`m_id`,`m_nokp`),
   UNIQUE KEY `m_nokp` (`m_nokp`),
   KEY `m_kelas` (`m_kelas`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `murid`
 --
 
 INSERT INTO `murid` (`m_id`, `m_nokp`, `m_nama`, `m_katalaluan`, `m_kelas`) VALUES
-(1, '111111111111', 'Aidil', '123', 1),
-(2, '222222222222', 'Sudin', '123', 2),
-(3, '333333333333', 'John', '123', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `skor_murid`
---
-
-CREATE TABLE IF NOT EXISTS `skor_murid` (
-  `sm_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `sm_murid` int(10) UNSIGNED NOT NULL,
-  `sm_kuiz` int(10) UNSIGNED NOT NULL,
-  `sm_skor` double(10,2) NOT NULL,
-  PRIMARY KEY (`sm_id`),
-  KEY `sm_murid` (`sm_murid`),
-  KEY `sm_kuiz` (`sm_kuiz`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+(1, '111111111111', 'Soupeed', '123', 1),
+(2, '222222222222', 'Sudin', '123', 2);
 
 -- --------------------------------------------------------
 
@@ -241,18 +225,17 @@ CREATE TABLE IF NOT EXISTS `soalan` (
   `s_gambar` text DEFAULT NULL,
   PRIMARY KEY (`s_id`),
   KEY `s_kuiz` (`s_kuiz`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `soalan`
 --
 
 INSERT INTO `soalan` (`s_id`, `s_kuiz`, `s_teks`, `s_gambar`) VALUES
-(1, 1, 'Apakah nama tokoh ini?', 'tokoh1.PNG'),
-(2, 1, 'Apakah pendapat Alfred Russel Wallace terhadap kedudukan geografi Alam Melayu?', NULL),
-(3, 2, 'Manakah antara berikut bukan kerajaan alam melayu yang masyhur', NULL),
-(4, 2, 'Siapakah pengasas kerajaan Champa?', NULL),
-(5, 3, 'Berikut merupakan kerajaan luar yang sezaman dengan kerajaan Funan, kecuali ', NULL);
+(1, 1, 'Apakah nama haiwan ini. - Kuiz', 'https://upload.wikimedia.org/wikipedia/commons/1/1c/YosriCicak.jpg'),
+(2, 1, 'Betul ke tak?', NULL),
+(3, 2, 'Apakah nama haiwan ini. - Kuiz', 'https://upload.wikimedia.org/wikipedia/commons/1/1c/YosriCicak.jpg'),
+(4, 2, 'Betul ke tak? - Kuiz', NULL);
 
 -- --------------------------------------------------------
 
@@ -267,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `soalan_jawapan` (
   PRIMARY KEY (`sj_id`),
   KEY `sj_soalan` (`sj_soalan`),
   KEY `sj_jawapan` (`sj_jawapan`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `soalan_jawapan`
@@ -277,8 +260,7 @@ INSERT INTO `soalan_jawapan` (`sj_id`, `sj_soalan`, `sj_jawapan`) VALUES
 (1, 1, 1),
 (2, 2, 5),
 (3, 3, 9),
-(4, 4, 13),
-(5, 5, 17);
+(4, 4, 13);
 
 --
 -- Constraints for dumped tables
@@ -317,13 +299,6 @@ ALTER TABLE `kuiz`
 --
 ALTER TABLE `murid`
   ADD CONSTRAINT `murid_ibfk_1` FOREIGN KEY (`m_kelas`) REFERENCES `kelas_tingkatan` (`kt_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `skor_murid`
---
-ALTER TABLE `skor_murid`
-  ADD CONSTRAINT `skor_murid_ibfk_1` FOREIGN KEY (`sm_murid`) REFERENCES `murid` (`m_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `skor_murid_ibfk_2` FOREIGN KEY (`sm_kuiz`) REFERENCES `kuiz` (`kz_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `soalan`

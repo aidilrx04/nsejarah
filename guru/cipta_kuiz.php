@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'tambah-kuiz') {
     // if( true )
     {
 
-        $soalan_list = $_POST['s']['b'];
+        $soalan_list = $_POST['s']['b'] ?? [];
         $sBerjaya = 0;
         $sGagal = 0;
         $sJumlah = count($soalan_list);

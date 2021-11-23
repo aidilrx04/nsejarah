@@ -34,6 +34,28 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 
+
+$kelas_list_main = getKelasList(-1);
+
+$qt = $_GET['qt'] ?? NULL;
+$qk = $_GET['qk'] ?? NULL;
+
+if ($qt) {
+    $query = "SELECT kelas_tingkatan.* FROM kelas_tingkatan, kelas WHERE kelas.k_id = kelas_tingkatan.kt_kelas AND kelas.k_nama LIKE ?";
+
+    $ting_list = get_query($query, '%' . $qt . '%');
+} else {
+    $ting_list = getTingList(-1);
+}
+
+if ($qk) {
+    $kelas_list_main = array_filter($kelas_list_main, function ($kelas) {
+        global $qk;
+        return strpos(strtolower($kelas['k_nama']), strtolower($qk)) !== false;
+    });
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             <div id="senarai-tingkatan">
                 <h3>Senarai Tingkatan</h3>
+
+                <!-- QUERY -->
+                <div class="search-box">
+                    <form action="guru/senarai_ting.php#senarai-tingkatan">
+                        <input type="text" name="qt" value="<?= $qt ?>" placeholder="Cari" <?= $qt ? 'autofocus' : '' ?>>
+                        <button> <i class="fas fa-search"></i> Cari</button>
+                    </form>
+                </div>
 
                 <table border="1">
                     <thead>
@@ -119,7 +149,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                         <?php
 
-                        $ting_list = getTingList(-1);
 
                         foreach ($ting_list as $ting) {
 
@@ -138,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                 <td>
                                     <a href="guru/kemaskini_ting.php?id_ting=<?= $ting['kt_id'] ?>&redir=guru/senarai_ting.php" class="kemaskini">Kemaskini</a>
 
-                                    <a href="guru/padam.php?table=kelas_tingkatan&col=kt_id&val=<?= $ting['kt_id'] ?>&redir=guru/senarai_ting.php" class="padam">Padam</a>
+                                    <a onclick="return deleteConfirmation()" href="guru/padam.php?table=kelas_tingkatan&col=kt_id&val=<?= $ting['kt_id'] ?>&redir=guru/senarai_ting.php" class="padam">Padam</a>
                                 </td>
                             </tr>
 
@@ -151,8 +180,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </table>
             </div>
 
+
+
             <div id="senarai-kelas">
+
                 <h3>Senarai Kelas</h3>
+
+                <!-- QUERY -->
+                <div class="search-box">
+                    <form action="guru/senarai_ting.php#senarai-kelas">
+                        <input type="text" name="qk" value="<?= $qk ?>" placeholder="Cari" <?= $qk ? 'autofocus' : '' ?>>
+                        <button> <i class="fas fa-search"></i> Cari</button>
+                    </form>
+                </div>
 
                 <table border="1">
                     <thead>
@@ -178,9 +218,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                         <?php
 
-                        $kelas_list = getKelasList(-1);
 
-                        foreach ($kelas_list as $kelas) {
+                        foreach ($kelas_list_main as $kelas) {
 
                         ?>
                             <tr>
@@ -188,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                                 <td>
                                     <a href="guru/kemaskini_kelas.php?id_kelas=<?= $kelas['k_id'] ?>&redir=guru/senarai_ting.php" class="kemaskini">Kemaskini</a>
-                                    <a href="guru/padam.php?table=kelas&col=k_id&val=<?= $kelas['k_id'] ?>&redir=guru/senarai_ting.php" class="padam">Padam</a>
+                                    <a onclick="return deleteConfirmation()" href="guru/padam.php?table=kelas&col=k_id&val=<?= $kelas['k_id'] ?>&redir=guru/senarai_ting.php" class="padam">Padam</a>
                                 </td>
                             </tr>
                         <?php

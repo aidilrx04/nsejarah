@@ -77,6 +77,7 @@ $kelas = getKelasById($ting['kt_kelas']);
                 <div><b>Nama Guru:</b> <?= $guru['g_nama'] ?></div>
 
                 <div><b>Kelas:</b> <?= $ting['kt_ting'] ?> <?= $kelas['k_nama'] ?></div>
+                <div><b>Kuiz:</b> <?= $kuiz['kz_nama'] ?></div>
 
                 <table border="1">
                     <thead>
@@ -98,7 +99,7 @@ $kelas = getKelasById($ting['kt_kelas']);
                         foreach ($murid_list as $murid) {
 
                             $jawapan_murid = getJawapanMurid($murid['m_id'], $kuiz['kz_id']);
-                            $skor_murid = $jawapan_murid ? countSkorMurid($jawapan_murid) : false;
+                            $skor_murid = $jawapan_murid ? countSkorMurid($jawapan_murid, $kuiz['kz_id']) : false;
                         ?>
                             <tr>
                                 <td><?= $murid['m_nama'] ?></td>
